@@ -7,6 +7,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Fitness Plan">
 <title>Fitness Plan</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -2541,7 +2542,7 @@ let state = {
   macros: {},
   bestStreak: 0
 };
-let supabase = null;
+let db = null;
 
 // ============== THEME ==============
 function setTheme(theme) {
@@ -2560,35 +2561,32 @@ setTheme(savedTheme);
 // ============== SUPABASE ==============
 function initSupabase() {
   if (SUPABASE_URL.startsWith('YOUR_')) { setSync('error', 'Setup'); return; }
-  if (!window.supabase) {
-    const s = document.createElement('script');
-    s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js';
-    s.onload = () => { supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY); pullAll(); };
-    s.onerror = () => setSync('error', 'CDN');
-    document.head.appendChild(s);
-  } else {
-    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-    pullAll();
+  if (!window.supabase || !window.supabase.createClient) {
+    setSync('error', 'CDN');
+    console.error('Supabase library failed to load from CDN. Check network or CSP settings.');
+    return;
   }
+  db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  pullAll();
 }
 function setSync(status, text) {
   document.getElementById('syncDot').className = 'sync-dot ' + (status === 'ok' ? '' : status);
   document.getElementById('syncText').textContent = text;
 }
 async function pullAll() {
-  if (!supabase) return;
+  if (!db) return;
   setSync('syncing', 'Loading');
   try {
     const [days, weeks, mass, runs, gym, meas, supps, skin, macros] = await Promise.all([
-      supabase.from('prehab_days').select('*'),
-      supabase.from('prehab_weeks').select('*'),
-      supabase.from('massage_log').select('*').order('date', { ascending: false }),
-      supabase.from('run_log').select('*').order('date', { ascending: false }).limit(100),
-      supabase.from('gym_log').select('*').order('date', { ascending: false }).limit(200),
-      supabase.from('measurements').select('*').order('date', { ascending: false }),
-      supabase.from('supplement_log').select('*'),
-      supabase.from('skincare_log').select('*'),
-      supabase.from('macros_log').select('*').order('date', { ascending: false }).limit(60)
+      db.from('prehab_days').select('*'),
+      db.from('prehab_weeks').select('*'),
+      db.from('massage_log').select('*').order('date', { ascending: false }),
+      db.from('run_log').select('*').order('date', { ascending: false }).limit(100),
+      db.from('gym_log').select('*').order('date', { ascending: false }).limit(200),
+      db.from('measurements').select('*').order('date', { ascending: false }),
+      db.from('supplement_log').select('*'),
+      db.from('skincare_log').select('*'),
+      db.from('macros_log').select('*').order('date', { ascending: false }).limit(60)
     ]);
     state.days = {};
     (days.data || []).forEach(r => { state.days[r.date] = { dailyTasks: r.daily_tasks || [], habits: r.habits || {}, notes: r.notes }; });
@@ -2610,70 +2608,70 @@ async function pullAll() {
   } catch (e) { console.error(e); setSync('error', 'Failed'); }
 }
 async function pushDay(date) {
-  if (!supabase) return;
+  if (!db) return;
   setSync('syncing', 'Saving');
   const d = state.days[date] || { dailyTasks: [], habits: {} };
-  const { error } = await supabase.from('prehab_days').upsert({ date, daily_tasks: d.dailyTasks, habits: d.habits, notes: d.notes, updated_at: new Date().toISOString() });
+  const { error } = await db.from('prehab_days').upsert({ date, daily_tasks: d.dailyTasks, habits: d.habits, notes: d.notes, updated_at: new Date().toISOString() });
   setSync(error ? 'error' : 'ok', error ? 'Failed' : 'Synced');
 }
 async function pushWeek(week) {
-  if (!supabase) return;
+  if (!db) return;
   setSync('syncing', 'Saving');
-  const { error } = await supabase.from('prehab_weeks').upsert({ week, counts: state.weeks[week] || {}, updated_at: new Date().toISOString() });
+  const { error } = await db.from('prehab_weeks').upsert({ week, counts: state.weeks[week] || {}, updated_at: new Date().toISOString() });
   setSync(error ? 'error' : 'ok', error ? 'Failed' : 'Synced');
 }
 async function pushMassage(date) {
-  if (!supabase) return;
+  if (!db) return;
   setSync('syncing', 'Saving');
-  const { data, error } = await supabase.from('massage_log').insert({ date }).select();
+  const { data, error } = await db.from('massage_log').insert({ date }).select();
   if (error) { setSync('error', 'Failed'); return; }
   if (data && data[0]) state.massageLog.unshift({ id: data[0].id, date: data[0].date });
   setSync('ok', 'Synced');
 }
 async function pushRun(r) {
-  if (!supabase) return;
+  if (!db) return;
   setSync('syncing', 'Saving');
-  const { data, error } = await supabase.from('run_log').insert(r).select();
+  const { data, error } = await db.from('run_log').insert(r).select();
   if (error) { setSync('error', 'Failed'); return; }
   if (data && data[0]) state.runs.unshift(data[0]);
   setSync('ok', 'Synced');
 }
 async function pushGym(g) {
-  if (!supabase) return;
+  if (!db) return;
   setSync('syncing', 'Saving');
   const sameEx = state.gym.filter(x => x.exercise === g.exercise);
   g.is_pb = sameEx.length === 0 || g.weight_kg > Math.max(...sameEx.map(x => x.weight_kg || 0));
-  const { data, error } = await supabase.from('gym_log').insert(g).select();
+  const { data, error } = await db.from('gym_log').insert(g).select();
   if (error) { setSync('error', 'Failed'); return; }
   if (data && data[0]) state.gym.unshift(data[0]);
   setSync('ok', 'Synced');
 }
 async function pushMeas(m) {
-  if (!supabase) return;
+  if (!db) return;
   setSync('syncing', 'Saving');
-  const { error } = await supabase.from('measurements').upsert({ ...m, updated_at: new Date().toISOString() });
+  const { error } = await db.from('measurements').upsert({ ...m, updated_at: new Date().toISOString() });
   if (error) { setSync('error', 'Failed'); return; }
-  const { data } = await supabase.from('measurements').select('*').order('date', { ascending: false });
+  const { data } = await db.from('measurements').select('*').order('date', { ascending: false });
   state.measurements = data || [];
   setSync('ok', 'Synced');
 }
 async function pushSupps(date) {
-  if (!supabase) return;
+  if (!db) return;
   setSync('syncing', 'Saving');
-  const { error } = await supabase.from('supplement_log').upsert({ date, supplements: state.supps[date] || {}, updated_at: new Date().toISOString() });
+  const { error } = await db.from('supplement_log').upsert({ date, supplements: state.supps[date] || {}, updated_at: new Date().toISOString() });
   setSync(error ? 'error' : 'ok', error ? 'Failed' : 'Synced');
 }
 async function pushSkin(date) {
-  if (!supabase) return;
+  if (!db) return;
   setSync('syncing', 'Saving');
   const s = state.skin[date] || {};
-  const { error } = await supabase.from('skincare_log').upsert({ date, am_done: !!s.am, pm_done: !!s.pm, active: s.active, updated_at: new Date().toISOString() });
+  const { error } = await db.from('skincare_log').upsert({ date, am_done: !!s.am, pm_done: !!s.pm, active: s.active, updated_at: new Date().toISOString() });
   setSync(error ? 'error' : 'ok', error ? 'Failed' : 'Synced');
 }
 async function pushMacros(m) {
-  if (!supabase) return;
+  if (!db) return;
   setSync('syncing', 'Saving');
-  const { error } = await supabase.from('macros_log').upsert({ ...m, updated_at: new Date().toISOString() });
+  const { error } = await db.from('macros_log').upsert({ ...m, updated_at: new Date().toISOString() });
   setSync(error ? 'error' : 'ok', error ? 'Failed' : 'Synced');
 }
 
@@ -2730,10 +2728,10 @@ async function pullWorkouts() {
   state.activeWorkout = state.activeWorkout || null;
   state.workoutSessions = state.workoutSessions || [];
   state.workoutSets = state.workoutSets || [];
-  if (!supabase) return;
+  if (!db) return;
   try {
     // Get active workout (is_active=true)
-    const { data: active, error: activeErr } = await supabase
+    const { data: active, error: activeErr } = await db
       .from('workout_sessions')
       .select('*')
       .eq('is_active', true)
@@ -2748,7 +2746,7 @@ async function pullWorkouts() {
 
     if (active && active.length > 0) {
       const sess = active[0];
-      const { data: sets } = await supabase
+      const { data: sets } = await db
         .from('workout_sets')
         .select('*')
         .eq('session_id', sess.id)
@@ -2759,7 +2757,7 @@ async function pullWorkouts() {
     }
 
     // Get recent finished sessions (last 30)
-    const { data: recent } = await supabase
+    const { data: recent } = await db
       .from('workout_sessions')
       .select('*')
       .eq('is_active', false)
@@ -2768,7 +2766,7 @@ async function pullWorkouts() {
     state.workoutSessions = recent || [];
 
     // Get all workout sets for chart progression
-    const { data: allSets } = await supabase
+    const { data: allSets } = await db
       .from('workout_sets')
       .select('*, workout_sessions!inner(date, is_active)')
       .eq('completed', true)
@@ -2846,7 +2844,7 @@ function getLastSessionForExercise(exerciseName) {
 }
 
 async function startWorkout(templateKey) {
-  if (!supabase) {
+  if (!db) {
     alert('Supabase not connected yet. Check your SUPABASE_URL and SUPABASE_KEY at the top of the script.');
     return;
   }
@@ -2860,7 +2858,7 @@ async function startWorkout(templateKey) {
 
   // Insert session
   setSync('syncing', 'Starting');
-  const { data: sessData, error: sessErr } = await supabase
+  const { data: sessData, error: sessErr } = await db
     .from('workout_sessions')
     .insert({ date, template: templateKey, is_active: true })
     .select();
@@ -2881,7 +2879,7 @@ async function startWorkout(templateKey) {
         sets.push({ session_id: sess.id, exercise: ex.name, set_number: i, weight_kg: null, reps: null, completed: false });
       }
       // Insert empty rows so user just fills them
-      const { data: insertedSets } = await supabase.from('workout_sets').insert(sets).select();
+      const { data: insertedSets } = await db.from('workout_sets').insert(sets).select();
       exercises.push({
         name: ex.name,
         target: { sets: ex.sets, reps: ex.reps },
@@ -2909,7 +2907,7 @@ async function addSet(exerciseName) {
   const ex = w.exercises.find(e => e.name === exerciseName);
   if (!ex) return;
   const nextNum = ex.sets.length + 1;
-  const { data, error } = await supabase
+  const { data, error } = await db
     .from('workout_sets')
     .insert({ session_id: w.id, exercise: exerciseName, set_number: nextNum, completed: false })
     .select();
@@ -2927,13 +2925,13 @@ async function removeSet(exerciseName, setIndex) {
   if (!ex || !ex.sets[setIndex]) return;
   const set = ex.sets[setIndex];
   if (set.id) {
-    await supabase.from('workout_sets').delete().eq('id', set.id);
+    await db.from('workout_sets').delete().eq('id', set.id);
   }
   ex.sets.splice(setIndex, 1);
   // Renumber
   for (let i = 0; i < ex.sets.length; i++) {
     if (ex.sets[i].id) {
-      await supabase.from('workout_sets').update({ set_number: i + 1 }).eq('id', ex.sets[i].id);
+      await db.from('workout_sets').update({ set_number: i + 1 }).eq('id', ex.sets[i].id);
     }
   }
   renderLog();
@@ -2948,7 +2946,7 @@ async function updateSet(exerciseName, setIndex, field, value) {
   set[field] = value;
   if (set.id) {
     const dbField = field === 'weight' ? 'weight_kg' : field;
-    await supabase.from('workout_sets').update({ [dbField]: value }).eq('id', set.id);
+    await db.from('workout_sets').update({ [dbField]: value }).eq('id', set.id);
   }
 }
 
@@ -2960,7 +2958,7 @@ async function toggleSetComplete(exerciseName, setIndex) {
   const set = ex.sets[setIndex];
   set.completed = !set.completed;
   if (set.id) {
-    await supabase.from('workout_sets').update({
+    await db.from('workout_sets').update({
       completed: set.completed,
       completed_at: set.completed ? new Date().toISOString() : null
     }).eq('id', set.id);
@@ -2977,7 +2975,7 @@ async function addExerciseToWorkout(name) {
   for (let i = 1; i <= 3; i++) {
     newSets.push({ session_id: w.id, exercise: name, set_number: i, weight_kg: null, reps: null, completed: false });
   }
-  const { data, error } = await supabase.from('workout_sets').insert(newSets).select();
+  const { data, error } = await db.from('workout_sets').insert(newSets).select();
   if (error) { console.error(error); return; }
   w.exercises.push({
     name,
@@ -2999,7 +2997,7 @@ async function finishWorkout() {
   }
   if (!confirm(`Finish workout? ${completedCount} sets logged.`)) return;
   setSync('syncing', 'Finishing');
-  await supabase.from('workout_sessions').update({
+  await db.from('workout_sessions').update({
     is_active: false,
     finished_at: new Date().toISOString()
   }).eq('id', w.id);
@@ -3007,7 +3005,7 @@ async function finishWorkout() {
   for (const ex of w.exercises) {
     for (const set of ex.sets) {
       if (!set.completed && (set.weight == null || set.reps == null)) {
-        if (set.id) await supabase.from('workout_sets').delete().eq('id', set.id);
+        if (set.id) await db.from('workout_sets').delete().eq('id', set.id);
       }
     }
   }
@@ -3023,7 +3021,7 @@ async function discardWorkout() {
   if (!w) return;
   setSync('syncing', 'Discarding');
   // Cascade delete via FK
-  await supabase.from('workout_sessions').delete().eq('id', w.id);
+  await db.from('workout_sessions').delete().eq('id', w.id);
   state.activeWorkout = null;
   setSync('ok', 'Synced');
   renderLog();
