@@ -1303,7 +1303,7 @@ footer {
   <button class="active" data-tab="dash"><span class="nav-icon">◐</span>Home</button>
   <button data-tab="plan"><span class="nav-icon">▤</span>Plan</button>
   <button data-tab="log"><span class="nav-icon">▣</span>Log</button>
-  <button data-tab="nut"><span class="nav-icon">◍</span>Nut</button>
+  <button data-tab="nut"><span class="nav-icon">◍</span>Fuel</button>
   <button data-tab="glow"><span class="nav-icon">◉</span>Glow</button>
 </nav>
 
@@ -1351,6 +1351,9 @@ footer {
     </div>
   </div>
 
+  <!-- Post-Warsaw transition banner (only renders after race day) -->
+  <div id="postWarsawBanner"></div>
+
   <!-- Today's session -->
   <div class="section">
     <div class="section-head">
@@ -1369,32 +1372,13 @@ footer {
     <div id="macrosCard"></div>
   </div>
 
-  <!-- Activity rings -->
+  <!-- Recovery -->
   <div class="section">
     <div class="section-head">
-      <div class="section-title">Today's Activity</div>
-      <div class="section-meta" id="todayDateLabel">—</div>
+      <div class="section-title">Recovery</div>
+      <div class="section-meta" id="recoveryMeta">—</div>
     </div>
-    <div class="ring-row" style="grid-template-columns:repeat(2, 1fr)">
-      <div class="ring-card">
-        <svg class="ring-svg" viewBox="0 0 80 80">
-          <circle class="ring-bg-arc" cx="40" cy="40" r="32" fill="none" stroke-width="6"/>
-          <circle class="ring-fg-arc" id="ringHabits" cx="40" cy="40" r="32" fill="none" stroke-width="6"
-            stroke-dasharray="201" stroke-dashoffset="201" transform="rotate(-90 40 40)"/>
-          <text class="ring-text" id="ringHabitsText" x="40" y="48" text-anchor="middle">0/11</text>
-        </svg>
-        <div class="ring-label">Habits</div>
-      </div>
-      <div class="ring-card">
-        <svg class="ring-svg" viewBox="0 0 80 80">
-          <circle class="ring-bg-arc" cx="40" cy="40" r="32" fill="none" stroke-width="6"/>
-          <circle class="ring-fg-arc" id="ringMiles" cx="40" cy="40" r="32" fill="none" stroke-width="6"
-            stroke-dasharray="201" stroke-dashoffset="201" transform="rotate(-90 40 40)"/>
-          <text class="ring-text" id="ringMilesText" x="40" y="48" text-anchor="middle">0</text>
-        </svg>
-        <div class="ring-label">Miles WK</div>
-      </div>
-    </div>
+    <div id="recoveryCard"></div>
   </div>
 
   <!-- Weekly mileage progress -->
@@ -1406,11 +1390,23 @@ footer {
     <div id="weekMileageCard"></div>
   </div>
 
-  <!-- Daily habits -->
+  <!-- Daily habits with inline ring -->
   <div class="section">
     <div class="section-head">
       <div class="section-title">Daily Habits</div>
-      <div class="section-meta" id="dashHabitsCount">0 / 11</div>
+      <div class="section-meta" id="todayDateLabel">—</div>
+    </div>
+    <div class="card" style="display:flex;align-items:center;gap:18px;padding:16px 18px;margin-bottom:8px">
+      <svg viewBox="0 0 80 80" style="width:64px;height:64px;flex-shrink:0">
+        <circle class="ring-bg-arc" cx="40" cy="40" r="32" fill="none" stroke-width="6"/>
+        <circle class="ring-fg-arc" id="ringHabits" cx="40" cy="40" r="32" fill="none" stroke-width="6"
+          stroke-dasharray="201" stroke-dashoffset="201" transform="rotate(-90 40 40)"/>
+        <text class="ring-text" id="ringHabitsText" x="40" y="48" text-anchor="middle" style="font-size:18px">0/10</text>
+      </svg>
+      <div style="flex:1">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;line-height:0.9;color:var(--ink);letter-spacing:-0.01em" id="dashHabitsCount">0 / 10</div>
+        <div class="card-meta" style="margin-top:4px" id="dashHabitsStatus">TICK BELOW TO LOG</div>
+      </div>
     </div>
     <div id="dashHabitList"></div>
   </div>
@@ -1438,6 +1434,15 @@ footer {
         <div class="stat-label">Weeks to Race</div>
       </div>
     </div>
+  </div>
+
+  <!-- Race time predictor -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-title">Race Predictor</div>
+      <div class="section-meta" id="predictorMeta">FROM RECENT STRAVA RUNS</div>
+    </div>
+    <div id="predictorCard"></div>
   </div>
 
   <div class="section">
@@ -1474,6 +1479,7 @@ footer {
   <div class="subtabs">
     <button class="active" data-plansub="weeks">Weeks</button>
     <button data-plansub="paces">Paces</button>
+    <button data-plansub="strength">Strength</button>
     <button data-plansub="races">Races</button>
     <button data-plansub="raceday">Race Day</button>
   </div>
@@ -1501,6 +1507,77 @@ footer {
       <div class="section-head"><div class="section-title">Decision Rule</div></div>
       <div class="card">
         <div class="card-detail">If Mid Cheshire goes sub-18 and Colshaw sub-39, sub-2:55 is on. If either misses by &gt;30s, MP target drops to 6:45/mi. <strong style="color:var(--ink)">Train for 2:55, race for 2:57.</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="subtab" id="plansub-strength">
+    <div class="section">
+      <div class="hero" style="margin:0 0 20px">
+        <div class="hero-eyebrow">DURING THE BUILD</div>
+        <div class="hero-num" style="font-size:32px">MAINTAIN</div>
+        <div class="hero-label">Don't lose strength while running high mileage</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title">Why This Matters</div>
+      </div>
+      <div class="card">
+        <div class="card-detail">Skinny + weak = injury equation. Quad-dominant running, weak core, poor late-marathon form. Most sub-3 runners have functional strength even though they look skinny. Goal: build durability, not mass.</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title">Benchmarks</div>
+        <div class="section-meta">START · MAINTAIN · BUILD</div>
+      </div>
+      <div id="strengthBenchmarks"></div>
+    </div>
+
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title">Phase Plan</div>
+      </div>
+      <div class="card" style="border-left:3px solid var(--accent-deep)">
+        <div class="card-title">May–Sep · Marathon Build</div>
+        <div class="card-meta">MAINTAIN PHASE</div>
+        <div class="card-detail">Upper Mon, Lower Wed, Core Fri. Moderate loads (8–12 reps). Build core specifically — plank progressions, side planks, dead bugs. No hypertrophy push.</div>
+      </div>
+      <div class="card" style="margin-top:8px;border-left:3px solid var(--accent)">
+        <div class="card-title">Oct 2026 onwards · Hypertrophy Block</div>
+        <div class="card-meta">BUILD PHASE · POST-WARSAW</div>
+        <div class="card-detail">After A-race recovery (2 weeks easy). Caloric surplus +250–400 kcal. Lift 3–4×/week, heavy (4–8 reps). Reduce running to 30–40mi base. 4–6 month block to genuinely add muscle. Spring 2027 marathon would benefit from this strength.</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title">Non-Negotiables</div>
+      </div>
+      <div class="card">
+        <div class="card-detail" style="line-height:1.7">
+          <strong style="color:var(--ink)">Core 3×/week</strong> — even on tired weeks. Plank + side plank + dead bug + Pallof press. 10 minutes.<br>
+          <strong style="color:var(--ink)">Posterior chain weekly</strong> — RDLs or single-leg RDLs. Fix the quad-dominant pattern.<br>
+          <strong style="color:var(--ink)">Don't skip Upper</strong> — atrophy at high mileage is real. Maintain bench, row, pull.
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title">Yoga + Group Classes</div>
+        <div class="section-meta">AD-HOC SUPPLEMENTS</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Yoga · 1×/week ideal</div>
+        <div class="card-detail">Hip openers (pigeon, lizard, half-pigeon) directly address ITB / knee tightness. <strong style="color:var(--ink)">Yin or restorative > vinyasa</strong> — slower holds, no extra load. Log via Quick Log Yoga button on Gym tab.</div>
+      </div>
+      <div class="card" style="margin-top:8px">
+        <div class="card-title">Group strength classes</div>
+        <div class="card-detail"><strong style="color:var(--ink)">Pick carefully.</strong> Runner-focused or coach-led classes that respect your training load = good. Generic CrossFit/HIIT/F45 = bad — they push to failure and run their own progression that fights your marathon plan. Log via Quick Log Class.</div>
       </div>
     </div>
   </div>
@@ -1604,6 +1681,10 @@ footer {
           <button class="btn accent" onclick="startWorkout('upper')" style="padding:18px 8px">Upper</button>
           <button class="btn dark" onclick="startWorkout('lower')" style="padding:18px 8px">Lower</button>
           <button class="btn outline" onclick="startWorkout('core')" style="padding:18px 8px">Core</button>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(2, 1fr);gap:8px;margin-top:8px">
+          <button class="btn outline" onclick="quickLogClass('yoga')" style="padding:14px 8px">+ Quick Log Yoga</button>
+          <button class="btn outline" onclick="quickLogClass('class')" style="padding:14px 8px">+ Quick Log Class</button>
         </div>
         <button class="btn outline full" onclick="startWorkout('custom')" style="margin-top:8px">+ Custom Workout</button>
       </div>
@@ -1936,6 +2017,31 @@ footer {
   </div>
 </div>
 
+<div class="modal-bg" id="recoveryModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Log Recovery</div>
+      <button class="modal-close" onclick="closeModal('recoveryModal')">×</button>
+    </div>
+    <label class="field">Date</label>
+    <input type="date" class="field-input" id="recoveryDate">
+    <div class="input-row">
+      <div><label class="field" style="margin-top:0">Sleep hrs</label><input type="number" step="0.1" id="recoverySleepHours" placeholder="7.5"></div>
+      <div><label class="field" style="margin-top:0">Sleep score</label><input type="number" id="recoverySleepScore" placeholder="0–100" min="0" max="100"></div>
+    </div>
+    <div class="input-row">
+      <div><label class="field" style="margin-top:0">Steps</label><input type="number" id="recoverySteps" placeholder="10000"></div>
+      <div><label class="field" style="margin-top:0">Resting HR</label><input type="number" id="recoveryRHR" placeholder="bpm"></div>
+    </div>
+    <label class="field">Notes</label>
+    <textarea class="field-textarea" id="recoveryNotes" placeholder="Stressful day, slept poorly, etc."></textarea>
+    <div style="margin-top:20px;display:flex;gap:8px">
+      <button class="btn outline" onclick="closeModal('recoveryModal')" style="flex:1">Cancel</button>
+      <button class="btn accent" onclick="saveRecovery()" style="flex:1">Save</button>
+    </div>
+  </div>
+</div>
+
 <div class="modal-bg" id="runNotesModal">
   <div class="modal">
     <div class="modal-header">
@@ -2019,9 +2125,9 @@ const HABITS = [
   { id: 'water', label: 'Water Target', meta: '2.5–3L EASY · 3–3.5L HARD' },
   { id: 'core', label: 'Core / Mobility', meta: '10 MIN' },
   // ===== AFTERNOON =====
-  { id: 'shake', label: '3:30PM Shake', meta: '+ APPLE + NUTS · 35G' },
+  { id: 'shake', label: '3:30PM Shake', meta: '35G PROTEIN' },
   // ===== EVENING =====
-  { id: 'noScreens', label: 'No Screens 8PM', meta: 'SLEEP 9–9:30PM' },
+  { id: 'noScreens', label: 'No Screens 9PM', meta: 'SLEEP 10–10:30PM' },
   { id: 'skinPM', label: 'Skincare PM', meta: 'CLEANSE · ACTIVE · CREAM' },
   { id: 'magPM', label: 'Magnesium PM', meta: '300–400MG BEFORE BED' }
 ];
@@ -2047,28 +2153,28 @@ const RACES = [
   { date: '2026-09-27', name: 'Warsaw Marathon', goal: 'A-RACE · sub-2:55', type: 'a-race' }
 ];
 const PLAN_WEEKS = [
-  { wk: 22, start: '2026-04-27', miles: 12, lr: 'walk only', notes: 'Recovery — walks only this week' },
-  { wk: 21, start: '2026-05-04', miles: 32, lr: '9', notes: 'Easy rebuild, no quality' },
-  { wk: 20, start: '2026-05-11', miles: 45, lr: '13', notes: 'Back to normal' },
-  { wk: 19, start: '2026-05-18', miles: 40, lr: '10', notes: 'Mid Cheshire 5K Fri' },
-  { wk: 18, start: '2026-05-25', miles: 38, lr: 'Stockholm', notes: 'Stockholm walked' },
-  { wk: 17, start: '2026-06-01', miles: 50, lr: '15', notes: 'First MP touch' },
-  { wk: 16, start: '2026-06-08', miles: 42, lr: '10K race', notes: 'Colshaw Sun' },
-  { wk: 15, start: '2026-06-15', miles: 53, lr: '16 + 4mi MP', notes: 'First MP-in-LR' },
-  { wk: 14, start: '2026-06-22', miles: 55, lr: '17 + 6mi MP', notes: '' },
-  { wk: 13, start: '2026-06-29', miles: 57, lr: '18 + 8mi MP', notes: '' },
-  { wk: 12, start: '2026-07-06', miles: 58, lr: '19 + 8mi MP', notes: '' },
-  { wk: 11, start: '2026-07-13', miles: 45, lr: 'Stockport 10K tempo', notes: 'DELOAD + race-as-tempo Sun', deload: true },
-  { wk: 10, start: '2026-07-20', miles: 60, lr: '20 + 10mi MP', notes: '' },
-  { wk: 9,  start: '2026-07-27', miles: 60, lr: '22 + 12mi MP', notes: 'Peak LR #1' },
-  { wk: 8,  start: '2026-08-03', miles: 62, lr: '20 + 14mi MP', notes: 'Highest mileage' },
-  { wk: 7,  start: '2026-08-10', miles: 60, lr: '24 + 14mi MP', notes: 'Peak LR #2' },
-  { wk: 6,  start: '2026-08-17', miles: 48, lr: '14', notes: 'DELOAD', deload: true },
-  { wk: 5,  start: '2026-08-24', miles: 58, lr: '20 + 12mi MP', notes: '' },
-  { wk: 4,  start: '2026-08-31', miles: 60, lr: '22 + 16mi MP', notes: 'Decisive workout' },
-  { wk: 3,  start: '2026-09-07', miles: 50, lr: 'GNR tune-up', notes: '4 easy + 8 MP + 1 easy' },
-  { wk: 2,  start: '2026-09-14', miles: 32, lr: '12 steady', notes: 'TAPER' },
-  { wk: 1,  start: '2026-09-21', miles: 22, lr: '4 + strides', notes: 'RACE WEEK', race: true }
+  { wk: 22, start: '2026-04-27', miles: 4, lr: 'walk only', notes: 'Recovery — walks only this week' },
+  { wk: 21, start: '2026-05-04', miles: 32, lr: '9', notes: 'Easy rebuild, no quality. Shake-out Mon AM' },
+  { wk: 20, start: '2026-05-11', miles: 43, lr: '13', notes: 'Back to normal' },
+  { wk: 19, start: '2026-05-18', miles: 23, lr: '10', notes: 'Mid Cheshire 5K Fri · low-mileage race week' },
+  { wk: 18, start: '2026-05-25', miles: 15, lr: 'Stockholm', notes: 'Stockholm walked · low miles' },
+  { wk: 17, start: '2026-06-01', miles: 39, lr: '15', notes: 'First MP touch' },
+  { wk: 16, start: '2026-06-08', miles: 31, lr: '10K race', notes: 'Colshaw Sun · race week' },
+  { wk: 15, start: '2026-06-15', miles: 46, lr: '16 + 4mi MP', notes: 'First MP-in-LR' },
+  { wk: 14, start: '2026-06-22', miles: 60, lr: '17 + 6mi MP', notes: '' },
+  { wk: 13, start: '2026-06-29', miles: 58, lr: '18 + 8mi MP', notes: '' },
+  { wk: 12, start: '2026-07-06', miles: 62, lr: '19 + 8mi MP', notes: '' },
+  { wk: 11, start: '2026-07-13', miles: 34, lr: 'Stockport 10K tempo', notes: 'DELOAD + race-as-tempo Sun', deload: true },
+  { wk: 10, start: '2026-07-20', miles: 55, lr: '20 + 10mi MP', notes: '' },
+  { wk: 9,  start: '2026-07-27', miles: 63, lr: '22 + 12mi MP', notes: 'Peak LR #1' },
+  { wk: 8,  start: '2026-08-03', miles: 65, lr: '20 + 14mi MP', notes: 'Highest mileage' },
+  { wk: 7,  start: '2026-08-10', miles: 68, lr: '24 + 14mi MP', notes: 'Peak LR #2' },
+  { wk: 6,  start: '2026-08-17', miles: 40, lr: '14', notes: 'DELOAD', deload: true },
+  { wk: 5,  start: '2026-08-24', miles: 61, lr: '20 + 12mi MP', notes: '' },
+  { wk: 4,  start: '2026-08-31', miles: 65, lr: '22 + 16mi MP', notes: 'Decisive workout' },
+  { wk: 3,  start: '2026-09-07', miles: 35, lr: 'GNR tune-up', notes: '4 easy + 8 MP + 1 easy · low taper' },
+  { wk: 2,  start: '2026-09-14', miles: 37, lr: '12 steady', notes: 'TAPER' },
+  { wk: 1,  start: '2026-09-21', miles: 44, lr: '4 + strides', notes: 'RACE WEEK · incl. marathon', race: true }
 ];
 const PACES = [
   { label: 'Marathon', mi: '6:38', km: '4:08' },
@@ -2077,6 +2183,22 @@ const PACES = [
   { label: '10K', mi: '5:55', km: '3:41' },
   { label: '5K', mi: '5:46', km: '3:35' },
   { label: 'Easy', mi: '8:00–8:30', km: '5:00–5:18' }
+];
+
+// Strength benchmarks for marathon-build maintenance
+// Goal during build = MAINTAIN strength, not build mass
+// "Start" = honest baseline assumption for someone returning to lifting
+// "Maintain" = end-of-build target (dropping ≤10% is fine)
+// Post-Warsaw "Build" = hypertrophy block target
+const STRENGTH_BENCHMARKS = [
+  { lift: 'Bench Press', unit: 'kg × 8', start: '40', maintain: '40–45', build: '55+', why: 'Upper body durability for arm drive late in marathon.' },
+  { lift: 'Single-arm Row', unit: 'kg × 10', start: '20', maintain: '20–25', build: '30+', why: 'Upper back strength prevents shoulder roll-forward at fatigue.' },
+  { lift: 'Goblet Squat', unit: 'kg × 8', start: '24', maintain: '24–28', build: '40+', why: 'Quad + glute strength = force production efficiency.' },
+  { lift: 'Romanian Deadlift', unit: 'kg × 10', start: '40', maintain: '45–55', build: '70+', why: 'Posterior chain — fixes quad-dominant running.' },
+  { lift: 'Plank Hold', unit: 'seconds', start: '60', maintain: '90–120', build: '180+', why: 'Trunk stability — prevents form breakdown in final 10K.' },
+  { lift: 'Side Plank', unit: 'seconds each', start: '30', maintain: '45–60', build: '90+', why: 'Hip stability — prevents ITB / lateral knee issues.' },
+  { lift: 'Pull-ups', unit: 'reps', start: '3', maintain: '5–8', build: '10+', why: 'Functional upper body — durability indicator.' },
+  { lift: 'Push-ups', unit: 'reps', start: '15', maintain: '25–30', build: '40+', why: 'Press strength + core stability under fatigue.' }
 ];
 const SESSIONS = [
   { name: '5×1km @ 5K Pace', detail: '90s float between · Phase 1–2', tag: 'speed' },
@@ -2231,7 +2353,7 @@ const DAILY_PLAN = {
   },
   // ============ WK 21 · w/c 4 May · REBUILD · 32mi ============
   '2026-05-04': {
-    1: { name: 'Rest + Upper Gym', detail: 'Light gym, 70%. No running.', type: 'gym' },
+    1: { name: 'Easy 3mi + Upper Gym', detail: '8:30/mi shake-out AM. Upper gym 70% loads. KEEP IT GENUINELY EASY — body still recovering from London.', type: 'easy' },
     2: { name: 'Easy 4mi', detail: '8:00–8:30/mi. Treadmill or road.', type: 'easy' },
     3: { name: 'Easy 5mi + Core', detail: '8:00–8:30/mi. 10 min core after.', type: 'easy' },
     4: { name: 'Easy 4mi + Football PM', detail: '8:15/mi run. 1hr football evening — Alsager Sports Hub. Light contact only, charity match prep.', type: 'easy' },
@@ -2450,6 +2572,90 @@ function getWeekStartDate(date = new Date()) {
   return monday.toISOString().slice(0, 10);
 }
 
+// Extract miles from a session name. Returns 0 if no run, e.g. rest/gym/football.
+function extractMiles(session) {
+  if (!session || !session.name) return 0;
+  const name = session.name.toLowerCase();
+  const detail = (session.detail || '').toLowerCase();
+  const combined = name + ' ' + detail;
+
+  // Pure rest
+  if (session.type === 'rest') return 0;
+  // Football charity match (no running miles tracked)
+  if (name.includes('charity football') || name === 'football') return 0;
+
+  // Race-specific known distances
+  if (name.includes('mid cheshire 5k')) return 3.1;
+  if (name.includes('parkrun')) return 3.1;
+  if (name.includes('colshaw 10k')) return 6.2;
+  if (name.includes('stockport 10k')) {
+    const wuCdMatch = combined.match(/(\d+(?:\.\d+)?)\s*mi\s*total/);
+    if (wuCdMatch) return parseFloat(wuCdMatch[1]);
+    return 11.5;
+  }
+  if (name.includes('great north run') || name.includes('gnr')) return 13.1;
+  if (name.includes('warsaw marathon')) return 26.2;
+  if (name.includes('stockholm')) return 0; // walk
+
+  // Reps sessions (e.g. "5×1mi at 5:55", "5×1km at 5K Pace", "10×800m Yasso")
+  // These need WU + reps + recoveries + CD
+  // Heuristic: if name matches pattern N×Distance with reps formatting, total ≈ 9-11mi for reps + 2mi WU + 1mi CD
+  const repsMatch = name.match(/(\d+)\s*[×x]\s*(\d+(?:\.\d+)?)\s*(mi|km|m)\b/);
+  if (repsMatch) {
+    const reps = parseInt(repsMatch[1]);
+    let dist = parseFloat(repsMatch[2]);
+    const unit = repsMatch[3];
+    // Convert to miles
+    if (unit === 'km') dist = dist * 0.621;
+    else if (unit === 'm') dist = (dist / 1000) * 0.621;
+    const repsMi = reps * dist;
+    // Add WU 2mi + recoveries (~half of reps distance) + CD 1mi
+    const recoveryMi = repsMi * 0.4;
+    return Math.round((repsMi + recoveryMi + 3) * 10) / 10;
+  }
+
+  // Special case: "Treadmill X AM + Stoke Club PM" — extract treadmill X and add ~7mi for club session
+  if (name.includes('treadmill') && (name.includes('club') || name.includes('stoke'))) {
+    const tm = name.match(/treadmill\s+(\d+(?:\.\d+)?)/);
+    const treadmillMi = tm ? parseFloat(tm[1]) : 0;
+    return treadmillMi + 7;
+  }
+
+  // Sum all "Nmi" tokens in the name
+  const matches = name.match(/(\d+(?:\.\d+)?)\s*mi\b/g);
+  if (!matches) return 0;
+  const nums = matches.map(m => parseFloat(m));
+
+  // MP-in-LR: take max not sum (the MP is part of the long, not extra)
+  if (combined.includes('mp') && nums.length >= 2) {
+    return Math.max(...nums);
+  }
+
+  // Default: sum (handles "Treadmill 4 + Easy 4" = 8, "Easy 4mi + strides" = 4)
+  return Math.round(nums.reduce((a, b) => a + b, 0) * 10) / 10;
+}
+
+function calcWeekMiles(weekStart) {
+  const week = DAILY_PLAN[weekStart];
+  if (!week) return 0;
+  let total = 0;
+  for (let dow = 0; dow < 7; dow++) {
+    // Check overrides first
+    const start = new Date(weekStart);
+    start.setDate(start.getDate() + (dow === 0 ? 6 : dow - 1));
+    const dateStr = start.toISOString().slice(0, 10);
+    const override = state.planOverrides && state.planOverrides[dateStr];
+    let session;
+    if (override && (override.name || override.detail || override.type)) {
+      session = { name: override.name, detail: override.detail, type: override.type };
+    } else {
+      session = week[dow];
+    }
+    total += extractMiles(session);
+  }
+  return Math.round(total * 10) / 10;
+}
+
 function getTodaySession(date = new Date()) {
   const dateStr = typeof date === 'string' ? date : date.toISOString().slice(0, 10);
   // Override takes precedence
@@ -2483,6 +2689,7 @@ let state = {
   skin: {},
   macros: {},
   planOverrides: {},
+  recovery: {},
   bestStreak: 0
 };
 let db = null;
@@ -2555,6 +2762,17 @@ async function pullAll() {
       });
     } catch (e) {
       console.warn('[plan_overrides table not ready]', e.message);
+    }
+
+    // Recovery log — gracefully handle missing table
+    state.recovery = {};
+    try {
+      const { data: recovery } = await db.from('recovery_log').select('*').order('date', { ascending: false }).limit(60);
+      (recovery || []).forEach(r => {
+        state.recovery[r.date] = { sleep_hours: r.sleep_hours, sleep_score: r.sleep_score, steps: r.steps, resting_hr: r.resting_hr, notes: r.notes };
+      });
+    } catch (e) {
+      console.warn('[recovery_log table not ready]', e.message);
     }
 
     await pullWorkouts();
@@ -2657,9 +2875,32 @@ async function pushRunNotes(runId, notes) {
   setSync(error ? 'error' : 'ok', error ? 'Failed' : 'Synced');
   if (error) console.error(error);
 }
+async function pushRecovery(r) {
+  if (!db) return;
+  setSync('syncing', 'Saving');
+  const payload = {
+    date: r.date,
+    sleep_hours: r.sleep_hours ?? null,
+    sleep_score: r.sleep_score ?? null,
+    steps: r.steps ?? null,
+    resting_hr: r.resting_hr ?? null,
+    notes: r.notes || null,
+    updated_at: new Date().toISOString()
+  };
+  const { error } = await db.from('recovery_log').upsert(payload);
+  setSync(error ? 'error' : 'ok', error ? 'Failed' : 'Synced');
+  if (error) console.error(error);
+}
 
 // ============== WORKOUT TRACKER ==============
 // Workout templates — exercises + target sets/reps
+// Time-based exercises (held for seconds, no weight)
+function isTimeBased(name) {
+  if (!name) return false;
+  const n = name.toLowerCase();
+  return n.includes('plank') || n.includes('hollow hold') || n.includes('l-sit') || n.includes('wall sit') || n.includes('hold') || n.includes('yoga') || n.includes('class') || n.includes('cardio');
+}
+
 const WORKOUT_TEMPLATES = {
   upper: {
     name: 'Upper',
@@ -2671,7 +2912,10 @@ const WORKOUT_TEMPLATES = {
       { name: 'Rear delt fly', sets: 3, reps: 15 },
       { name: 'Lateral raise', sets: 3, reps: 15 },
       { name: 'Bicep curl', sets: 3, reps: 12 },
-      { name: 'Tricep extension', sets: 3, reps: 12 }
+      { name: 'Tricep extension', sets: 3, reps: 12 },
+      // ===== CORE FINISHER =====
+      { name: 'Plank', sets: 3, reps: 60 },
+      { name: 'Pallof press', sets: 2, reps: 12 }
     ]
   },
   lower: {
@@ -2683,7 +2927,11 @@ const WORKOUT_TEMPLATES = {
       { name: 'Step-up', sets: 3, reps: 10 },
       { name: 'Single-leg RDL', sets: 3, reps: 10 },
       { name: 'Hip thrust', sets: 3, reps: 12 },
-      { name: 'Calf raise', sets: 3, reps: 20 }
+      { name: 'Calf raise', sets: 3, reps: 20 },
+      // ===== CORE FINISHER (non-negotiable for runners) =====
+      { name: 'Plank', sets: 3, reps: 60 },
+      { name: 'Side plank', sets: 2, reps: 45 },
+      { name: 'Dead bug', sets: 2, reps: 10 }
     ]
   },
   core: {
@@ -2698,6 +2946,16 @@ const WORKOUT_TEMPLATES = {
       { name: 'Russian twist', sets: 3, reps: 20 },
       { name: 'Leg raise', sets: 3, reps: 12 }
     ]
+  },
+  yoga: {
+    name: 'Yoga',
+    exercises: [
+      { name: 'Yoga session', sets: 1, reps: 60 }
+    ]
+  },
+  class: {
+    name: 'Class',
+    exercises: []
   }
 };
 
@@ -2824,6 +3082,58 @@ function getLastSessionForExercise(exerciseName) {
     };
   }
   return null;
+}
+
+async function quickLogClass(type) {
+  if (!db) {
+    alert('Supabase not connected.');
+    return;
+  }
+  const minsStr = prompt(`How long was the ${type} session? (minutes)`, '60');
+  if (!minsStr) return;
+  const mins = parseInt(minsStr);
+  if (!mins || mins <= 0 || mins > 300) {
+    alert('Please enter a valid duration in minutes (1–300).');
+    return;
+  }
+  const note = prompt('Optional note (e.g. studio name, instructor, how it felt)?', '');
+
+  const date = TODAY();
+  setSync('syncing', 'Saving');
+
+  // Create a finished session
+  const { data: sessData, error: sessErr } = await db
+    .from('workout_sessions')
+    .insert({
+      date,
+      template: type,
+      is_active: false,
+      started_at: new Date().toISOString(),
+      finished_at: new Date().toISOString(),
+      notes: note || null
+    })
+    .select();
+
+  if (sessErr) { setSync('error', 'Failed'); console.error(sessErr); return; }
+  const sess = sessData[0];
+
+  // Insert one set: duration in minutes (stored in reps field for time-based)
+  const exerciseName = type === 'yoga' ? 'Yoga session' : 'Class session';
+  await db.from('workout_sets').insert({
+    session_id: sess.id,
+    exercise: exerciseName,
+    set_number: 1,
+    weight_kg: null,
+    reps: mins,
+    completed: true,
+    completed_at: new Date().toISOString()
+  });
+
+  await pullWorkouts();
+  setSync('ok', 'Synced');
+  if (navigator.vibrate) navigator.vibrate([60, 40, 60]);
+  renderLog();
+  renderDash();
 }
 
 async function startWorkout(templateKey) {
@@ -3090,7 +3400,7 @@ function calcHabitStats() {
   const dayCount = Math.floor((end - start) / 86400000) + 1;
 
   const perHabit = {};
-  HABITS.forEach(h => { perHabit[h.id] = { done: 0, total: dayCount }; });
+  HABITS.forEach(h => { perHabit[h.id] = { done: 0, total: dayCount, streak: 0 }; });
   let totalDone = 0, totalPossible = dayCount * HABITS.length;
 
   for (let i = 0; i < dayCount; i++) {
@@ -3104,6 +3414,28 @@ function calcHabitStats() {
       }
     });
   }
+
+  // Calculate current streak per habit — count back from today
+  HABITS.forEach(h => {
+    let streak = 0;
+    const todayDate = new Date(todayStr);
+    for (let i = 0; i < 365; i++) {
+      const d = new Date(todayDate); d.setDate(todayDate.getDate() - i);
+      const ds = d.toISOString().slice(0, 10);
+      const day = state.days[ds];
+      const done = day && day.habits && day.habits[h.id];
+      if (done) {
+        streak++;
+      } else if (i === 0) {
+        // Today not done yet — streak is yesterday's count
+        continue;
+      } else {
+        break;
+      }
+    }
+    perHabit[h.id].streak = streak;
+  });
+
   const overall = Math.round((totalDone / totalPossible) * 100);
   return { perHabit, overall, totalDays: dayCount };
 }
@@ -3115,7 +3447,10 @@ function getCurrentWeek() {
     const end = new Date(start);
     end.setDate(end.getDate() + 6);
     end.setHours(23, 59, 59, 999);
-    if (now >= start && now <= end) return w;
+    if (now >= start && now <= end) {
+      // Override stored miles with calculated total from DAILY_PLAN
+      return { ...w, miles: calcWeekMiles(w.start) || w.miles };
+    }
   }
   return null;
 }
@@ -3265,6 +3600,7 @@ function openWeekDetail(weekStart) {
 function renderWeekDetail(weekStart) {
   const w = PLAN_WEEKS.find(p => p.start === weekStart);
   if (!w) return;
+  const calculatedMiles = calcWeekMiles(weekStart) || w.miles;
   const dayNames = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
   const monthNames = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
   const typeColors = { long: 'accent', quality: 'warn', rest: 'dark', race: 'accent', easy: '', gym: 'dark' };
@@ -3275,7 +3611,7 @@ function renderWeekDetail(weekStart) {
   if (w.race) tags.push('<span class="tag accent">RACE</span>');
 
   document.getElementById('weekDetailTitle').textContent = `Week ${w.wk}`;
-  document.getElementById('weekDetailMeta').innerHTML = `${fmtDateShort(w.start)} · ${w.miles}MI · LR ${w.lr} ${tags.join(' ')}`;
+  document.getElementById('weekDetailMeta').innerHTML = `${fmtDateShort(w.start)} · ${calculatedMiles}MI · LR ${w.lr} ${tags.join(' ')}`;
 
   // Banner explaining swap state
   let bannerHtml = '';
@@ -3442,6 +3778,341 @@ async function saveRunNotes() {
   renderLog();
 }
 
+function renderRacePredictor() {
+  const card = document.getElementById('predictorCard');
+  const metaEl = document.getElementById('predictorMeta');
+  if (!card) return;
+
+  // Pull last 30 days of runs from Strava (or any source) with valid pace + distance
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - 30);
+  const cutoffStr = cutoff.toISOString().slice(0, 10);
+
+  const runs = (state.runs || []).filter(r => {
+    return r.date >= cutoffStr
+      && r.distance_mi
+      && r.duration_sec
+      && parseFloat(r.distance_mi) >= 2  // skip warm-ups, walks, etc.
+      && (r.type === 'easy' || r.type === 'quality' || r.type === 'long' || r.type === 'race' || !r.type);
+  });
+
+  if (runs.length === 0) {
+    card.innerHTML = `<div class="card"><div class="card-detail">Need at least one run in the last 30 days. Will populate as Strava syncs.</div></div>`;
+    if (metaEl) metaEl.textContent = 'NO DATA YET';
+    return;
+  }
+
+  // Distance bands (in miles)
+  // Find best (lowest sec/mi pace) effort in each band
+  const bands = [
+    { name: '5K', miles: 3.1, min: 2.5, max: 4.0 },
+    { name: '10K', miles: 6.2, min: 5.5, max: 7.0 },
+    { name: 'HM', miles: 13.1, min: 12.0, max: 14.5 },
+    { name: 'M', miles: 26.2, min: 18.0, max: 30.0 }
+  ];
+
+  // For each band, find fastest run that fits
+  const bandBest = {};
+  bands.forEach(b => {
+    const candidates = runs.filter(r => {
+      const d = parseFloat(r.distance_mi);
+      return d >= b.min && d <= b.max;
+    });
+    if (candidates.length === 0) return;
+    // Lowest pace = fastest
+    const fastest = candidates.reduce((best, r) => {
+      const paceSec = parseFloat(r.duration_sec) / parseFloat(r.distance_mi);
+      const bestPace = best ? parseFloat(best.duration_sec) / parseFloat(best.distance_mi) : Infinity;
+      return paceSec < bestPace ? r : best;
+    }, null);
+    bandBest[b.name] = { run: fastest, band: b };
+  });
+
+  if (Object.keys(bandBest).length === 0) {
+    card.innerHTML = `<div class="card"><div class="card-detail">Need at least one run between 2.5–14.5 miles. Will populate as Strava syncs.</div></div>`;
+    if (metaEl) metaEl.textContent = 'WAITING FOR DATA';
+    return;
+  }
+
+  // Riegel formula: T2 = T1 × (D2/D1)^1.06
+  // Project each band's best to a marathon
+  const RIEGEL = 1.06;
+  const projections = [];
+  for (const [name, info] of Object.entries(bandBest)) {
+    const t1 = parseFloat(info.run.duration_sec);
+    const d1 = parseFloat(info.run.distance_mi);
+    const d2 = 26.2;
+    const t2 = t1 * Math.pow(d2 / d1, RIEGEL);
+    projections.push({
+      band: name,
+      run: info.run,
+      runTime: t1,
+      runDistance: d1,
+      projectedMarathon: t2
+    });
+  }
+
+  // Sort by best (most reliable predictor — closer to marathon distance is better)
+  // Order: M, HM, 10K, 5K
+  const order = ['M', 'HM', '10K', '5K'];
+  projections.sort((a, b) => order.indexOf(a.band) - order.indexOf(b.band));
+
+  // Best estimate = take median of projections, or the longest-distance one (more reliable)
+  const projectedSecs = projections.map(p => p.projectedMarathon);
+  const median = projectedSecs.slice().sort((a, b) => a - b)[Math.floor(projectedSecs.length / 2)];
+
+  // Compare vs goal 2:54 = 10440 sec
+  const goalSecs = 2 * 3600 + 54 * 60; // 2:54:00
+  const delta = median - goalSecs;
+  const onTrack = Math.abs(delta) < 180; // within 3 min
+  const ahead = delta < -180;
+  const behind = delta > 180;
+  const statusColor = ahead ? 'var(--accent-deep)' : onTrack ? 'var(--accent-deep)' : 'var(--warn)';
+  const statusLabel = ahead ? `${fmtSecs(Math.abs(delta), false)} AHEAD OF GOAL` : onTrack ? 'ON TARGET' : `${fmtSecs(Math.abs(delta), false)} BEHIND GOAL`;
+
+  if (metaEl) metaEl.textContent = `BASED ON LAST 30 DAYS · ${runs.length} RUNS`;
+
+  card.innerHTML = `
+    <div class="card" style="padding:18px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:14px;margin-bottom:14px">
+        <div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:54px;line-height:0.85;color:var(--ink)">${fmtSecs(median, true)}</div>
+          <div class="card-meta" style="margin-top:6px">PROJECTED MARATHON</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-faint);font-weight:700;letter-spacing:0.04em">GOAL · 2:54:00</div>
+          <div class="card-meta" style="margin-top:4px;color:${statusColor}">${statusLabel}</div>
+        </div>
+      </div>
+      <div style="border-top:1px solid var(--line-soft);padding-top:12px">
+        <div class="card-meta" style="margin-bottom:8px">FROM EACH DISTANCE BAND</div>
+        ${projections.map(p => {
+          const dm = fmtDayMonth(p.run.date);
+          const pace = parseFloat(p.run.duration_sec) / parseFloat(p.run.distance_mi);
+          return `
+            <div style="display:grid;grid-template-columns:48px 1fr auto;gap:10px;align-items:center;padding:6px 0;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-soft)">
+              <span style="font-family:'Inter',sans-serif;font-weight:800;letter-spacing:0.18em;color:var(--ink-faint)">${p.band}</span>
+              <span>${parseFloat(p.run.distance_mi).toFixed(1)}MI · ${fmtSecs(pace, false)}/MI · ${dm.day} ${dm.month}</span>
+              <span style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--ink);letter-spacing:0">${fmtSecs(p.projectedMarathon, true)}</span>
+            </div>`;
+        }).join('')}
+      </div>
+    </div>
+  `;
+}
+
+// Format seconds as h:mm:ss or m:ss
+function fmtSecs(secs, includeHours) {
+  if (secs == null || isNaN(secs)) return '—';
+  secs = Math.round(secs);
+  const h = Math.floor(secs / 3600);
+  const m = Math.floor((secs % 3600) / 60);
+  const s = secs % 60;
+  if (includeHours && h > 0) return `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  if (h > 0) return `${h}h${String(m).padStart(2,'0')}`;
+  return `${m}:${String(s).padStart(2,'0')}`;
+}
+
+function renderRecoveryCard() {
+  const card = document.getElementById('recoveryCard');
+  const metaEl = document.getElementById('recoveryMeta');
+  if (!card) return;
+
+  const todayStr = TODAY();
+  const todayRec = state.recovery[todayStr] || {};
+
+  // Calc baseline resting HR from last 30 days (excluding today)
+  const dates = Object.keys(state.recovery).filter(d => d !== todayStr).sort().slice(-30);
+  const rhrValues = dates.map(d => state.recovery[d].resting_hr).filter(v => v != null);
+  const baselineRHR = rhrValues.length >= 7 ? Math.round(rhrValues.reduce((a, b) => a + b, 0) / rhrValues.length) : null;
+
+  // Build 7-day window (including today)
+  const last7 = [];
+  for (let i = 0; i < 7; i++) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    last7.push(d.toISOString().slice(0, 10));
+  }
+
+  // Helpers — average of an array of values, returns null if empty
+  const avg = (arr) => {
+    const valid = arr.filter(v => v != null && !isNaN(v));
+    if (valid.length === 0) return null;
+    return valid.reduce((a, b) => a + b, 0) / valid.length;
+  };
+
+  const sleep7 = avg(last7.map(d => state.recovery[d]?.sleep_hours));
+  const steps7 = avg(last7.map(d => state.recovery[d]?.steps));
+  const allDates = Object.keys(state.recovery);
+  const sleepAll = avg(allDates.map(d => state.recovery[d]?.sleep_hours));
+  const stepsAll = avg(allDates.map(d => state.recovery[d]?.steps));
+
+  // Sleep status: <6 red, 6-6.9 amber, 7+ green
+  const sleepStatus = (h) => {
+    if (h == null) return { color: 'var(--ink-faint)', label: '—' };
+    if (h < 6) return { color: 'var(--warn)', label: 'LOW' };
+    if (h < 7) return { color: '#d4a017', label: 'OK' };
+    return { color: 'var(--accent-deep)', label: 'GOOD' };
+  };
+
+  // Steps status: <5k low, 5-7.9k moderate, 8k+ active
+  const stepsStatus = (s) => {
+    if (s == null) return { color: 'var(--ink-faint)', label: '—' };
+    if (s < 5000) return { color: 'var(--warn)', label: 'LOW' };
+    if (s < 8000) return { color: '#d4a017', label: 'OK' };
+    return { color: 'var(--accent-deep)', label: 'ACTIVE' };
+  };
+
+  // RHR status: vs baseline. +5 = elevated, +8 = high
+  const rhrStatus = (rhr) => {
+    if (rhr == null) return { color: 'var(--ink-faint)', label: '—', delta: null };
+    if (baselineRHR == null) return { color: 'var(--ink)', label: 'NO BASELINE', delta: null };
+    const delta = rhr - baselineRHR;
+    if (delta >= 8) return { color: 'var(--warn)', label: `+${delta} ELEVATED`, delta };
+    if (delta >= 5) return { color: '#d4a017', label: `+${delta} CHECK`, delta };
+    if (delta <= -3) return { color: 'var(--accent-deep)', label: `${delta} GREAT`, delta };
+    return { color: 'var(--accent-deep)', label: 'BASELINE', delta };
+  };
+
+  const ss = sleepStatus(todayRec.sleep_hours);
+  const stps = stepsStatus(todayRec.steps);
+  const rs = rhrStatus(todayRec.resting_hr);
+
+  const hasAnyToday = todayRec.sleep_hours != null || todayRec.steps != null || todayRec.resting_hr != null;
+  const hasAnyHistory = Object.keys(state.recovery).length > 0;
+
+  if (metaEl) {
+    if (hasAnyToday) {
+      metaEl.textContent = 'TODAY · TAP TO EDIT';
+    } else {
+      metaEl.textContent = 'NOT LOGGED YET';
+    }
+  }
+
+  // ============ EMPTY STATE — no recovery data at all ============
+  if (!hasAnyHistory) {
+    card.innerHTML = `
+      <div class="card" onclick="openRecoveryModal()" style="cursor:pointer;padding:24px;text-align:center;border-style:dashed;border-width:1.5px">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;line-height:1;color:var(--ink);letter-spacing:-0.01em">+ LOG TODAY</div>
+        <div class="card-meta" style="margin-top:8px">SLEEP · STEPS · RESTING HR</div>
+        <div style="font-size:12px;color:var(--ink-soft);margin-top:14px;line-height:1.6;max-width:380px;margin-left:auto;margin-right:auto">
+          Pull your numbers from Garmin Connect each morning. Builds a recovery picture across the whole 22-week build.
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  // ============ LOADED STATE — has data ============
+  // Build 7-day mini-chart only if we have 3+ data points
+  const chartDates = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    chartDates.push(d.toISOString().slice(0, 10));
+  }
+  const sleepValues = chartDates.map(d => state.recovery[d]?.sleep_hours || 0);
+  const sleepDataPoints = sleepValues.filter(v => v > 0).length;
+  const showChart = sleepDataPoints >= 3;
+  const maxSleep = 9;
+  const dayShort = ['S','M','T','W','T','F','S'];
+
+  // Single metric block — big number, label, status pill, optional avg line
+  const metricBlock = (bigValue, unit, labelText, statusObj, avgLine, scoreLine) => {
+    const isEmpty = bigValue === '—';
+    return `
+      <div style="text-align:center">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:${isEmpty ? '28px' : '44px'};line-height:0.85;color:${isEmpty ? 'var(--ink-faint)' : 'var(--ink)'};letter-spacing:-0.01em">${bigValue}${unit && !isEmpty ? `<span style="font-size:14px;color:var(--ink-faint);font-family:'Inter';font-weight:700;letter-spacing:0.18em;margin-left:3px">${unit}</span>` : ''}</div>
+        <div style="font-family:'Inter',sans-serif;font-weight:800;font-size:10px;letter-spacing:0.22em;color:var(--ink-faint);margin-top:8px">${labelText}</div>
+        ${!isEmpty && statusObj.label !== '—' && statusObj.label !== 'NO BASELINE' ? `
+          <div style="display:inline-block;margin-top:8px;padding:3px 8px;background:${statusObj.color};color:var(--bg);font-family:'Inter',sans-serif;font-weight:700;font-size:9px;letter-spacing:0.18em;text-transform:uppercase">${statusObj.label}</div>
+        ` : ''}
+        ${avgLine ? `<div class="card-meta" style="margin-top:8px;color:var(--ink-faint);font-size:10px">${avgLine}</div>` : ''}
+        ${scoreLine ? `<div class="card-meta" style="margin-top:2px;color:var(--ink-faint);font-size:10px">${scoreLine}</div>` : ''}
+      </div>
+    `;
+  };
+
+  const sleepBig = todayRec.sleep_hours ?? '—';
+  const stepsBig = todayRec.steps ? (todayRec.steps >= 1000 ? (todayRec.steps/1000).toFixed(1) + 'K' : String(todayRec.steps)) : '—';
+  const rhrBig = todayRec.resting_hr ?? '—';
+
+  const sleepAvgLine = sleep7 != null ? `7D AVG ${sleep7.toFixed(1)}H${sleepAll != null && allDates.length > 7 ? ` · ALL ${sleepAll.toFixed(1)}H` : ''}` : '';
+  const stepsAvgLine = steps7 != null ? `7D AVG ${(steps7/1000).toFixed(1)}K${stepsAll != null && allDates.length > 7 ? ` · ALL ${(stepsAll/1000).toFixed(1)}K` : ''}` : '';
+  const rhrAvgLine = baselineRHR ? `BASELINE ${baselineRHR} BPM` : '';
+
+  const sleepScoreLine = todayRec.sleep_score ? `SCORE ${todayRec.sleep_score}/100` : '';
+
+  card.innerHTML = `
+    <div class="card" onclick="openRecoveryModal()" style="cursor:pointer;padding:22px 16px">
+      <div style="display:grid;grid-template-columns:1fr 1px 1fr 1px 1fr;gap:0;align-items:start">
+        ${metricBlock(sleepBig, 'H', 'SLEEP', ss, sleepAvgLine, sleepScoreLine)}
+        <div style="background:var(--line-soft);width:1px;height:80px;align-self:center"></div>
+        ${metricBlock(stepsBig, '', 'STEPS', stps, stepsAvgLine, '')}
+        <div style="background:var(--line-soft);width:1px;height:80px;align-self:center"></div>
+        ${metricBlock(rhrBig, 'BPM', 'RESTING HR', rs, rhrAvgLine, '')}
+      </div>
+      ${showChart ? `
+        <div style="border-top:1px solid var(--line-soft);padding-top:14px;margin-top:18px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px">
+            <div class="card-meta">7-DAY SLEEP</div>
+            <div class="card-meta" style="color:var(--ink-faint);font-size:9px">${sleepDataPoints} OF 7 LOGGED</div>
+          </div>
+          <svg viewBox="0 0 280 60" style="width:100%;height:50px;display:block" preserveAspectRatio="none">
+            ${sleepValues.map((v, i) => {
+              const x = (i / 6) * 260 + 10;
+              const h = v > 0 ? Math.min(50, (v / maxSleep) * 50) : 0;
+              const y = 55 - h;
+              const colour = v === 0 ? 'transparent' : v < 6 ? 'var(--warn)' : v < 7 ? '#d4a017' : 'var(--accent)';
+              const stroke = v === 0 ? 'var(--line-soft)' : 'none';
+              const strokeWidth = v === 0 ? '1' : '0';
+              const strokeDash = v === 0 ? '2,2' : 'none';
+              if (v === 0) {
+                return `<line x1="${x - 18}" y1="55" x2="${x + 18}" y2="55" stroke="var(--line-soft)" stroke-width="1.5" stroke-dasharray="2,2"/>`;
+              }
+              return `<rect x="${x - 18}" y="${y}" width="36" height="${h}" fill="${colour}" rx="2"/>`;
+            }).join('')}
+          </svg>
+          <div style="display:flex;justify-content:space-between;margin-top:6px;font-family:'Inter',sans-serif;font-weight:800;font-size:9px;color:var(--ink-faint);letter-spacing:0.22em;padding:0 10px">
+            ${chartDates.map(d => {
+              const dow = new Date(d).getDay();
+              const isToday = d === todayStr;
+              return `<span style="${isToday ? 'color:var(--accent-deep)' : ''}">${dayShort[dow]}</span>`;
+            }).join('')}
+          </div>
+        </div>
+      ` : ''}
+    </div>
+  `;
+}
+
+function openRecoveryModal(dateStr) {
+  const date = dateStr || TODAY();
+  document.getElementById('recoveryDate').value = date;
+  const existing = state.recovery[date] || {};
+  document.getElementById('recoverySleepHours').value = existing.sleep_hours ?? '';
+  document.getElementById('recoverySleepScore').value = existing.sleep_score ?? '';
+  document.getElementById('recoverySteps').value = existing.steps ?? '';
+  document.getElementById('recoveryRHR').value = existing.resting_hr ?? '';
+  document.getElementById('recoveryNotes').value = existing.notes || '';
+  document.getElementById('recoveryModal').classList.add('active');
+}
+
+async function saveRecovery() {
+  const r = {
+    date: document.getElementById('recoveryDate').value,
+    sleep_hours: parseFloat(document.getElementById('recoverySleepHours').value) || null,
+    sleep_score: parseInt(document.getElementById('recoverySleepScore').value) || null,
+    steps: parseInt(document.getElementById('recoverySteps').value) || null,
+    resting_hr: parseInt(document.getElementById('recoveryRHR').value) || null,
+    notes: document.getElementById('recoveryNotes').value
+  };
+  state.recovery[r.date] = r;
+  await pushRecovery(r);
+  closeModal('recoveryModal');
+  renderDash();
+}
+
 function openMacrosModal() {
   document.getElementById('macrosDate').value = TODAY();
   // Pre-populate if today already logged
@@ -3586,8 +4257,12 @@ function renderDash() {
       const done = day.habits && day.habits[h.id];
       const stat = habitStats.perHabit[h.id];
       const pct = stat && stat.total > 0 ? Math.round((stat.done / stat.total) * 100) : null;
+      const streak = stat?.streak || 0;
       const pctDisplay = pct !== null
         ? `<div style="font-family:'Bebas Neue',sans-serif;font-size:22px;line-height:1;color:${pct >= 80 ? 'var(--accent-deep)' : pct >= 50 ? 'var(--ink)' : 'var(--ink-faint)'};letter-spacing:0">${pct}<span style="font-size:11px;font-family:'Inter';font-weight:700;letter-spacing:0.18em;margin-left:2px">%</span></div>`
+        : '';
+      const streakDisplay = streak > 0
+        ? `<div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:${streak >= 7 ? 'var(--accent-deep)' : 'var(--ink-faint)'};font-weight:700;letter-spacing:0.04em">${streak}D 🔥</div>`
         : '';
       return `
         <div class="card ${done ? 'complete' : ''}">
@@ -3598,19 +4273,34 @@ function renderDash() {
             </div>
             <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
               ${pctDisplay}
+              ${streakDisplay}
               <button class="check-btn sm" onclick="toggleHabit('${h.id}')">✓</button>
             </div>
           </div>
         </div>`;
     }).join('');
     document.getElementById('dashHabitsCount').textContent = `${habitCount} / ${habitTotal}`;
+    const statusEl = document.getElementById('dashHabitsStatus');
+    if (statusEl) {
+      const pct = habitTotal > 0 ? Math.round((habitCount / habitTotal) * 100) : 0;
+      if (habitCount === 0) {
+        statusEl.textContent = 'TICK BELOW TO START';
+      } else if (habitCount === habitTotal) {
+        statusEl.textContent = 'ALL HABITS COMPLETE';
+      } else {
+        statusEl.textContent = `${pct}% COMPLETE TODAY`;
+      }
+    }
   }
 
   const ws = weekStrFor();
   const weekMiles = state.runs.filter(r => weekStrFor(new Date(r.date)) === ws).reduce((s, r) => s + (parseFloat(r.distance_mi) || 0), 0);
   const targetMiles = cw ? cw.miles : 50;
-  document.getElementById('ringMilesText').textContent = weekMiles.toFixed(0);
-  setRing('ringMiles', weekMiles, targetMiles);
+  const ringMilesEl = document.getElementById('ringMilesText');
+  if (ringMilesEl) {
+    ringMilesEl.textContent = weekMiles.toFixed(0);
+    setRing('ringMiles', weekMiles, targetMiles);
+  }
 
   document.getElementById('dashTotalMiles').textContent = state.runs.reduce((s, r) => s + (parseFloat(r.distance_mi) || 0), 0).toFixed(0);
   document.getElementById('dashWeeksToGo').textContent = Math.ceil(days / 7);
@@ -3774,6 +4464,38 @@ function renderDash() {
         </div>`;
     }
   }
+
+  // ====== POST-WARSAW BANNER (Sep 28 onwards) ======
+  const banner = document.getElementById('postWarsawBanner');
+  if (banner) {
+    const warsawDay = new Date('2026-09-28'); // day after race
+    if (today >= warsawDay) {
+      const daysSince = Math.floor((today - new Date('2026-09-27')) / 86400000);
+      banner.innerHTML = `
+        <div class="section">
+          <div class="hero" style="margin:0 0 20px;background:var(--ink);color:var(--bg)">
+            <div class="hero-eyebrow" style="color:var(--accent)">${daysSince} DAYS POST-WARSAW</div>
+            <div class="hero-num" style="font-size:42px;color:var(--bg)">HYPERTROPHY BLOCK</div>
+            <div class="hero-label" style="color:var(--accent)">Build the strength that protects against injury</div>
+            <div style="margin-top:14px;font-size:13px;line-height:1.6;color:var(--bg);opacity:0.9">
+              ${daysSince <= 14
+                ? `<strong>Recovery first.</strong> Easy walks only this week. Sports massage. Listen to body — full recovery before lifting begins.`
+                : `Caloric surplus +250–400 kcal. Heavy lifting 3–4×/week (4–8 reps). Running drops to 30–40mi base. 4–6 month block to add real muscle.`
+              }
+            </div>
+          </div>
+        </div>
+      `;
+    } else {
+      banner.innerHTML = '';
+    }
+  }
+
+  // ====== RECOVERY CARD ======
+  renderRecoveryCard();
+  // ====== RACE PREDICTOR ======
+  renderRacePredictor();
+
   const next7El = document.getElementById('dashNext7');
   if (next7El) {
     const dayNames = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
@@ -3850,11 +4572,14 @@ function renderToday() {
 function renderPlan() {
   const cw = getCurrentWeek();
 
+  // Calculate actual miles per week from DAILY_PLAN (single source of truth)
+  const planWeeksWithCalc = PLAN_WEEKS.map(w => ({ ...w, miles: calcWeekMiles(w.start) || w.miles }));
+
   // Bar chart
-  const maxMiles = Math.max(...PLAN_WEEKS.map(w => w.miles));
+  const maxMiles = Math.max(...planWeeksWithCalc.map(w => w.miles));
   const barChart = document.getElementById('mileageChart');
   // Reverse so wk 22 is first (left)
-  const orderedWeeks = [...PLAN_WEEKS];
+  const orderedWeeks = [...planWeeksWithCalc];
   barChart.innerHTML = orderedWeeks.map(w => {
     const h = (w.miles / maxMiles) * 100;
     let cls = 'bar';
@@ -3865,7 +4590,7 @@ function renderPlan() {
     return `<div class="${cls}" style="height:${h}%" title="Wk ${w.wk}: ${w.miles}mi"></div>`;
   }).join('');
 
-  document.getElementById('planWeeks').innerHTML = PLAN_WEEKS.map(w => {
+  document.getElementById('planWeeks').innerHTML = planWeeksWithCalc.map(w => {
     const isCurrent = cw && cw.wk === w.wk;
     return `
       <div class="plan-week ${isCurrent ? 'current' : ''}" onclick="openWeekDetail('${w.start}')" style="cursor:pointer">
@@ -3886,6 +4611,34 @@ function renderPlan() {
       </div>
     </div>
   `).join('');
+
+  // Strength benchmarks
+  const strengthEl = document.getElementById('strengthBenchmarks');
+  if (strengthEl) {
+    strengthEl.innerHTML = STRENGTH_BENCHMARKS.map(b => `
+      <div class="card" style="padding:14px 16px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:6px">
+          <div class="card-title">${b.lift}</div>
+          <div class="card-meta" style="color:var(--ink-faint)">${b.unit}</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0;text-align:center">
+          <div style="padding:8px;background:var(--bg);border:1px solid var(--line-soft)">
+            <div style="font-family:'Inter',sans-serif;font-weight:800;font-size:9px;letter-spacing:0.18em;color:var(--ink-faint);margin-bottom:4px">START</div>
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--ink-faint);line-height:1">${b.start}</div>
+          </div>
+          <div style="padding:8px;background:var(--accent-deep);border:1px solid var(--accent-deep)">
+            <div style="font-family:'Inter',sans-serif;font-weight:800;font-size:9px;letter-spacing:0.18em;color:var(--bg);margin-bottom:4px">MAINTAIN</div>
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--bg);line-height:1">${b.maintain}</div>
+          </div>
+          <div style="padding:8px;background:var(--bg);border:1px dashed var(--line)">
+            <div style="font-family:'Inter',sans-serif;font-weight:800;font-size:9px;letter-spacing:0.18em;color:var(--ink-faint);margin-bottom:4px">BUILD ▸</div>
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--ink);line-height:1">${b.build}</div>
+          </div>
+        </div>
+        <div style="font-size:11px;color:var(--ink-soft);font-style:italic;line-height:1.5">${b.why}</div>
+      </div>
+    `).join('');
+  }
 
   const sessionListEl = document.getElementById('sessionList');
   if (sessionListEl) {
@@ -4271,26 +5024,29 @@ function renderActiveWorkout() {
         <div class="exercise-head">
           <div style="flex:1;min-width:0">
             <div class="exercise-name">${ex.name}</div>
-            ${target ? `<div class="exercise-target">TARGET · ${target}</div>` : ''}
+            ${target ? `<div class="exercise-target">TARGET · ${target}${isTimeBased(ex.name) ? ' SEC' : ''}</div>` : ''}
             <div class="exercise-last">LAST · ${lastStr}</div>
           </div>
         </div>
         <div class="set-table">
           <div class="set-table-head">
             <div>#</div>
-            <div>KG</div>
-            <div>REPS</div>
+            <div>${isTimeBased(ex.name) ? '—' : 'KG'}</div>
+            <div>${isTimeBased(ex.name) ? 'SEC' : 'REPS'}</div>
             <div></div>
           </div>
           ${ex.sets.map((s, i) => `
             <div class="set-row ${s.completed ? 'done' : ''} ${s.is_warmup ? 'warmup' : ''}">
               <div class="set-num">${s.is_warmup ? 'W' : (i + 1)}</div>
               <div class="set-input">
-                <input type="number" step="0.5" value="${s.weight ?? ''}" placeholder="${last && last.sets[i] ? last.sets[i].weight_kg : '—'}"
-                  onchange="updateSet('${escAttr(ex.name)}', ${i}, 'weight', this.value ? parseFloat(this.value) : null)" inputmode="decimal">
+                ${isTimeBased(ex.name)
+                  ? `<span style="color:var(--ink-faint);font-family:'JetBrains Mono';font-size:14px">—</span>`
+                  : `<input type="number" step="0.5" value="${s.weight ?? ''}" placeholder="${last && last.sets[i] ? last.sets[i].weight_kg : '—'}"
+                      onchange="updateSet('${escAttr(ex.name)}', ${i}, 'weight', this.value ? parseFloat(this.value) : null)" inputmode="decimal">`
+                }
               </div>
               <div class="set-input">
-                <input type="number" value="${s.reps ?? ''}" placeholder="${last && last.sets[i] ? last.sets[i].reps : '—'}"
+                <input type="number" value="${s.reps ?? ''}" placeholder="${last && last.sets[i] ? last.sets[i].reps : (isTimeBased(ex.name) ? '60' : '—')}"
                   onchange="updateSet('${escAttr(ex.name)}', ${i}, 'reps', this.value ? parseInt(this.value) : null)" inputmode="numeric">
               </div>
               <div class="set-tick">
@@ -4469,7 +5225,7 @@ function renderAll() {
 function switchTab(name) {
   document.querySelectorAll('nav.bottom-nav button[data-tab]').forEach(b => b.classList.toggle('active', b.dataset.tab === name));
   document.querySelectorAll('main > .tab').forEach(t => t.classList.toggle('active', t.id === 'tab-' + name));
-  const titles = { dash: ['Dashboard', 'Warsaw 2026 build'], plan: ['Plan', '22-week build'], log: ['Log', 'Training history'], nut: ['Nutrition', 'Macros + fuelling'], glow: ['Glow', 'Aesthetic + health'] };
+  const titles = { dash: ['Dashboard', 'Warsaw 2026 build'], plan: ['Plan', '22-week build'], log: ['Log', 'Training history'], nut: ['Fuel', 'Macros + fuelling'], glow: ['Glow', 'Aesthetic + health'] };
   const t = titles[name] || ['', ''];
   document.getElementById('dynamicTitle').textContent = t[0];
   document.getElementById('dynamicSubtitle').textContent = t[1];
