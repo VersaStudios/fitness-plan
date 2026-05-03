@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Fitness Plan">
-<title>Fitness Plan</title>
+<meta name="apple-mobile-web-app-title" content="Project 2:55">
+<title>Project 2:55</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1297,11 +1297,10 @@ footer {
 <!-- ============== SIDEBAR / BOTTOM NAV ============== -->
 <nav class="bottom-nav" id="appNav" style="display:none">
   <div class="nav-brand" style="display:none">
-    <div class="nav-brand-title">FIT<span style="color:var(--accent-deep)">.</span></div>
+    <div class="nav-brand-title">PROJECT<span style="color:var(--accent-deep)"> 2:55</span></div>
     <div class="nav-brand-sub">Warsaw 2026</div>
   </div>
   <button class="active" data-tab="dash"><span class="nav-icon">◐</span>Home</button>
-  <button data-tab="today"><span class="nav-icon">◑</span>Today</button>
   <button data-tab="plan"><span class="nav-icon">▤</span>Plan</button>
   <button data-tab="log"><span class="nav-icon">▣</span>Log</button>
   <button data-tab="nut"><span class="nav-icon">◍</span>Nut</button>
@@ -1462,100 +1461,19 @@ footer {
       <div class="section-title">Quick Actions</div>
     </div>
     <div class="quick-actions-grid">
-      <button class="btn accent" onclick="switchTab('today')">Open Today</button>
-      <button class="btn outline" onclick="openRunModal()">Log Run</button>
+      <button class="btn accent" onclick="openMacrosModal()">Log Macros</button>
       <button class="btn outline" onclick="goToGym()">Start Workout</button>
     </div>
   </div>
 
 </div>
 
-<!-- ============== TAB: TODAY ============== -->
-<div class="tab" id="tab-today">
-
-  <div class="hero">
-    <div class="hero-eyebrow" id="todayEyebrow">—</div>
-    <div class="hero-num" id="todayPct">0%</div>
-    <div class="hero-label" id="todayLabel">complete</div>
-    <div class="hero-bar"><div class="hero-fill" id="todayFill" style="width:0%"></div></div>
-    <div class="hero-detail">
-      <span id="todayDate">—</span>
-      <span id="todayPlan">—</span>
-    </div>
-  </div>
-
-  <div class="subtabs" id="todaySubtabs">
-    <button class="active" data-sub="habits">Habits</button>
-    <button data-sub="supps">Supps</button>
-    <button data-sub="skin">Skin</button>
-  </div>
-
-  <div class="subtab active" id="sub-habits">
-    <div class="section">
-      <div class="section-head"><div class="section-title">Daily Habits</div></div>
-      <div id="habitList"></div>
-    </div>
-  </div>
-
-  <div class="subtab" id="sub-supps">
-    <div class="section">
-      <div class="section-head"><div class="section-title">AM — With Smoothie</div></div>
-      <div id="suppsAM"></div>
-    </div>
-    <div class="section">
-      <div class="section-head"><div class="section-title">PM — Before Bed</div></div>
-      <div id="suppsPM"></div>
-    </div>
-  </div>
-
-  <div class="subtab" id="sub-skin">
-    <div class="section">
-      <div class="section-head"><div class="section-title">AM Routine</div></div>
-      <div class="card" id="skinAMCard">
-        <div class="card-head">
-          <div style="flex:1">
-            <div class="card-title">Morning Stack</div>
-            <div class="card-meta">CLEANSE · VIT C · EYE · SPF · LIP SPF</div>
-          </div>
-          <button class="check-btn" onclick="toggleSkin('am')">✓</button>
-        </div>
-      </div>
-    </div>
-    <div class="section">
-      <div class="section-head"><div class="section-title">PM Routine</div></div>
-      <div class="card" id="skinPMCard">
-        <div class="card-head">
-          <div style="flex:1">
-            <div class="card-title">Evening Stack</div>
-            <div class="card-meta" id="skinPMMeta">Active of the day...</div>
-          </div>
-          <button class="check-btn" onclick="toggleSkin('pm')">✓</button>
-        </div>
-      </div>
-    </div>
-    <div class="section">
-      <div class="section-head"><div class="section-title">Active Grid</div></div>
-      <div class="card">
-        <div style="font-family:'JetBrains Mono', monospace;font-size:13px;line-height:2">
-          <div><strong style="font-family:Inter;font-weight:800;letter-spacing:0.1em">MON</strong> · Retinol</div>
-          <div><strong style="font-family:Inter;font-weight:800;letter-spacing:0.1em">TUE</strong> · Rest</div>
-          <div><strong style="font-family:Inter;font-weight:800;letter-spacing:0.1em">WED</strong> · Retinol + derma roller</div>
-          <div><strong style="font-family:Inter;font-weight:800;letter-spacing:0.1em">THU</strong> · Rest</div>
-          <div><strong style="font-family:Inter;font-weight:800;letter-spacing:0.1em">FRI</strong> · Retinol</div>
-          <div><strong style="font-family:Inter;font-weight:800;letter-spacing:0.1em">SAT</strong> · BHA exfoliant</div>
-          <div><strong style="font-family:Inter;font-weight:800;letter-spacing:0.1em">SUN</strong> · Clay mask</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 
 <!-- ============== TAB: PLAN ============== -->
 <div class="tab" id="tab-plan">
   <div class="subtabs">
     <button class="active" data-plansub="weeks">Weeks</button>
     <button data-plansub="paces">Paces</button>
-    <button data-plansub="sessions">Sessions</button>
     <button data-plansub="races">Races</button>
     <button data-plansub="raceday">Race Day</button>
   </div>
@@ -1587,13 +1505,6 @@ footer {
     </div>
   </div>
 
-  <div class="subtab" id="plansub-sessions">
-    <div class="section">
-      <div class="section-head"><div class="section-title">Quality Sessions</div></div>
-      <div id="sessionList"></div>
-    </div>
-  </div>
-
   <div class="subtab" id="plansub-races">
     <div class="section">
       <div class="section-head"><div class="section-title">2026 Calendar</div></div>
@@ -1613,10 +1524,10 @@ footer {
       <div class="section-head"><div class="section-title">Pacing</div></div>
       <div class="card">
         <div style="font-family:'JetBrains Mono', monospace;font-size:13px;line-height:1.9">
-          5K · 33:00<br>
-          10K · 41:15<br>
-          HM · 1:27:00<br>
-          30K · 2:04:30<br>
+          5K · 20:34<br>
+          10K · 41:09<br>
+          HM · 1:26:55<br>
+          30K · 2:03:30<br>
           <strong style="font-family:Inter;font-weight:800;letter-spacing:0.1em">FIN · 2:54:00</strong>
         </div>
       </div>
@@ -1662,7 +1573,7 @@ footer {
   </div>
 
   <div class="subtab active" id="logsub-runs">
-    <button class="btn accent full" onclick="openRunModal()" style="margin-bottom:16px">+ Log Run</button>
+    <div style="margin-bottom:16px;padding:12px 14px;background:var(--bg-elev);border-left:3px solid #fc4c02;font-family:'Inter',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.18em;color:var(--ink-soft)">RUNS SYNC AUTOMATICALLY FROM STRAVA</div>
     <div class="stat-grid">
       <div class="stat-card">
         <div class="stat-num" id="runWeekTotal">0</div>
@@ -1729,7 +1640,7 @@ footer {
     <button class="btn accent full" onclick="logMassage()" style="margin-bottom:16px">+ Log Massage Today</button>
     <div class="hero">
       <div class="hero-eyebrow">14-Day Cycle</div>
-      <div class="hero-num" id="massageDays">14</div>
+      <div class="hero-num" id="massageDays">28</div>
       <div class="hero-label">Days to Next</div>
       <div class="hero-detail">
         <span id="massageDate">No log yet</span>
@@ -1747,9 +1658,7 @@ footer {
 <div class="tab" id="tab-nut">
   <div class="subtabs">
     <button class="active" data-nutsub="phase">Phase</button>
-    <button data-nutsub="day">Day Plan</button>
     <button data-nutsub="protein">Protein</button>
-    <button data-nutsub="cook">Batch</button>
     <button data-nutsub="hydro">Water</button>
   </div>
 
@@ -1773,13 +1682,6 @@ footer {
     </div>
   </div>
 
-  <div class="subtab" id="nutsub-day">
-    <div class="section">
-      <div class="section-head"><div class="section-title">Daily Template</div></div>
-      <div id="dayPlan"></div>
-    </div>
-  </div>
-
   <div class="subtab" id="nutsub-protein">
     <div class="section">
       <div class="hero" style="margin:0 0 20px">
@@ -1795,13 +1697,6 @@ footer {
     <div class="section">
       <div class="section-head"><div class="section-title">Per Meal</div></div>
       <div id="proteinMeals"></div>
-    </div>
-  </div>
-
-  <div class="subtab" id="nutsub-cook">
-    <div class="section">
-      <div class="section-head"><div class="section-title">Sunday Batch</div></div>
-      <div id="batchList"></div>
     </div>
   </div>
 
@@ -1925,7 +1820,7 @@ footer {
 
 </main>
 
-<footer style="display:none" id="appFooter">FIT · Andrew Rowell · Warsaw 2026</footer>
+<footer style="display:none" id="appFooter">PROJECT 2:55 · Andrew Rowell · Warsaw 2026</footer>
 
 <!-- ============== MODALS ============== -->
 <div class="modal-bg" id="runModal">
@@ -2037,6 +1932,40 @@ footer {
     <div style="margin-top:20px;display:flex;gap:8px">
       <button class="btn outline" onclick="closeModal('measureModal')" style="flex:1">Cancel</button>
       <button class="btn accent" onclick="saveMeas()" style="flex:1">Save</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-bg" id="runNotesModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="runNotesTitle">Run Notes</div>
+        <div class="card-meta" id="runNotesMeta" style="margin-top:4px">—</div>
+      </div>
+      <button class="modal-close" onclick="closeModal('runNotesModal')">×</button>
+    </div>
+    <label class="field">Your notes</label>
+    <textarea class="field-textarea" id="runNotesInput" placeholder="Felt strong, knee twinged at mile 6, etc."></textarea>
+    <div style="margin-top:20px;display:flex;gap:8px">
+      <button class="btn outline" onclick="closeModal('runNotesModal')" style="flex:1">Cancel</button>
+      <button class="btn accent" onclick="saveRunNotes()" style="flex:1">Save</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-bg" id="weekDetailModal">
+  <div class="modal" style="max-width:560px">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="weekDetailTitle">Week Detail</div>
+        <div class="card-meta" id="weekDetailMeta" style="margin-top:4px">—</div>
+      </div>
+      <button class="modal-close" onclick="closeModal('weekDetailModal')">×</button>
+    </div>
+    <div id="weekDetailBody"></div>
+    <div style="margin-top:16px">
+      <button class="btn outline full" onclick="closeModal('weekDetailModal')">Close</button>
     </div>
   </div>
 </div>
@@ -2278,7 +2207,7 @@ const RECOVERY_LIST = [
   { label: 'Foam Roll', meta: '3×/WK · 10 MIN' },
   { label: 'Cold Shower 30s', meta: 'NOT POST-GYM' },
   { label: 'Sleep', meta: '8.5–9HR PEAK BLOCK' },
-  { label: 'Sports Massage', meta: 'BI-WEEKLY · JUL/AUG' }
+  { label: 'Sports Massage', meta: 'EVERY 4 WEEKS' }
 ];
 const EXERCISES_UPPER = ['Shoulder press','Single-arm row','DB bench press','Lat pullover','Rear delt fly','Lateral raise','Bicep curl','Tricep extension'];
 const EXERCISES_LOWER = ['Goblet squat','Romanian deadlift','Bulgarian split squat','Step-up','Single-leg RDL','Hip thrust','Calf raise'];
@@ -2522,10 +2451,23 @@ function getWeekStartDate(date = new Date()) {
 }
 
 function getTodaySession(date = new Date()) {
-  const weekKey = getWeekStartDate(date);
+  const dateStr = typeof date === 'string' ? date : date.toISOString().slice(0, 10);
+  // Override takes precedence
+  const override = state.planOverrides && state.planOverrides[dateStr];
+  if (override && (override.name || override.detail || override.type)) {
+    return {
+      name: override.name || '',
+      detail: override.detail || '',
+      type: override.type || 'easy',
+      _override: true
+    };
+  }
+  // Fallback to template
+  const dateObj = typeof date === 'string' ? new Date(date) : date;
+  const weekKey = getWeekStartDate(dateObj);
   const week = DAILY_PLAN[weekKey];
   if (!week) return null;
-  const dow = date.getDay();
+  const dow = dateObj.getDay();
   return week[dow] || null;
 }
 
@@ -2540,6 +2482,7 @@ let state = {
   supps: {},
   skin: {},
   macros: {},
+  planOverrides: {},
   bestStreak: 0
 };
 let db = null;
@@ -2602,6 +2545,18 @@ async function pullAll() {
     (skin.data || []).forEach(r => { state.skin[r.date] = { am: r.am_done, pm: r.pm_done, active: r.active }; });
     state.macros = {};
     (macros.data || []).forEach(r => { state.macros[r.date] = { kcal: r.kcal, protein_g: r.protein_g, carbs_g: r.carbs_g, fat_g: r.fat_g, notes: r.notes }; });
+
+    // Plan overrides — gracefully handle missing table
+    state.planOverrides = {};
+    try {
+      const { data: overrides } = await db.from('plan_overrides').select('*');
+      (overrides || []).forEach(o => {
+        state.planOverrides[o.date] = { name: o.name, detail: o.detail, type: o.type, swapped_with: o.swapped_with, notes: o.notes };
+      });
+    } catch (e) {
+      console.warn('[plan_overrides table not ready]', e.message);
+    }
+
     await pullWorkouts();
     setSync('ok', 'Synced');
     renderAll();
@@ -2673,6 +2628,34 @@ async function pushMacros(m) {
   setSync('syncing', 'Saving');
   const { error } = await db.from('macros_log').upsert({ ...m, updated_at: new Date().toISOString() });
   setSync(error ? 'error' : 'ok', error ? 'Failed' : 'Synced');
+}
+async function pushPlanOverride(date, override) {
+  if (!db) return;
+  setSync('syncing', 'Saving');
+  const payload = {
+    date,
+    name: override.name || null,
+    detail: override.detail || null,
+    type: override.type || null,
+    swapped_with: override.swapped_with || null,
+    notes: override.notes || null,
+    updated_at: new Date().toISOString()
+  };
+  const { error } = await db.from('plan_overrides').upsert(payload);
+  setSync(error ? 'error' : 'ok', error ? 'Failed' : 'Synced');
+  if (error) console.error(error);
+}
+async function deletePlanOverride(date) {
+  if (!db) return;
+  await db.from('plan_overrides').delete().eq('date', date);
+  delete state.planOverrides[date];
+}
+async function pushRunNotes(runId, notes) {
+  if (!db) return;
+  setSync('syncing', 'Saving');
+  const { error } = await db.from('run_log').update({ user_notes: notes }).eq('id', runId);
+  setSync(error ? 'error' : 'ok', error ? 'Failed' : 'Synced');
+  if (error) console.error(error);
 }
 
 // ============== WORKOUT TRACKER ==============
@@ -3270,6 +3253,195 @@ function openMeasureModal() {
   ['measWeight','measWaist','measHip','measChest','measShoulder','measThigh','measArm','measArmF','measNotes'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('measureModal').classList.add('active');
 }
+// Swap state: holds the date-string of the first selected day during a swap
+let _swapPick = null;
+
+function openWeekDetail(weekStart) {
+  _swapPick = null; // reset on every open
+  renderWeekDetail(weekStart);
+  document.getElementById('weekDetailModal').classList.add('active');
+}
+
+function renderWeekDetail(weekStart) {
+  const w = PLAN_WEEKS.find(p => p.start === weekStart);
+  if (!w) return;
+  const dayNames = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+  const monthNames = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+  const typeColors = { long: 'accent', quality: 'warn', rest: 'dark', race: 'accent', easy: '', gym: 'dark' };
+  const typeLabels = { long: 'LONG', quality: 'QUALITY', rest: 'REST', race: 'RACE', easy: 'EASY', gym: 'GYM' };
+
+  const tags = [];
+  if (w.deload) tags.push('<span class="tag warn">DELOAD</span>');
+  if (w.race) tags.push('<span class="tag accent">RACE</span>');
+
+  document.getElementById('weekDetailTitle').textContent = `Week ${w.wk}`;
+  document.getElementById('weekDetailMeta').innerHTML = `${fmtDateShort(w.start)} · ${w.miles}MI · LR ${w.lr} ${tags.join(' ')}`;
+
+  // Banner explaining swap state
+  let bannerHtml = '';
+  if (_swapPick) {
+    const dt = new Date(_swapPick);
+    bannerHtml = `<div style="padding:10px 14px;background:var(--accent);color:var(--ink);font-family:'Inter';font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:0.18em;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center">
+      <span>Swap ${dayNames[dt.getDay()]} ${dt.getDate()} ${monthNames[dt.getMonth()]} with…</span>
+      <button onclick="cancelSwap('${weekStart}')" style="background:transparent;border:1px solid var(--ink);color:var(--ink);font-family:'Inter';font-weight:700;font-size:10px;padding:4px 8px;letter-spacing:0.18em;text-transform:uppercase">Cancel</button>
+    </div>`;
+  } else {
+    bannerHtml = `<div class="card-meta" style="margin-bottom:10px">TAP A DAY TO SWAP, OR <button onclick="resetWeekToTemplate('${weekStart}')" style="background:transparent;border:none;color:var(--accent-deep);font-family:'Inter';font-weight:700;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;cursor:pointer;padding:0">RESET WEEK</button></div>`;
+  }
+
+  // Build days in M-T-W-T-F-S-S order
+  const order = [1, 2, 3, 4, 5, 6, 0];
+  let html = bannerHtml;
+  order.forEach(dow => {
+    const dayDate = new Date(weekStart);
+    dayDate.setDate(dayDate.getDate() + (dow === 0 ? 6 : dow - 1));
+    const dateStr = dayDate.toISOString().slice(0, 10);
+    const dateLabel = `${dayDate.getDate()} ${monthNames[dayDate.getMonth()]}`;
+    const session = getTodaySession(dayDate);
+    const isSwapped = state.planOverrides[dateStr] && state.planOverrides[dateStr].swapped_with;
+    const isPicked = _swapPick === dateStr;
+
+    const cardStyle = isPicked
+      ? 'background:var(--accent);color:var(--ink);border:2px solid var(--accent)'
+      : 'cursor:pointer';
+    const dayLabelColor = isPicked ? 'var(--ink)' : 'var(--ink-faint)';
+
+    if (!session) {
+      html += `
+        <div class="card" style="display:flex;align-items:flex-start;gap:14px;padding:14px 16px;${cardStyle}" onclick="onSwapPick('${weekStart}', '${dateStr}')">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;line-height:0.95;color:${dayLabelColor};min-width:62px;flex-shrink:0">
+            ${dayNames[dow]}<br><span style="font-size:10px;font-family:'Inter';font-weight:700;letter-spacing:0.18em">${dateLabel}</span>
+          </div>
+          <div style="flex:1;color:${isPicked ? 'var(--ink)' : 'var(--ink-faint)'};font-style:italic;font-size:13px">No session scheduled</div>
+        </div>`;
+      return;
+    }
+
+    const tagColor = typeColors[session.type] || '';
+    const tagLabel = typeLabels[session.type] || (session.type || '').toUpperCase();
+    const swappedFlag = isSwapped ? '<span class="tag warn" style="margin-left:6px">SWAPPED</span>' : '';
+
+    html += `
+      <div class="card" style="padding:14px 16px;display:flex;gap:14px;align-items:flex-start;${cardStyle}" onclick="onSwapPick('${weekStart}', '${dateStr}')">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;line-height:0.95;color:${dayLabelColor};min-width:62px;flex-shrink:0">
+          ${dayNames[dow]}<br><span style="font-size:10px;font-family:'Inter';font-weight:700;letter-spacing:0.18em">${dateLabel}</span>
+        </div>
+        <div style="flex:1;min-width:0">
+          <div style="font-family:'Inter',sans-serif;font-weight:800;font-size:14px;text-transform:uppercase;letter-spacing:0.01em;line-height:1.2;margin-bottom:6px">${session.name}</div>
+          <div style="font-size:12px;color:${isPicked ? 'var(--ink)' : 'var(--ink-soft)'};line-height:1.5;margin-bottom:8px">${session.detail || ''}</div>
+          <span class="tag ${tagColor}">${tagLabel}</span>${swappedFlag}
+        </div>
+      </div>`;
+  });
+
+  if (w.notes) {
+    html += `
+      <div class="card" style="padding:14px 16px;margin-top:8px;background:var(--bg);border-left:3px solid var(--accent-deep)">
+        <div class="card-meta" style="margin-bottom:4px">WEEK NOTES</div>
+        <div style="font-size:13px;color:var(--ink)">${w.notes}</div>
+      </div>`;
+  }
+
+  document.getElementById('weekDetailBody').innerHTML = html;
+}
+
+function onSwapPick(weekStart, dateStr) {
+  if (!_swapPick) {
+    _swapPick = dateStr;
+    renderWeekDetail(weekStart);
+    return;
+  }
+  if (_swapPick === dateStr) {
+    // Tapped same day — cancel
+    _swapPick = null;
+    renderWeekDetail(weekStart);
+    return;
+  }
+  // Perform the swap
+  swapDays(_swapPick, dateStr).then(() => {
+    _swapPick = null;
+    renderWeekDetail(weekStart);
+    renderAll();
+  });
+}
+
+function cancelSwap(weekStart) {
+  _swapPick = null;
+  renderWeekDetail(weekStart);
+}
+
+async function swapDays(dateA, dateB) {
+  // Get the effective sessions for both days (using overrides if present)
+  const sessionA = getTodaySession(new Date(dateA));
+  const sessionB = getTodaySession(new Date(dateB));
+
+  // Write overrides — A gets B's session, B gets A's session
+  if (sessionB) {
+    await pushPlanOverride(dateA, {
+      name: sessionB.name,
+      detail: sessionB.detail,
+      type: sessionB.type,
+      swapped_with: dateB
+    });
+    state.planOverrides[dateA] = { name: sessionB.name, detail: sessionB.detail, type: sessionB.type, swapped_with: dateB };
+  } else {
+    await deletePlanOverride(dateA);
+  }
+  if (sessionA) {
+    await pushPlanOverride(dateB, {
+      name: sessionA.name,
+      detail: sessionA.detail,
+      type: sessionA.type,
+      swapped_with: dateA
+    });
+    state.planOverrides[dateB] = { name: sessionA.name, detail: sessionA.detail, type: sessionA.type, swapped_with: dateA };
+  } else {
+    await deletePlanOverride(dateB);
+  }
+  if (navigator.vibrate) navigator.vibrate([40, 60, 40]);
+}
+
+async function resetWeekToTemplate(weekStart) {
+  if (!confirm('Reset this week to the original plan? Any swaps will be undone.')) return;
+  const start = new Date(weekStart);
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(start);
+    d.setDate(d.getDate() + i);
+    const ds = d.toISOString().slice(0, 10);
+    if (state.planOverrides[ds]) {
+      await deletePlanOverride(ds);
+    }
+  }
+  renderWeekDetail(weekStart);
+  renderAll();
+}
+
+// Currently-editing run id for notes modal
+let _editingRunId = null;
+
+function openRunNotes(runId) {
+  const run = state.runs.find(r => String(r.id) === String(runId));
+  if (!run) return;
+  _editingRunId = runId;
+  const dm = fmtDayMonth(run.date);
+  document.getElementById('runNotesTitle').textContent = `${run.distance_mi || 0}mi · ${run.pace || '—'}`;
+  document.getElementById('runNotesMeta').textContent = `${dm.day} ${dm.month} · ${(run.type || '').toUpperCase()}${run.activity_name ? ' · ' + run.activity_name : ''}`;
+  document.getElementById('runNotesInput').value = run.user_notes || '';
+  document.getElementById('runNotesModal').classList.add('active');
+}
+
+async function saveRunNotes() {
+  if (!_editingRunId) return;
+  const notes = document.getElementById('runNotesInput').value.trim();
+  await pushRunNotes(_editingRunId, notes || null);
+  // Update local state
+  const run = state.runs.find(r => String(r.id) === String(_editingRunId));
+  if (run) run.user_notes = notes || null;
+  _editingRunId = null;
+  closeModal('runNotesModal');
+  renderLog();
+}
+
 function openMacrosModal() {
   document.getElementById('macrosDate').value = TODAY();
   // Pre-populate if today already logged
@@ -3671,94 +3843,8 @@ function renderDash() {
 }
 
 function renderToday() {
-  const date = TODAY(); const day = getDay(date);
-  const habitCount = Object.values(day.habits || {}).filter(Boolean).length;
-  const total = HABITS.length;
-  const pct = Math.round(habitCount / total * 100);
-  document.getElementById('todayPct').textContent = pct + '%';
-  document.getElementById('todayLabel').textContent = `${habitCount}/${total} COMPLETE`;
-  document.getElementById('todayFill').style.width = pct + '%';
-  document.getElementById('todayDate').textContent = fmtDateFull(date);
-  document.getElementById('todayEyebrow').textContent = fmtDateFull(date);
-  const cw = getCurrentWeek();
-  document.getElementById('todayPlan').textContent = cw ? `WK ${cw.wk}/22` : '—';
-
-  const dailyListEl = document.getElementById('dailyList');
-  if (dailyListEl) dailyListEl.innerHTML = DAILY_TASKS.map(t => {
-    const done = (day.dailyTasks || []).includes(t.id);
-    return `
-      <div class="card ${done ? 'complete' : ''}">
-        <div class="card-head">
-          <div style="flex:1">
-            <div class="card-title">${t.title}</div>
-            <div class="card-meta">${t.meta}</div>
-            <div class="card-detail">${t.detail}</div>
-          </div>
-          <button class="check-btn" onclick="toggleDaily('${t.id}')">✓</button>
-        </div>
-        ${t.timer ? `
-          <div class="timer-row">
-            <div class="timer-display" id="timer-${t.id}">${fmtTime(t.timer)}</div>
-            <button class="timer-btn" id="tbtn-${t.id}" onclick="toggleTimer('${t.id}', ${t.timer})">Start</button>
-            <button class="timer-btn reset" onclick="resetTimer('${t.id}', ${t.timer})">Reset</button>
-          </div>` : ''}
-      </div>`;
-  }).join('');
-
-  const week = getWeek();
-  const weeklyListEl = document.getElementById('weeklyList');
-  if (weeklyListEl) weeklyListEl.innerHTML = WEEKLY_TASKS.map(t => {
-    const c = week[t.id] || 0; const met = c >= t.target;
-    return `
-      <div class="card ${met ? 'complete' : ''}">
-        <div class="card-head">
-          <div style="flex:1">
-            <div class="card-title">${t.title} <span style="font-family:'Bebas Neue';font-size:20px;color:var(--accent)">${c}/${t.target}</span></div>
-            <div class="card-meta">${t.meta}</div>
-            <div class="card-detail">${t.detail}</div>
-          </div>
-          <button class="check-btn" onclick="incWeekly('${t.id}')">+</button>
-        </div>
-      </div>`;
-  }).join('');
-
-  document.getElementById('habitList').innerHTML = HABITS.map(h => {
-    const done = day.habits && day.habits[h.id];
-    return `
-      <div class="card ${done ? 'complete' : ''}">
-        <div class="card-head">
-          <div style="flex:1">
-            <div class="card-title">${h.label}</div>
-            <div class="card-meta">${h.meta}</div>
-          </div>
-          <button class="check-btn sm" onclick="toggleHabit('${h.id}')">✓</button>
-        </div>
-      </div>`;
-  }).join('');
-
-  const ds = state.supps[date] || {};
-  const renderSupp = s => {
-    const done = ds[s.id];
-    return `
-      <div class="card ${done ? 'complete' : ''}">
-        <div class="card-head">
-          <div style="flex:1">
-            <div class="card-title">${s.label}</div>
-            <div class="card-meta">${s.meta}</div>
-          </div>
-          <button class="check-btn sm" onclick="toggleSupp('${s.id}')">✓</button>
-        </div>
-      </div>`;
-  };
-  document.getElementById('suppsAM').innerHTML = SUPPS_AM.map(renderSupp).join('');
-  document.getElementById('suppsPM').innerHTML = SUPPS_PM.map(renderSupp).join('');
-
-  const skinDay = state.skin[date] || {};
-  document.getElementById('skinAMCard').classList.toggle('complete', !!skinDay.am);
-  document.getElementById('skinPMCard').classList.toggle('complete', !!skinDay.pm);
-  const dow = new Date(date).getDay();
-  const activeMap = ['CLAY MASK','RETINOL','REST · CLEANSE + MOISTURISE','RETINOL + DERMA ROLLER','REST · CLEANSE + MOISTURISE','RETINOL','BHA EXFOLIANT'];
-  document.getElementById('skinPMMeta').textContent = activeMap[dow];
+  // Today tab removed — habits render on home (renderDash). Function kept as no-op
+  // because various toggle handlers still call it. Most logic moved to renderDash.
 }
 
 function renderPlan() {
@@ -3782,7 +3868,7 @@ function renderPlan() {
   document.getElementById('planWeeks').innerHTML = PLAN_WEEKS.map(w => {
     const isCurrent = cw && cw.wk === w.wk;
     return `
-      <div class="plan-week ${isCurrent ? 'current' : ''}">
+      <div class="plan-week ${isCurrent ? 'current' : ''}" onclick="openWeekDetail('${w.start}')" style="cursor:pointer">
         <div class="plan-week-num">${w.wk}</div>
         <div class="plan-week-info">
           <div class="plan-week-detail">${fmtDateShort(w.start)} ${w.deload ? '· DELOAD' : ''}${w.race ? '· RACE WK' : ''}</div>
@@ -3801,12 +3887,15 @@ function renderPlan() {
     </div>
   `).join('');
 
-  document.getElementById('sessionList').innerHTML = SESSIONS.map(s => `
-    <div class="card">
-      <div class="card-title">${s.name}</div>
-      <div class="card-meta"><span class="tag ${s.tag === 'mp' ? 'accent' : s.tag === 'speed' ? 'dark' : ''}">${s.tag.toUpperCase()}</span> ${s.detail}</div>
-    </div>
-  `).join('');
+  const sessionListEl = document.getElementById('sessionList');
+  if (sessionListEl) {
+    sessionListEl.innerHTML = SESSIONS.map(s => `
+      <div class="card">
+        <div class="card-title">${s.name}</div>
+        <div class="card-meta"><span class="tag ${s.tag === 'mp' ? 'accent' : s.tag === 'speed' ? 'dark' : ''}">${s.tag.toUpperCase()}</span> ${s.detail}</div>
+      </div>
+    `).join('');
+  }
 
   document.getElementById('raceList').innerHTML = RACES.map(r => {
     const dm = fmtDayMonth(r.date);
@@ -3842,12 +3931,14 @@ function renderLog() {
         const elevPart = r.elevation_gain_m ? ` · ↑${r.elevation_gain_m}m` : '';
         const feelPart = r.feel ? `feel ${r.feel}/10` : '';
         const kneePart = r.knee_ankle && r.knee_ankle !== 'green' ? ` · KNEE ${r.knee_ankle.toUpperCase()}` : '';
+        const notesBlock = r.user_notes ? `<div style="font-size:12px;color:var(--ink-soft);font-style:italic;margin-top:6px;border-left:2px solid var(--accent-deep);padding-left:8px">"${r.user_notes}"</div>` : '';
         return `
-          <div class="log-entry">
+          <div class="log-entry" onclick="openRunNotes('${r.id}')" style="cursor:pointer">
             <div>
               <div class="log-distance">${r.distance_mi || 0}<span class="unit">MI</span>${isStrava ? ' <span class="log-pb" style="background:#fc4c02">STRAVA</span>' : ''}</div>
               <div class="log-meta">${r.pace || '—'} · ${fmtDuration(r.duration_sec)}${hrPart}${elevPart}${feelPart ? ' · ' + feelPart : ''}</div>
               <div class="log-type">${(r.type || '').toUpperCase()}${kneePart}${r.activity_name ? ' · ' + r.activity_name.toUpperCase() : ''}</div>
+              ${notesBlock}
             </div>
             <div class="log-date">
               <span class="day">${dm.day}</span>
@@ -4108,7 +4199,7 @@ function renderLog() {
   let daysLeft = 14, dateText = 'NO LOG YET';
   if (last) {
     const lastDate = new Date(last.date);
-    const next = new Date(lastDate); next.setDate(next.getDate() + 14);
+    const next = new Date(lastDate); next.setDate(next.getDate() + 28);
     const diff = Math.ceil((next - new Date()) / 86400000);
     daysLeft = Math.max(0, diff);
     dateText = `LAST ${fmtDateShort(last.date)} · NEXT ${fmtDateShort(next)}`;
@@ -4280,7 +4371,8 @@ function renderNut() {
       <div class="card-detail">${p.detail}</div>
     </div>`).join('');
 
-  document.getElementById('dayPlan').innerHTML = DAY_PLAN.map(d => `
+  const dayPlanEl = document.getElementById('dayPlan');
+  if (dayPlanEl) dayPlanEl.innerHTML = DAY_PLAN.map(d => `
     <div class="card">
       <div style="display:flex;align-items:baseline;gap:14px">
         <div style="font-family:'Bebas Neue';font-size:24px;color:var(--accent-deep);min-width:90px;letter-spacing:0">${d.time}</div>
@@ -4306,7 +4398,8 @@ function renderNut() {
       </div>
     </div>`).join('');
 
-  document.getElementById('batchList').innerHTML = BATCH.map(b => `
+  const batchListEl = document.getElementById('batchList');
+  if (batchListEl) batchListEl.innerHTML = BATCH.map(b => `
     <div class="card">
       <div class="card-title">${b.label}</div>
       <div class="card-meta">${b.meta}</div>
@@ -4376,9 +4469,10 @@ function renderAll() {
 function switchTab(name) {
   document.querySelectorAll('nav.bottom-nav button[data-tab]').forEach(b => b.classList.toggle('active', b.dataset.tab === name));
   document.querySelectorAll('main > .tab').forEach(t => t.classList.toggle('active', t.id === 'tab-' + name));
-  const titles = { dash: ['Dashboard', 'Warsaw 2026 build'], today: ['Today', fmtDateFull(new Date())], plan: ['Plan', '22-week build'], log: ['Log', 'Training history'], nut: ['Nutrition', 'Vegan athlete'], glow: ['Glow', 'Aesthetic + health'] };
-  document.getElementById('dynamicTitle').textContent = titles[name][0];
-  document.getElementById('dynamicSubtitle').textContent = titles[name][1];
+  const titles = { dash: ['Dashboard', 'Warsaw 2026 build'], plan: ['Plan', '22-week build'], log: ['Log', 'Training history'], nut: ['Nutrition', 'Macros + fuelling'], glow: ['Glow', 'Aesthetic + health'] };
+  const t = titles[name] || ['', ''];
+  document.getElementById('dynamicTitle').textContent = t[0];
+  document.getElementById('dynamicSubtitle').textContent = t[1];
 }
 document.querySelectorAll('nav.bottom-nav button[data-tab]').forEach(btn => btn.addEventListener('click', () => switchTab(btn.dataset.tab)));
 
