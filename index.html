@@ -21,37 +21,39 @@
 ============================================================ */
 
 :root[data-theme="light"] {
-  --bg: #f5f3ee;
-  --bg-elev: #ffffff;
-  --bg-deep: #ebe8e0;
-  --ink: #0a0a0a;
-  --ink-soft: #555;
-  --ink-faint: #888;
+  --bg: #e8e8e8;            /* light neutral grey */
+  --bg-elev: #f0f0f0;       /* slightly lighter card */
+  --bg-deep: #d8d8d8;       /* deeper grey */
+  --ink: #1a1a1a;
+  --ink-soft: #4a4a4a;
+  --ink-faint: #888888;
   --line: #1a1a1a;
-  --line-soft: #d6d3ca;
-  --accent: #C8FA32;        /* NRC volt — but a slightly warmer push */
-  --accent-deep: #9bc91a;
-  --warn: #ff5722;
-  --good: #2e7d32;
+  --line-soft: #c0c0c0;
+  --accent: #b8472f;        /* rust red — stays the same */
+  --accent-deep: #8a3522;
+  --warn: #c45a2c;
+  --good: #5b7a2e;
   --shadow-card: none;
-  --grid-line: rgba(0,0,0,0.04);
+  --grid-line: rgba(26,26,26,0.05);
+  --grain: rgba(26,26,26,0.015);
 }
 
 :root[data-theme="dark"] {
-  --bg: #0a0a0a;
-  --bg-elev: #161616;
-  --bg-deep: #050505;
-  --ink: #f5f3ee;
-  --ink-soft: #b8b5ad;
-  --ink-faint: #666;
-  --line: #f5f3ee;
-  --line-soft: #2a2a2a;
-  --accent: #C8FA32;
-  --accent-deep: #9bc91a;
-  --warn: #ff7043;
-  --good: #66bb6a;
+  --bg: #1c1c1c;            /* charcoal — Whoop-style */
+  --bg-elev: #262626;       /* card surface */
+  --bg-deep: #0f0f0f;       /* deepest */
+  --ink: #e8e8e8;           /* off-white text */
+  --ink-soft: #a8a8a8;
+  --ink-faint: #5e5e5e;
+  --line: #e8e8e8;
+  --line-soft: #2e2e2e;
+  --accent: #d8593c;        /* brighter rust pops better on dark grey */
+  --accent-deep: #b8472f;
+  --warn: #e07a4f;
+  --good: #88a350;
   --shadow-card: none;
-  --grid-line: rgba(255,255,255,0.04);
+  --grid-line: rgba(232,232,232,0.04);
+  --grain: rgba(232,232,232,0.015);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -67,6 +69,20 @@ body {
   font-feature-settings: 'ss01', 'cv11';
   -webkit-font-smoothing: antialiased;
 }
+
+/* Paper grain texture — uses SVG noise as data URI, layered subtly over parchment */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.08  0 0 0 0 0.08  0 0 0 0 0.08  0 0 0 0.18 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/></svg>");
+  background-size: 200px 200px;
+  pointer-events: none;
+  z-index: 1;
+  mix-blend-mode: multiply;
+  opacity: 0.6;
+}
+[data-theme="dark"] body::after { mix-blend-mode: screen; opacity: 0.3; }
 
 /* Subtle grid texture on background — adds depth without noise */
 body::before {
@@ -244,7 +260,9 @@ header {
   gap: 6px;
   white-space: nowrap;
 }
-.theme-btn:active { transform: scale(0.96); }
+.theme-btn:active, .sync-pill:active { transform: scale(0.96); }
+.sync-pill { transition: transform 0.1s ease; }
+.sync-pill:hover { border-color: var(--ink-faint); }
 
 .sync-dot {
   width: 6px;
@@ -261,7 +279,7 @@ header {
 main {
   padding: 16px 20px 32px;
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 .tab { display: none; }
 .tab.active { display: block; }
@@ -295,35 +313,221 @@ main {
 
 /* ============== HERO ============== */
 .hero {
-  background: var(--ink);
-  color: var(--bg);
-  padding: 28px 24px;
+  background: var(--bg-elev);
+  color: var(--ink);
+  padding: 22px 24px 0;
   margin-bottom: 16px;
   position: relative;
   overflow: hidden;
+  border: 1px solid var(--line-soft);
 }
+/* Subtle paper grain inside hero (lighter than body) */
 .hero::before {
   content: "";
   position: absolute;
-  top: -40px;
-  right: -40px;
-  width: 200px;
-  height: 200px;
-  border: 1px solid var(--accent);
-  border-radius: 50%;
-  opacity: 0.4;
+  inset: 0;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n2'><feTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.08  0 0 0 0 0.08  0 0 0 0 0.08  0 0 0 0.22 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n2)' opacity='0.5'/></svg>");
+  background-size: 240px 240px;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+  opacity: 0.5;
 }
-.hero::after {
-  content: "";
+
+.poster-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  position: relative;
+  z-index: 2;
+}
+.poster-chapter {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.chapter-card {
+  background: var(--ink);
+  color: var(--bg);
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  padding: 6px 10px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.poster-meta {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink);
+  line-height: 1.5;
+  padding-top: 2px;
+}
+.poster-mountain {
+  width: 36px;
+  height: 24px;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.poster-main {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  gap: 8px;
+  margin: 4px 0 24px;
+  position: relative;
+  z-index: 2;
+}
+.poster-num {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: clamp(140px, 38vw, 220px);
+  line-height: 0.8;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+  flex-shrink: 0;
+}
+.poster-num-side {
+  padding-bottom: 14px;
+  flex: 0 1 auto;
+}
+.poster-num-label {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 22px;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+.poster-num-divider {
+  height: 2px;
+  width: 100%;
+  background: var(--accent);
+  margin: 8px 0;
+}
+.poster-num-sub {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  color: var(--ink);
+  text-transform: uppercase;
+}
+
+.poster-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  position: relative;
+  z-index: 2;
+  padding: 14px 0 18px;
+  border-top: 1px solid var(--line-soft);
+}
+.poster-tag {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.poster-tag.accent { color: var(--accent); }
+.poster-tag-rule {
+  width: 56px;
+  height: 2px;
+  background: var(--accent);
+  margin-top: 6px;
+}
+.poster-tag-right {
+  text-align: right;
+}
+.poster-tag-right .poster-tag-rule { margin-left: auto; }
+
+/* Mountain silhouette anchored to bottom-left of hero */
+.poster-range {
   position: absolute;
-  top: -60px;
-  right: -60px;
-  width: 240px;
-  height: 240px;
-  border: 1px solid var(--accent);
-  border-radius: 50%;
-  opacity: 0.15;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 90px;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.85;
 }
+.poster-range svg { width: 100%; height: 100%; display: block; }
+[data-theme="dark"] .poster-range { opacity: 0.6; }
+
+/* Timeline: parchment-friendly version */
+.timeline-wrap {
+  position: relative;
+  margin: 0;
+  padding: 14px 0 20px;
+  z-index: 2;
+}
+.timeline-track {
+  height: 2px;
+  background: var(--line-soft);
+  position: relative;
+}
+.timeline-fill {
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.timeline-now {
+  position: absolute;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 0 3px var(--bg-elev);
+}
+.timeline-marker {
+  position: absolute;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+.timeline-marker.past { background: var(--accent); opacity: 0.6; }
+.timeline-marker.future { background: var(--bg-elev); border: 1.5px solid var(--ink); }
+.timeline-marker.warsaw {
+  width: 14px;
+  height: 14px;
+  background: var(--accent);
+  border: 2px solid var(--bg-elev);
+}
+.timeline-label {
+  position: absolute;
+  top: calc(50% + 12px);
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 8px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  white-space: nowrap;
+  transform: translateX(-50%);
+}
+.timeline-label.warsaw { color: var(--accent); font-weight: 800; }
+.timeline-label.past { color: var(--ink-faint); opacity: 0.6; }
+.timeline-endcap {
+  position: absolute;
+  top: calc(50% + 12px);
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+}
+.timeline-endcap.left { left: 0; }
+.timeline-endcap.right { right: 0; color: var(--accent); }
 .hero-eyebrow {
   font-family: 'Inter', sans-serif;
   font-weight: 700;
@@ -350,10 +554,68 @@ main {
   margin-top: 4px;
   position: relative;
 }
+
+/* === DASHBOARD COUNTDOWN === */
+.cd-grid {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 24px;
+  align-items: end;
+  margin: 8px 0 24px;
+}
+.cd-pct {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(110px, 32vw, 200px);
+  line-height: 0.78;
+  letter-spacing: -0.04em;
+  color: var(--accent);
+  position: relative;
+}
+.cd-pct .pct-sym {
+  font-size: 0.45em;
+  letter-spacing: 0;
+  margin-left: 2px;
+  color: var(--accent);
+  vertical-align: top;
+  position: relative;
+  top: 0.15em;
+}
+.cd-side {
+  text-align: right;
+  padding-bottom: 8px;
+}
+.cd-side .num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(48px, 12vw, 80px);
+  line-height: 0.85;
+  color: var(--bg);
+  letter-spacing: -0.02em;
+}
+.cd-side .num-label {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--accent);
+  margin-top: 4px;
+}
+.cd-side .num-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  color: rgba(255,255,255,0.5);
+  text-transform: uppercase;
+  margin-top: 6px;
+}
+
+/* Timeline classes are defined in the parchment hero block above */
+
 .hero-bar {
   height: 2px;
   background: rgba(255,255,255,0.1);
-  margin-top: 20px;
+  margin-top: 4px;
   position: relative;
 }
 .hero-fill {
@@ -1292,7 +1554,7 @@ footer {
 }
 </style>
 </head>
-<body data-theme="light">
+<body data-theme="dark">
 
 <!-- ============== SIDEBAR / BOTTOM NAV ============== -->
 <nav class="bottom-nav" id="appNav" style="display:none">
@@ -1312,16 +1574,16 @@ footer {
   <div class="h-row">
     <div class="h-titles">
       <div class="h-title-main" id="dynamicTitle">Dashboard</div>
-      <div class="h-title-sub" id="dynamicSubtitle">Warsaw 2026 build</div>
+      <div class="h-title-sub" id="dynamicSubtitle">Project 2:55</div>
     </div>
     <div class="h-controls">
       <button class="theme-btn" onclick="toggleTheme()" id="themeBtn" title="Toggle theme">
         <span id="themeIcon">☾</span>
       </button>
-      <div class="sync-pill">
+      <button class="sync-pill" onclick="manualRefresh()" id="syncPill" title="Tap to refresh" style="border:none;cursor:pointer">
         <div class="sync-dot" id="syncDot"></div>
         <span id="syncText">Synced</span>
-      </div>
+      </button>
     </div>
   </div>
 </header>
@@ -1333,22 +1595,60 @@ footer {
 
   <!-- Hero countdown -->
   <div class="hero">
-    <div class="hero-eyebrow">Sun 27 Sep · Warsaw Marathon</div>
-    <div style="display:flex;align-items:flex-end;gap:24px;flex-wrap:wrap">
+    <!-- Poster header: chapter card + Warsaw meta + mountain icon -->
+    <div class="poster-top">
+      <div class="poster-chapter">
+        <div class="chapter-card" id="posterChapter">21</div>
+        <div class="poster-meta">
+          WARSAW MARATHON<br>
+          27 SEP 2026
+        </div>
+      </div>
+      <svg class="poster-mountain" viewBox="0 0 36 24" fill="currentColor" style="display:none">
+        <path d="M0 24 L9 6 L14 14 L18 8 L24 18 L26 14 L36 24 Z"/>
+        <path d="M11 24 L18 10 L25 24 Z"/>
+      </svg>
+    </div>
+
+    <!-- The big number -->
+    <div class="poster-main">
+      <div class="poster-num" id="dashDays">—</div>
+      <div class="poster-num-side">
+        <div class="poster-num-label">DAYS<br>TO GO</div>
+        <div class="poster-num-divider"></div>
+        <div class="poster-num-sub" id="dashWeeks">— WEEKS</div>
+      </div>
+    </div>
+
+    <!-- Timeline -->
+    <div class="timeline-wrap">
+      <div class="timeline-track">
+        <div class="timeline-fill" id="timelineFill" style="width:0%"></div>
+        <div id="timelineMarkers"></div>
+        <div class="timeline-now" id="timelineNow" style="left:0%"></div>
+      </div>
+      <div class="timeline-endcap left">DAY 1</div>
+      <div class="timeline-endcap right">WARSAW</div>
+    </div>
+
+    <!-- Bottom row: phase / habits / week -->
+    <div class="poster-bottom">
       <div>
-        <div class="hero-num" id="dashDays">—</div>
-        <div class="hero-label">Days</div>
+        <div class="poster-tag accent" id="dashPhase">—</div>
+        <div class="poster-tag-rule"></div>
       </div>
-      <div style="opacity:0.85">
-        <div class="hero-num" id="dashWeeks" style="font-size:clamp(56px, 14vw, 100px)">—</div>
-        <div class="hero-label">Weeks</div>
+      <div style="text-align:center">
+        <div class="poster-tag" id="dashHabitsToday">—</div>
+      </div>
+      <div style="text-align:center">
+        <div class="poster-tag" id="dashPctComplete">—</div>
+      </div>
+      <div class="poster-tag-right">
+        <div class="poster-tag" id="dashWeek">—</div>
+        <div class="poster-tag-rule"></div>
       </div>
     </div>
-    <div class="hero-bar"><div class="hero-fill" id="dashFill" style="width:0%"></div></div>
-    <div class="hero-detail">
-      <span id="dashPhase">—</span>
-      <span id="dashWeek">—</span>
-    </div>
+
   </div>
 
   <!-- Post-Warsaw transition banner (only renders after race day) -->
@@ -1680,7 +1980,11 @@ footer {
         <div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:8px">
           <button class="btn accent" onclick="startWorkout('upper')" style="padding:18px 8px">Upper</button>
           <button class="btn dark" onclick="startWorkout('lower')" style="padding:18px 8px">Lower</button>
-          <button class="btn outline" onclick="startWorkout('core')" style="padding:18px 8px">Core</button>
+          <button class="btn outline" onclick="startWorkout('core')" style="padding:18px 8px">Core Plan</button>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
+          <button class="btn outline" onclick="startWorkout('core', {activation:true})" style="padding:12px 8px;font-size:12px">Core · Activation (1 round)</button>
+          <button class="btn outline" onclick="openCorePlanInfo()" style="padding:12px 8px;font-size:12px">Core Plan Info</button>
         </div>
         <div style="display:grid;grid-template-columns:repeat(2, 1fr);gap:8px;margin-top:8px">
           <button class="btn outline" onclick="quickLogClass('yoga')" style="padding:14px 8px">+ Quick Log Yoga</button>
@@ -1793,8 +2097,13 @@ footer {
 <div class="tab" id="tab-glow">
   <div class="subtabs">
     <button class="active" data-glowsub="phase">Phases</button>
-    <button data-glowsub="phys">Physique</button>
     <button data-glowsub="skin">Skin</button>
+    <button data-glowsub="teeth">Teeth</button>
+    <button data-glowsub="feet">Feet</button>
+    <button data-glowsub="hair">Hair</button>
+    <button data-glowsub="posture">Posture</button>
+    <button data-glowsub="phys">Body</button>
+    <button data-glowsub="photos">Photos</button>
     <button data-glowsub="health">Health</button>
     <button data-glowsub="flags">Flags</button>
   </div>
@@ -1808,12 +2117,140 @@ footer {
       </div>
     </div>
     <div class="section">
+      <div class="section-head">
+        <div class="section-title">The Glow Up Plan</div>
+        <div class="section-meta">MAY 2026 → MARCH 2027</div>
+      </div>
+      <div class="card">
+        <div class="card-detail" style="line-height:1.7">
+          <strong style="color:var(--ink)">5 phases.</strong> Marathon performance (sub-2:55 Warsaw) sets the runway. The aesthetic build happens in two windows: skin/teeth/feet routine locks in NOW, the muscle build happens POST-Warsaw. By spring 2027 (45th birthday) the package should be in place.
+        </div>
+      </div>
+    </div>
+    <div class="section">
       <div class="section-head"><div class="section-title">All Phases</div></div>
       <div id="glowPhases"></div>
     </div>
   </div>
 
+  <div class="subtab" id="glowsub-skin">
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title">AM Routine</div>
+        <div class="section-meta">5 MIN · BEFORE COFFEE</div>
+      </div>
+      <div id="amRoutine"></div>
+    </div>
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title">PM Routine</div>
+        <div class="section-meta">5 MIN · BEFORE BED</div>
+      </div>
+      <div id="pmRoutine"></div>
+    </div>
+    <div class="section">
+      <div class="section-head"><div class="section-title">Weekly Add-Ons</div></div>
+      <div class="card">
+        <div class="card-title">Exfoliate · 2×/wk</div>
+        <div class="card-detail">BHA (salicylic acid) — Paula's Choice 2% liquid. PM only, after cleanse. Skip on retinol nights.</div>
+      </div>
+      <div class="card" style="margin-top:8px">
+        <div class="card-title">Retinol · 2-3×/wk</div>
+        <div class="card-detail">Start with 0.3% (The Ordinary or La Roche-Posay). Build tolerance over 8 weeks before going to 0.5%. PM only. ALWAYS SPF the next day.</div>
+      </div>
+      <div class="card" style="margin-top:8px">
+        <div class="card-title">Clay Mask · 1×/wk</div>
+        <div class="card-detail">Sundays. After foot care. 10 min. Pulls oil + dirt from pores.</div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-head"><div class="section-title">Skin Rules</div></div>
+      <div class="card">
+        <div class="card-detail" style="line-height:1.8">
+          <strong style="color:var(--ink)">SPF 50 daily.</strong> Even if cloudy. Even in winter. UVA goes through windows.<br>
+          <strong style="color:var(--ink)">Don't mix actives.</strong> Vitamin C AM, retinol PM. Never the same time.<br>
+          <strong style="color:var(--ink)">Pat, don't rub.</strong> Towel after shower, products on damp skin.<br>
+          <strong style="color:var(--ink)">Cheap moisturiser is fine.</strong> CeraVe £15 = same as £80 brands.<br>
+          <strong style="color:var(--ink)">Consistency > intensity.</strong> 6 months of basic routine beats 6 weeks of 12-step.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="subtab" id="glowsub-teeth">
+    <div class="section">
+      <div class="hero" style="margin:0 0 20px">
+        <div class="hero-eyebrow">PROTOCOL</div>
+        <div class="hero-num" style="font-size:32px">14 + MAINTENANCE</div>
+        <div class="hero-label">Initial 14-day strip course, then monthly 7-day touch-ups</div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-head"><div class="section-title">Regimen</div></div>
+      <div id="teethRegimen"></div>
+    </div>
+    <div class="section">
+      <div class="section-head"><div class="section-title">Honest Notes</div></div>
+      <div id="teethNotes"></div>
+    </div>
+  </div>
+
+  <div class="subtab" id="glowsub-feet">
+    <div class="section">
+      <div class="hero" style="margin:0 0 20px">
+        <div class="hero-eyebrow">RUNNER FEET</div>
+        <div class="hero-num" style="font-size:32px">MAINTAIN</div>
+        <div class="hero-label">Calluses are armour. Cracked calluses are injuries waiting.</div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title">Weekly Regimen</div>
+        <div class="section-meta">SUN PM RITUAL · POST-LONG-RUN</div>
+      </div>
+      <div id="feetRegimen"></div>
+    </div>
+    <div class="section">
+      <div class="section-head"><div class="section-title">Runner Rules</div></div>
+      <div id="feetRules"></div>
+    </div>
+  </div>
+
+  <div class="subtab" id="glowsub-hair">
+    <div class="section">
+      <div class="section-head"><div class="section-title">Hair · Beard · Brows</div></div>
+      <div id="hairList"></div>
+    </div>
+    <div class="section">
+      <div class="section-head"><div class="section-title">Notes</div></div>
+      <div id="hairNotes"></div>
+    </div>
+  </div>
+
+  <div class="subtab" id="glowsub-posture">
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title">Daily Mobility</div>
+        <div class="section-meta">10 MIN · MORNING OR EVENING</div>
+      </div>
+      <div id="postureList"></div>
+    </div>
+    <div class="section">
+      <div class="section-head"><div class="section-title">Posture Rules</div></div>
+      <div id="postureRules"></div>
+    </div>
+  </div>
+
   <div class="subtab" id="glowsub-phys">
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title">Body Composition Plan</div>
+        <div class="section-meta">SEE STRENGTH TAB FOR FULL DETAIL</div>
+      </div>
+      <div class="card">
+        <div class="card-detail">During the marathon build → maintain. Post-Warsaw → genuine hypertrophy block, caloric surplus, heavy lifting 4×/week. Target by spring 2027 (45): visible muscle, ~6kg lean mass added, body fat ≤15%.</div>
+      </div>
+    </div>
     <div class="section">
       <div class="section-head"><div class="section-title">Upper — Mon</div></div>
       <div id="upperList"></div>
@@ -1822,38 +2259,55 @@ footer {
       <div class="section-head"><div class="section-title">Lower — Wed</div></div>
       <div id="lowerList"></div>
     </div>
-    <div class="section">
-      <div class="section-head"><div class="section-title">Posture · Daily</div></div>
-      <div id="postureList"></div>
-    </div>
   </div>
 
-  <div class="subtab" id="glowsub-skin">
+  <div class="subtab" id="glowsub-photos">
     <div class="section">
-      <div class="section-head"><div class="section-title">AM Routine</div></div>
-      <div id="amRoutine"></div>
+      <div class="hero" style="margin:0 0 20px">
+        <div class="hero-eyebrow">PROGRESS PHOTOS</div>
+        <div class="hero-num" style="font-size:32px">EVERY 4 WEEKS</div>
+        <div class="hero-label">Same lighting, same pose, same clothes — or none</div>
+      </div>
     </div>
     <div class="section">
-      <div class="section-head"><div class="section-title">PM Routine</div></div>
-      <div id="pmRoutine"></div>
+      <div class="section-head"><div class="section-title">Protocol</div></div>
+      <div id="photoProtocol"></div>
     </div>
     <div class="section">
-      <div class="section-head"><div class="section-title">Hair · Body</div></div>
-      <div id="bodyList"></div>
+      <div class="section-head"><div class="section-title">Honest Truth</div></div>
+      <div class="card">
+        <div class="card-detail" style="line-height:1.7">
+          You will not see change daily, weekly, or in mirrors. Your brain accommodates.<br><br>
+          <strong style="color:var(--ink)">Only photos in same lighting, same pose, 4 weeks apart show the truth.</strong><br><br>
+          Save them in a private album: <em>Glow 2026-05-04</em>, <em>Glow 2026-06-01</em>, etc. Compare side-by-side at month 3.
+        </div>
+      </div>
     </div>
     <div class="section">
-      <div class="section-head"><div class="section-title">Facial Detail</div></div>
-      <div id="facialList"></div>
+      <div class="section-head"><div class="section-title">When to Take</div></div>
+      <div class="card">
+        <div class="card-detail" style="line-height:1.7">
+          <strong style="color:var(--ink)">Today (Wk 21 start)</strong> — baseline.<br>
+          <strong style="color:var(--ink)">Pre-Warsaw (mid-Sep)</strong> — peak fitness, lean.<br>
+          <strong style="color:var(--ink)">Post-Warsaw (mid-Oct)</strong> — start of hypertrophy block.<br>
+          <strong style="color:var(--ink)">Christmas 2026</strong> — 8 weeks into build.<br>
+          <strong style="color:var(--ink)">Birthday Feb 2027</strong> — 16 weeks into build.<br>
+          <strong style="color:var(--ink)">Spring 2027</strong> — peak aesthetic.
+        </div>
+      </div>
     </div>
   </div>
 
   <div class="subtab" id="glowsub-health">
     <div class="section">
-      <div class="section-head"><div class="section-title">Bloods to Request</div></div>
+      <div class="section-head">
+        <div class="section-title">Bloods to Request</div>
+        <div class="section-meta">£90 ONLINE · MEDICHECKS / THRIVA</div>
+      </div>
       <div id="bloodList"></div>
     </div>
     <div class="section">
-      <div class="section-head"><div class="section-title">Recovery</div></div>
+      <div class="section-head"><div class="section-title">Recovery Stack</div></div>
       <div id="recoveryList"></div>
     </div>
   </div>
@@ -2026,7 +2480,8 @@ footer {
     <label class="field">Date</label>
     <input type="date" class="field-input" id="recoveryDate">
     <div class="input-row">
-      <div><label class="field" style="margin-top:0">Sleep hrs</label><input type="number" step="0.1" id="recoverySleepHours" placeholder="7.5"></div>
+      <div><label class="field" style="margin-top:0">Sleep hrs</label><input type="number" id="recoverySleepHrs" placeholder="7" min="0" max="14" inputmode="numeric"></div>
+      <div><label class="field" style="margin-top:0">Sleep mins</label><input type="number" id="recoverySleepMins" placeholder="30" min="0" max="59" inputmode="numeric"></div>
       <div><label class="field" style="margin-top:0">Sleep score</label><input type="number" id="recoverySleepScore" placeholder="0–100" min="0" max="100"></div>
     </div>
     <div class="input-row">
@@ -2038,6 +2493,96 @@ footer {
     <div style="margin-top:20px;display:flex;gap:8px">
       <button class="btn outline" onclick="closeModal('recoveryModal')" style="flex:1">Cancel</button>
       <button class="btn accent" onclick="saveRecovery()" style="flex:1">Save</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-bg" id="corePlanModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">Core Plan</div>
+        <div class="card-meta" style="margin-top:4px">10 MIN · RUNNER-SPECIFIC</div>
+      </div>
+      <button class="modal-close" onclick="closeModal('corePlanModal')">×</button>
+    </div>
+
+    <div style="margin-top:8px">
+      <div style="font-family:'Inter',sans-serif;font-weight:800;font-size:11px;letter-spacing:0.18em;color:var(--accent-deep);margin-bottom:8px">BLOCK A · ANTI-EXTENSION / ANTI-ROTATION</div>
+      <div class="card" style="padding:12px 14px;margin-bottom:6px">
+        <div style="display:flex;justify-content:space-between;gap:10px"><span class="card-title" style="flex:1">A1 Front plank</span><span class="card-meta" style="margin-top:0">45 SEC · TARGET 60+</span></div>
+      </div>
+      <div class="card" style="padding:12px 14px;margin-bottom:6px">
+        <div style="display:flex;justify-content:space-between;gap:10px"><span class="card-title" style="flex:1">A2 Side plank L</span><span class="card-meta" style="margin-top:0">30 SEC · TARGET 45+</span></div>
+      </div>
+      <div class="card" style="padding:12px 14px;margin-bottom:6px">
+        <div style="display:flex;justify-content:space-between;gap:10px"><span class="card-title" style="flex:1">A3 Side plank R</span><span class="card-meta" style="margin-top:0">30 SEC · TARGET 45+</span></div>
+      </div>
+      <div class="card" style="padding:12px 14px">
+        <div style="display:flex;justify-content:space-between;gap:10px"><span class="card-title" style="flex:1">A4 Dead bug</span><span class="card-meta" style="margin-top:0">8 EACH SIDE · SLOW</span></div>
+      </div>
+    </div>
+
+    <div style="margin-top:18px">
+      <div style="font-family:'Inter',sans-serif;font-weight:800;font-size:11px;letter-spacing:0.18em;color:var(--accent-deep);margin-bottom:8px">BLOCK B · POSTERIOR CHAIN ACTIVATION</div>
+      <div class="card" style="padding:12px 14px;margin-bottom:6px">
+        <div style="display:flex;justify-content:space-between;gap:10px"><span class="card-title" style="flex:1">B1 Glute bridge</span><span class="card-meta" style="margin-top:0">12 REPS · 2-SEC PAUSE TOP</span></div>
+      </div>
+      <div class="card" style="padding:12px 14px;margin-bottom:6px">
+        <div style="display:flex;justify-content:space-between;gap:10px"><span class="card-title" style="flex:1">B2 Bird dog</span><span class="card-meta" style="margin-top:0">8 EACH · SLOW + PAUSE</span></div>
+      </div>
+      <div class="card" style="padding:12px 14px;margin-bottom:6px">
+        <div style="display:flex;justify-content:space-between;gap:10px"><span class="card-title" style="flex:1">B3 Pallof press hold</span><span class="card-meta" style="margin-top:0">20 SEC EACH · SKIP IF NO BAND</span></div>
+      </div>
+      <div class="card" style="padding:12px 14px">
+        <div style="display:flex;justify-content:space-between;gap:10px"><span class="card-title" style="flex:1">B4 Single-leg glute bridge</span><span class="card-meta" style="margin-top:0">6 REPS EACH SIDE</span></div>
+      </div>
+    </div>
+
+    <div style="margin-top:18px">
+      <div style="font-family:'Inter',sans-serif;font-weight:800;font-size:11px;letter-spacing:0.18em;color:var(--ink-faint);margin-bottom:8px">FORMAT</div>
+      <div class="card" style="padding:14px 16px">
+        <div class="card-detail" style="line-height:1.7">
+          <strong style="color:var(--ink)">Circuit:</strong> 2 rounds, minimal rest within round, 60–90 sec between rounds.<br>
+          <strong style="color:var(--ink)">When:</strong> morning, pre-food, pre-run is best.<br>
+          <strong style="color:var(--ink)">Activation mode:</strong> 1 round only — use the day before quality sessions.
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:14px">
+      <div style="font-family:'Inter',sans-serif;font-weight:800;font-size:11px;letter-spacing:0.18em;color:var(--ink-faint);margin-bottom:8px">FORM PRIORITIES</div>
+      <div class="card" style="padding:14px 16px">
+        <div class="card-detail" style="line-height:1.7">
+          <strong style="color:var(--ink)">Plank:</strong> no sag, no pike. Straight line ear-to-heel.<br>
+          <strong style="color:var(--ink)">Glute bridge:</strong> driven by glute squeeze, NOT hamstrings. If you feel it in hamstrings, knees too far away.<br>
+          <strong style="color:var(--ink)">Dead bug:</strong> minimum 4 seconds per rep. Lower back stays glued to floor — if it lifts, smaller range.<br>
+          <strong style="color:var(--ink)">Bird dog:</strong> hips don't tilt. Imagine a glass of water on your back.
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:14px">
+      <div style="font-family:'Inter',sans-serif;font-weight:800;font-size:11px;letter-spacing:0.18em;color:var(--ink-faint);margin-bottom:8px">IF TIME-PRESSED</div>
+      <div class="card" style="padding:14px 16px">
+        <div class="card-detail" style="line-height:1.6">
+          The four that matter most: <strong style="color:var(--ink)">front plank</strong>, <strong style="color:var(--ink)">side planks both sides</strong>, <strong style="color:var(--ink)">dead bug</strong>, <strong style="color:var(--ink)">single-leg glute bridge</strong>. 5 minutes covers it.
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:14px">
+      <div style="font-family:'Inter',sans-serif;font-weight:800;font-size:11px;letter-spacing:0.18em;color:var(--ink-faint);margin-bottom:8px">PROGRESSION · EVERY 4 WEEKS</div>
+      <div class="card" style="padding:14px 16px">
+        <div class="card-detail" style="line-height:1.6">
+          Increase hold times. Add unilateral variants. Add load (weighted plank, banded glute bridge). Track weekly via the Progress chart on the gym tab.
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:20px;display:flex;gap:8px">
+      <button class="btn outline" onclick="closeModal('corePlanModal')" style="flex:1">Close</button>
+      <button class="btn accent" onclick="closeModal('corePlanModal');startWorkout('core')" style="flex:1">Start Now</button>
     </div>
   </div>
 </div>
@@ -2109,7 +2654,7 @@ const SUPABASE_URL = 'https://afgkkuwzhobjjbkijmjd.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFmZ2trdXd6aG9iampia2lqbWpkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc4MDI5NTEsImV4cCI6MjA5MzM3ODk1MX0.xPUXI6g5A6r-pxNIrTrpedIJDsGKBkbpxA8JMETazTc';
 
 const RACE_DATE = new Date('2026-09-27');
-const PLAN_START = new Date('2026-04-27');
+const PLAN_START = new Date('2026-05-04');  // Wk 21 rebuild start (Wk 22 was post-London recovery walk-only)
 const TODAY = () => new Date().toISOString().slice(0, 10);
 
 // ============== DATA ==============
@@ -2128,7 +2673,7 @@ const HABITS = [
   { id: 'shake', label: '3:30PM Shake', meta: '35G PROTEIN' },
   // ===== EVENING =====
   { id: 'noScreens', label: 'No Screens 9PM', meta: 'SLEEP 10–10:30PM' },
-  { id: 'skinPM', label: 'Skincare PM', meta: 'CLEANSE · ACTIVE · CREAM' },
+  { id: 'skinPM', label: 'PM Glow Stack', meta: 'SKINCARE · FLOSS · FOOT CREAM' },
   { id: 'magPM', label: 'Magnesium PM', meta: '300–400MG BEFORE BED' }
 ];
 const SUPPS_AM = [
@@ -2252,9 +2797,11 @@ const HYDRO = [
   { label: 'Coffee Cap', meta: 'NONE AFTER 1PM' }
 ];
 const GLOW_PHASES = [
-  { name: 'Rebuild', range: '22 APR → 12 MAY', detail: 'Post-London foundation. Habits restart, gym back.', start: '2026-04-22', end: '2026-05-12' },
-  { name: 'Sculpt', range: '13 MAY → 16 JUN', detail: 'Cut + gym + skincare ramp. Lower body returns.', start: '2026-05-13', end: '2026-06-16' },
-  { name: 'Polish', range: '17 JUN → 15 JUL', detail: 'Recomp + refine. Peak aesthetic w/c 13 Jul.', start: '2026-06-17', end: '2026-07-15' }
+  { name: 'Foundation', range: '4 MAY → 14 JUN', detail: 'Marathon rebuild + glow-up basics. Skin routine locked in. Teeth strips week 1. Foot care weekly. Habits restart.', start: '2026-05-04', end: '2026-06-14' },
+  { name: 'Refine', range: '15 JUN → 19 JUL', detail: 'Marathon build + maintenance. Skin actives ramp. Posture daily. Brows monthly. Bloods drawn.', start: '2026-06-15', end: '2026-07-19' },
+  { name: 'Peak Form', range: '20 JUL → 27 SEP', detail: 'Marathon peak + taper. Maintenance only — no new actives, no new products. Photos pre-Warsaw.', start: '2026-07-20', end: '2026-09-27' },
+  { name: 'Recovery', range: '28 SEP → 11 OCT', detail: 'Post-Warsaw. Body resets. Foot care intensive. Sleep priority. Massage week 1+2.', start: '2026-09-28', end: '2026-10-11' },
+  { name: 'Hypertrophy + Glow', range: '12 OCT → MARCH 2027', detail: 'The big build. Caloric surplus. Heavy lifting 4×/wk. Mass + visible muscle. Aesthetic peak by birthday.', start: '2026-10-12', end: '2027-03-31' }
 ];
 const UPPER = [
   { label: 'Shoulder Press', meta: '4×8 @ 22.5–27.5KG' },
@@ -2331,6 +2878,86 @@ const RECOVERY_LIST = [
   { label: 'Sleep', meta: '8.5–9HR PEAK BLOCK' },
   { label: 'Sports Massage', meta: 'EVERY 4 WEEKS' }
 ];
+
+// === GLOW UP — TEETH ===
+const TEETH_REGIMEN = [
+  { label: 'Crest 3D Whitestrips Professional Effects', meta: 'INITIAL · 14 CONSECUTIVE DAYS · 30 MIN' },
+  { label: 'Maintenance', meta: '1× MONTHLY 7-DAY TOUCH-UP' },
+  { label: 'Toothpaste', meta: 'SENSODYNE PRONAMEL · NOT WHITENING' },
+  { label: 'Electric Toothbrush', meta: 'ORAL-B IO OR PHILIPS SONICARE · 2 MIN ×2/DAY' },
+  { label: 'Floss', meta: 'NIGHTLY · NON-NEGOTIABLE' },
+  { label: 'Mouthwash', meta: 'CORSODYL DAILY · ALCOHOL-FREE' }
+];
+const TEETH_NOTES = [
+  'Whitening strips work as well as £400 dentist trays for 1/30th the cost.',
+  'Sensitivity = stop. Wait a week. Drop to every-other-day.',
+  'Coffee + red wine stain teeth post-whitening. Rinse after, brush 30 min later.',
+  'Yellow tones come from dentin (genetic). Strips lighten enamel only — diminishing returns past 8 shades.',
+  'Photos in same lighting before/after = the only honest gauge.'
+];
+
+// === GLOW UP — FEET (RUNNER-SPECIFIC) ===
+const FEET_REGIMEN = [
+  { label: 'Pumice Stone', meta: '2×/WK · IN SHOWER · 30 SEC PER FOOT' },
+  { label: 'Electric Callus Remover', meta: 'WEEKLY · DRY FEET · GENTLE PASSES' },
+  { label: 'Foot File / Glass File', meta: 'WEEKLY ALTERNATE WITH PUMICE' },
+  { label: 'Foot Cream Daily', meta: 'CCS HEEL BALM · 25% UREA · BEFORE BED' },
+  { label: 'Toenail Trim', meta: 'STRAIGHT ACROSS · NEVER ROUNDED · WEEKLY' },
+  { label: 'Foot Soak', meta: 'EPSOM · 15 MIN · POST-LONG-RUN SUNDAYS' }
+];
+const FEET_RUNNER_RULES = [
+  'Calluses are runner armour BUT cracked calluses become blister entry points. Maintain, don\'t eliminate.',
+  'Toenails — black/bruised = shoes too tight or downhills too aggressive. Reassess fit.',
+  'Athletes\' foot lurks between toes. Tea tree oil weekly = preventative. Lamisil if it appears.',
+  'Plantar fasciitis prevention: rolling foot on tennis ball 2 min daily after long runs.',
+  'New socks every 6 months — old elastic causes blisters you blame on shoes.'
+];
+
+// === GLOW UP — HAIR / GROOMING ===
+const HAIR_GROOMING = [
+  { label: 'Barber Cadence', meta: 'EVERY 4 WEEKS · MARK CALENDAR' },
+  { label: 'Beard Trim', meta: 'EVERY 7 DAYS · NECKLINE + CHEEK LINE' },
+  { label: 'Nose / Ear Trimmer', meta: 'WEEKLY' },
+  { label: 'Brows', meta: 'MONTHLY · SCISSORS + TWEEZERS · DON\'T OVER-TWEEZE' },
+  { label: 'Scalp Massage', meta: '2 MIN · 3×/WK · CIRCULATION' },
+  { label: 'Nizoral 2% Shampoo', meta: '1×/WK PREVENTATIVE · LEAVE ON 5 MIN' },
+  { label: 'Regular Shampoo', meta: 'OTHER DAYS · NOT DAILY' },
+  { label: 'Conditioner', meta: 'ENDS ONLY · NEVER SCALP' }
+];
+const HAIR_NOTES = [
+  'Biggest aesthetic lever at 44 = beard neckline kept sharp. Looks 3 years younger.',
+  'Hair thinning at temples? Minoxidil 5% (Regaine) is the only OTC treatment that works. Twice daily.',
+  'Vegan diet + high mileage = iron + B12 + biotin matter. Bloods will catch deficiencies.',
+  'Stress sheds hair. The marathon build is a stressor. Don\'t panic if you notice extra shed in peak weeks.'
+];
+
+// === GLOW UP — POSTURE / MOBILITY ===
+const POSTURE_DAILY = [
+  { label: 'Doorway Chest Stretch', meta: '2×30S · MORNING' },
+  { label: 'Band Pull-Aparts', meta: '3×15 · ANY TIME · DESK BREAKS' },
+  { label: 'Wall Angels', meta: '2×10 · MORNING OR PRE-RUN' },
+  { label: 'Thoracic Extension', meta: '2×10 OVER FOAM ROLLER · POST-RUN' },
+  { label: 'Hip Flexor Stretch', meta: '90/90 + COUCH · 2 MIN EACH SIDE' },
+  { label: 'Pigeon', meta: '2 MIN EACH SIDE · POST-LONG-RUN' },
+  { label: 'Glute Bridge', meta: '2×15 · ACTIVATION · PRE-RUN' }
+];
+const POSTURE_RULES = [
+  'Office posture matters more than gym posture. 8hr seated > 1hr stretching.',
+  'Phone at eye level. Tech-neck adds 5kg of load to cervical spine.',
+  'Stand on the train. Walk between meetings. Set a 50-min timer.',
+  'Strong glutes = good posture. Weak glutes = anterior pelvic tilt = lower back pain.',
+  'Yoga 1×/wk fixes things daily mobility can\'t reach.'
+];
+
+// === GLOW UP — PHOTOS / PROGRESS ===
+const PHOTO_PROTOCOL = [
+  'Same lighting (window, morning, no flash)',
+  'Same pose × 4: front, side, back, side (other)',
+  'Same clothing (or none — boxer briefs)',
+  'Same time of day (morning, fasted, post-toilet)',
+  'Same phone, same distance (mark a spot on the floor)',
+  'Cadence: every 4 weeks during build. Every 2 weeks during hypertrophy block.'
+];
 const EXERCISES_UPPER = ['Shoulder press','Single-arm row','DB bench press','Lat pullover','Rear delt fly','Lateral raise','Bicep curl','Tricep extension'];
 const EXERCISES_LOWER = ['Goblet squat','Romanian deadlift','Bulgarian split squat','Step-up','Single-leg RDL','Hip thrust','Calf raise'];
 
@@ -2355,9 +2982,9 @@ const DAILY_PLAN = {
   '2026-05-04': {
     1: { name: 'Easy 3mi + Upper Gym', detail: '8:30/mi shake-out AM. Upper gym 70% loads. KEEP IT GENUINELY EASY — body still recovering from London.', type: 'easy' },
     2: { name: 'Easy 4mi', detail: '8:00–8:30/mi. Treadmill or road.', type: 'easy' },
-    3: { name: 'Easy 5mi + Core', detail: '8:00–8:30/mi. 10 min core after.', type: 'easy' },
+    3: { name: 'Easy 5mi', detail: '8:00–8:30/mi. Daily core habit covers strength.', type: 'easy' },
     4: { name: 'Easy 4mi + Football PM', detail: '8:15/mi run. 1hr football evening — Alsager Sports Hub. Light contact only, charity match prep.', type: 'easy' },
-    5: { name: 'Easy 4mi + Football PM', detail: '8:15/mi run. 1hr football — Alsager Sports Hub. Watch for fatigue from yesterday.', type: 'easy' },
+    5: { name: 'Easy 4mi', detail: '8:15/mi. Saving legs — no football tonight.', type: 'easy' },
     6: { name: 'Parkrun easy', detail: '8:00/mi with Albert. Not racing.', type: 'easy' },
     0: { name: 'Long 9mi', detail: '8:15/mi steady. First long run back.', type: 'long' }
   },
@@ -2705,7 +3332,7 @@ function toggleTheme() {
   const cur = document.documentElement.getAttribute('data-theme') || 'light';
   setTheme(cur === 'light' ? 'dark' : 'light');
 }
-const savedTheme = localStorage.getItem('fit_theme') || 'light';
+const savedTheme = localStorage.getItem('fit_theme') || 'dark';
 setTheme(savedTheme);
 
 // ============== SUPABASE ==============
@@ -2723,6 +3350,23 @@ function setSync(status, text) {
   document.getElementById('syncDot').className = 'sync-dot ' + (status === 'ok' ? '' : status);
   document.getElementById('syncText').textContent = text;
 }
+async function manualRefresh() {
+  if (state._refreshing) return; // prevent double-tap
+  state._refreshing = true;
+  if (navigator.vibrate) navigator.vibrate(40);
+  setSync('syncing', 'Refreshing');
+  try {
+    await pullAll();
+    renderAll();
+    setSync('ok', 'Synced');
+    if (navigator.vibrate) navigator.vibrate([40, 40, 60]);
+  } catch (e) {
+    console.error(e);
+    setSync('error', 'Failed');
+  }
+  state._refreshing = false;
+}
+
 async function pullAll() {
   if (!db) return;
   setSync('syncing', 'Loading');
@@ -2935,16 +3579,19 @@ const WORKOUT_TEMPLATES = {
     ]
   },
   core: {
-    name: 'Core',
+    name: 'Core Plan',
+    notes: '10 min · runner-specific · 2 rounds. Block A: anti-extension/rotation. Block B: posterior chain. Minimal rest within round, 60-90s between rounds. Best done morning, pre-food, pre-run.',
     exercises: [
-      { name: 'Plank', sets: 3, reps: 60 },
-      { name: 'Hollow hold', sets: 3, reps: 30 },
-      { name: 'Side plank', sets: 3, reps: 45 },
-      { name: 'Dead bug', sets: 3, reps: 10 },
-      { name: 'Pallof press', sets: 3, reps: 12 },
-      { name: 'L-sit', sets: 3, reps: 20 },
-      { name: 'Russian twist', sets: 3, reps: 20 },
-      { name: 'Leg raise', sets: 3, reps: 12 }
+      // === BLOCK A · ANTI-EXTENSION / ANTI-ROTATION ===
+      { name: 'A1 Front plank', sets: 2, reps: 45 },
+      { name: 'A2 Side plank L', sets: 2, reps: 30 },
+      { name: 'A3 Side plank R', sets: 2, reps: 30 },
+      { name: 'A4 Dead bug', sets: 2, reps: 8 },
+      // === BLOCK B · POSTERIOR CHAIN ACTIVATION ===
+      { name: 'B1 Glute bridge', sets: 2, reps: 12 },
+      { name: 'B2 Bird dog', sets: 2, reps: 8 },
+      { name: 'B3 Pallof press hold', sets: 2, reps: 20 },
+      { name: 'B4 Single-leg glute bridge', sets: 2, reps: 6 }
     ]
   },
   yoga: {
@@ -3136,7 +3783,7 @@ async function quickLogClass(type) {
   renderDash();
 }
 
-async function startWorkout(templateKey) {
+async function startWorkout(templateKey, opts) {
   if (!db) {
     alert('Supabase not connected yet. Check your SUPABASE_URL and SUPABASE_KEY at the top of the script.');
     return;
@@ -3148,12 +3795,13 @@ async function startWorkout(templateKey) {
 
   const tmpl = WORKOUT_TEMPLATES[templateKey];
   const date = TODAY();
+  const activationMode = opts && opts.activation === true;
 
   // Insert session
   setSync('syncing', 'Starting');
   const { data: sessData, error: sessErr } = await db
     .from('workout_sessions')
-    .insert({ date, template: templateKey, is_active: true })
+    .insert({ date, template: templateKey, is_active: true, notes: activationMode ? 'ACTIVATION MODE · 1 round' : null })
     .select();
   if (sessErr) {
     setSync('error', 'Failed');
@@ -3167,15 +3815,17 @@ async function startWorkout(templateKey) {
   const exercises = [];
   if (tmpl) {
     for (const ex of tmpl.exercises) {
+      // Activation mode: cut sets in half (round down, min 1)
+      const setCount = activationMode ? Math.max(1, Math.floor(ex.sets / 2)) : ex.sets;
       const sets = [];
-      for (let i = 1; i <= ex.sets; i++) {
+      for (let i = 1; i <= setCount; i++) {
         sets.push({ session_id: sess.id, exercise: ex.name, set_number: i, weight_kg: null, reps: null, completed: false });
       }
       // Insert empty rows so user just fills them
       const { data: insertedSets } = await db.from('workout_sets').insert(sets).select();
       exercises.push({
         name: ex.name,
-        target: { sets: ex.sets, reps: ex.reps },
+        target: { sets: setCount, reps: ex.reps },
         sets: (insertedSets || []).sort((a,b) => a.set_number - b.set_number).map(s => ({
           id: s.id, weight: s.weight_kg, reps: s.reps, completed: s.completed, is_warmup: s.is_warmup
         }))
@@ -3305,7 +3955,22 @@ async function finishWorkout() {
   state.activeWorkout = null;
   await pullWorkouts();
   setSync('ok', 'Synced');
+
+  // Auto-tick the daily Core/Mobility habit if the workout was core, upper or lower
+  // (Upper + Lower both have core finishers built in)
+  const tmplKey = w.template;
+  if (tmplKey === 'core' || tmplKey === 'upper' || tmplKey === 'lower') {
+    const today = TODAY();
+    const day = getDay(today);
+    if (!day.habits) day.habits = {};
+    if (!day.habits.core) {
+      day.habits.core = true;
+      pushDay(today);
+    }
+  }
+
   renderLog();
+  renderDash();
   if (navigator.vibrate) navigator.vibrate([60, 40, 60, 40, 100]);
 }
 
@@ -4033,11 +4698,21 @@ function renderRecoveryCard() {
     `;
   };
 
-  const sleepBig = todayRec.sleep_hours ?? '—';
+  // Format decimal hours as "7H 30M" — clearer than "7.5H"
+  const fmtSleep = (decimalHours) => {
+    if (decimalHours == null || isNaN(decimalHours)) return '—';
+    const h = Math.floor(decimalHours);
+    const m = Math.round((decimalHours - h) * 60);
+    if (m === 60) return `${h + 1}H 0M`;
+    if (m === 0) return `${h}H`;
+    return `${h}H ${m}M`;
+  };
+
+  const sleepBig = todayRec.sleep_hours != null ? fmtSleep(todayRec.sleep_hours) : '—';
   const stepsBig = todayRec.steps ? (todayRec.steps >= 1000 ? (todayRec.steps/1000).toFixed(1) + 'K' : String(todayRec.steps)) : '—';
   const rhrBig = todayRec.resting_hr ?? '—';
 
-  const sleepAvgLine = sleep7 != null ? `7D AVG ${sleep7.toFixed(1)}H${sleepAll != null && allDates.length > 7 ? ` · ALL ${sleepAll.toFixed(1)}H` : ''}` : '';
+  const sleepAvgLine = sleep7 != null ? `7D AVG ${fmtSleep(sleep7)}${sleepAll != null && allDates.length > 7 ? ` · ALL ${fmtSleep(sleepAll)}` : ''}` : '';
   const stepsAvgLine = steps7 != null ? `7D AVG ${(steps7/1000).toFixed(1)}K${stepsAll != null && allDates.length > 7 ? ` · ALL ${(stepsAll/1000).toFixed(1)}K` : ''}` : '';
   const rhrAvgLine = baselineRHR ? `BASELINE ${baselineRHR} BPM` : '';
 
@@ -4046,7 +4721,7 @@ function renderRecoveryCard() {
   card.innerHTML = `
     <div class="card" onclick="openRecoveryModal()" style="cursor:pointer;padding:22px 16px">
       <div style="display:grid;grid-template-columns:1fr 1px 1fr 1px 1fr;gap:0;align-items:start">
-        ${metricBlock(sleepBig, 'H', 'SLEEP', ss, sleepAvgLine, sleepScoreLine)}
+        ${metricBlock(sleepBig, '', 'SLEEP', ss, sleepAvgLine, sleepScoreLine)}
         <div style="background:var(--line-soft);width:1px;height:80px;align-self:center"></div>
         ${metricBlock(stepsBig, '', 'STEPS', stps, stepsAvgLine, '')}
         <div style="background:var(--line-soft);width:1px;height:80px;align-self:center"></div>
@@ -4086,11 +4761,24 @@ function renderRecoveryCard() {
   `;
 }
 
+function openCorePlanInfo() {
+  document.getElementById('corePlanModal').classList.add('active');
+}
+
 function openRecoveryModal(dateStr) {
   const date = dateStr || TODAY();
   document.getElementById('recoveryDate').value = date;
   const existing = state.recovery[date] || {};
-  document.getElementById('recoverySleepHours').value = existing.sleep_hours ?? '';
+  // Convert decimal hours back into h+m for display
+  if (existing.sleep_hours != null) {
+    const h = Math.floor(existing.sleep_hours);
+    const m = Math.round((existing.sleep_hours - h) * 60);
+    document.getElementById('recoverySleepHrs').value = h;
+    document.getElementById('recoverySleepMins').value = m;
+  } else {
+    document.getElementById('recoverySleepHrs').value = '';
+    document.getElementById('recoverySleepMins').value = '';
+  }
   document.getElementById('recoverySleepScore').value = existing.sleep_score ?? '';
   document.getElementById('recoverySteps').value = existing.steps ?? '';
   document.getElementById('recoveryRHR').value = existing.resting_hr ?? '';
@@ -4099,9 +4787,15 @@ function openRecoveryModal(dateStr) {
 }
 
 async function saveRecovery() {
+  const hrs = parseInt(document.getElementById('recoverySleepHrs').value);
+  const mins = parseInt(document.getElementById('recoverySleepMins').value);
+  let sleepHoursDecimal = null;
+  if (!isNaN(hrs) || !isNaN(mins)) {
+    sleepHoursDecimal = (isNaN(hrs) ? 0 : hrs) + (isNaN(mins) ? 0 : mins) / 60;
+  }
   const r = {
     date: document.getElementById('recoveryDate').value,
-    sleep_hours: parseFloat(document.getElementById('recoverySleepHours').value) || null,
+    sleep_hours: sleepHoursDecimal,
     sleep_score: parseInt(document.getElementById('recoverySleepScore').value) || null,
     steps: parseInt(document.getElementById('recoverySteps').value) || null,
     resting_hr: parseInt(document.getElementById('recoveryRHR').value) || null,
@@ -4213,13 +4907,65 @@ function renderDash() {
   const today = new Date();
   const days = Math.max(0, Math.ceil((RACE_DATE - today) / 86400000));
   const weeks = Math.floor(days / 7);
+  const totalDays = Math.ceil((RACE_DATE - PLAN_START) / 86400000);
+  const elapsed = Math.max(0, totalDays - days);
+  const pct = Math.min(100, Math.max(0, Math.round((elapsed / totalDays) * 100)));
+
+  const dashPctEl = document.getElementById('dashPct');
+  if (dashPctEl) dashPctEl.textContent = pct;
+  const dashPctCompleteEl = document.getElementById('dashPctComplete');
+  if (dashPctCompleteEl) dashPctCompleteEl.textContent = `${pct}% COMPLETE`;
   document.getElementById('dashDays').textContent = days;
   const dashWeeksEl = document.getElementById('dashWeeks');
-  if (dashWeeksEl) dashWeeksEl.textContent = weeks;
-  const totalDays = Math.ceil((RACE_DATE - PLAN_START) / 86400000);
-  const elapsed = totalDays - days;
-  const pct = Math.min(100, Math.max(0, (elapsed / totalDays) * 100));
-  document.getElementById('dashFill').style.width = pct + '%';
+  if (dashWeeksEl) dashWeeksEl.textContent = `${weeks} WEEKS REMAINING`;
+
+  // Poster chapter card = current week number, formatted with leading zero
+  const cwEarly = getCurrentWeek();
+  const posterChapterEl = document.getElementById('posterChapter');
+  if (posterChapterEl) {
+    const wkNum = cwEarly ? cwEarly.wk : 0;
+    posterChapterEl.textContent = String(wkNum).padStart(2, '0');
+  }
+
+  // Update legacy hero-fill bar if present (for fallbacks)
+  const dashFillEl = document.getElementById('dashFill');
+  if (dashFillEl) dashFillEl.style.width = pct + '%';
+
+  // === TIMELINE: progress fill + race markers + now indicator ===
+  const tlFill = document.getElementById('timelineFill');
+  if (tlFill) tlFill.style.width = pct + '%';
+  const tlNow = document.getElementById('timelineNow');
+  if (tlNow) tlNow.style.left = pct + '%';
+  const tlMarkers = document.getElementById('timelineMarkers');
+  if (tlMarkers) {
+    // Build dots + labels — only races within plan window
+    let markerHTML = '';
+    RACES.forEach(r => {
+      const raceDate = new Date(r.date);
+      if (raceDate < PLAN_START || raceDate > RACE_DATE) return;
+      const fraction = (raceDate - PLAN_START) / 86400000 / totalDays;
+      const leftPct = Math.max(0, Math.min(100, fraction * 100));
+      const isWarsaw = r.name && r.name.toLowerCase().includes('warsaw');
+      const isPast = raceDate < today;
+      let cls = 'timeline-marker ';
+      let labelCls = 'timeline-label ';
+      if (isWarsaw) { cls += 'warsaw'; labelCls += 'warsaw'; }
+      else if (isPast) { cls += 'past'; labelCls += 'past'; }
+      else { cls += 'future'; }
+      // Short labels for the timeline
+      const shortLabel = r.name
+        .replace('Mid Cheshire 5K', '5K')
+        .replace('Stockholm Marathon', 'STK')
+        .replace('Colshaw 10K', '10K')
+        .replace('Stockport 10K', '10K·T')
+        .replace('Great North Run', 'GNR')
+        .replace('Warsaw Marathon', 'WARSAW');
+      // Don't render label for Warsaw (covered by endcap)
+      const labelHTML = isWarsaw ? '' : `<div class="${labelCls}" style="left:${leftPct}%">${shortLabel}</div>`;
+      markerHTML += `<div class="${cls}" style="left:${leftPct}%" title="${r.name} · ${r.date}"></div>${labelHTML}`;
+    });
+    tlMarkers.innerHTML = markerHTML;
+  }
 
   let phase = '—';
   if (days > totalDays) phase = 'Pre-build';
@@ -4233,10 +4979,12 @@ function renderDash() {
 
   const cw = getCurrentWeek();
   document.getElementById('dashWeek').textContent = cw ? `WK ${cw.wk} · ${cw.miles}MI` : '—';
-
   const day = state.days[TODAY()] || { dailyTasks: [], habits: {} };
   const habitCount = Object.values(day.habits || {}).filter(Boolean).length;
   const habitTotal = HABITS.length;
+  const habitPctToday = habitTotal > 0 ? Math.round((habitCount / habitTotal) * 100) : 0;
+  const dashHabitsTodayEl = document.getElementById('dashHabitsToday');
+  if (dashHabitsTodayEl) dashHabitsTodayEl.textContent = `${habitPctToday}% HABITS`;
 
   document.getElementById('ringHabitsText').textContent = `${habitCount}/${habitTotal}`;
   setRing('ringHabits', habitCount, habitTotal);
@@ -5178,7 +5926,7 @@ function renderGlow() {
     document.getElementById('glowPhaseMeta').textContent = gp.detail;
   } else {
     document.getElementById('glowPhaseTitle').textContent = '—';
-    document.getElementById('glowPhaseMeta').textContent = 'PHASE ENDS 15 JUL';
+    document.getElementById('glowPhaseMeta').textContent = 'PHASE TRANSITION';
   }
   document.getElementById('glowPhases').innerHTML = GLOW_PHASES.map(p => `
     <div class="card ${gp && gp.name === p.name ? 'complete' : ''}">
@@ -5194,15 +5942,32 @@ function renderGlow() {
         <div class="card-meta" style="margin-top:0;text-align:right">${i.meta}</div>
       </div>
     </div>`).join('');
-  document.getElementById('upperList').innerHTML = renderList(UPPER);
-  document.getElementById('lowerList').innerHTML = renderList(LOWER);
-  document.getElementById('postureList').innerHTML = renderList(POSTURE);
-  document.getElementById('amRoutine').innerHTML = renderList(AM_ROUTINE);
-  document.getElementById('pmRoutine').innerHTML = renderList(PM_ROUTINE);
-  document.getElementById('bodyList').innerHTML = renderList(BODY_LIST);
-  document.getElementById('facialList').innerHTML = renderList(FACIAL);
-  document.getElementById('bloodList').innerHTML = renderList(BLOODS);
-  document.getElementById('recoveryList').innerHTML = renderList(RECOVERY_LIST);
+
+  // Render plain string-array notes/rules as bulleted cards
+  const renderNotes = list => list.map(s => `
+    <div class="card" style="padding:14px 16px">
+      <div class="card-detail" style="line-height:1.6">${s}</div>
+    </div>`).join('');
+
+  // Existing
+  const safeSet = (id, html) => { const el = document.getElementById(id); if (el) el.innerHTML = html; };
+  safeSet('upperList', renderList(UPPER));
+  safeSet('lowerList', renderList(LOWER));
+  safeSet('postureList', renderList(POSTURE_DAILY));
+  safeSet('amRoutine', renderList(AM_ROUTINE));
+  safeSet('pmRoutine', renderList(PM_ROUTINE));
+  safeSet('bloodList', renderList(BLOODS));
+  safeSet('recoveryList', renderList(RECOVERY_LIST));
+
+  // New glow content
+  safeSet('teethRegimen', renderList(TEETH_REGIMEN));
+  safeSet('teethNotes', renderNotes(TEETH_NOTES));
+  safeSet('feetRegimen', renderList(FEET_REGIMEN));
+  safeSet('feetRules', renderNotes(FEET_RUNNER_RULES));
+  safeSet('hairList', renderList(HAIR_GROOMING));
+  safeSet('hairNotes', renderNotes(HAIR_NOTES));
+  safeSet('postureRules', renderNotes(POSTURE_RULES));
+  safeSet('photoProtocol', renderNotes(PHOTO_PROTOCOL));
 }
 
 function renderAll() {
@@ -5225,7 +5990,7 @@ function renderAll() {
 function switchTab(name) {
   document.querySelectorAll('nav.bottom-nav button[data-tab]').forEach(b => b.classList.toggle('active', b.dataset.tab === name));
   document.querySelectorAll('main > .tab').forEach(t => t.classList.toggle('active', t.id === 'tab-' + name));
-  const titles = { dash: ['Dashboard', 'Warsaw 2026 build'], plan: ['Plan', '22-week build'], log: ['Log', 'Training history'], nut: ['Fuel', 'Macros + fuelling'], glow: ['Glow', 'Aesthetic + health'] };
+  const titles = { dash: ['Dashboard', 'Project 2:55'], plan: ['Plan', '22-week build'], log: ['Log', 'Training history'], nut: ['Fuel', 'Macros + fuelling'], glow: ['Glow', 'Aesthetic + health'] };
   const t = titles[name] || ['', ''];
   document.getElementById('dynamicTitle').textContent = t[0];
   document.getElementById('dynamicSubtitle').textContent = t[1];
