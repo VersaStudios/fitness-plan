@@ -374,64 +374,82 @@ main {
 
 .poster-main {
   display: flex;
-  align-items: flex-end;
-  justify-content: flex-start;
-  gap: 8px;
-  margin: 4px 0 24px;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin: 4px 0 20px;
   position: relative;
   z-index: 2;
 }
 .poster-num {
   font-family: 'Archivo Black', sans-serif;
-  font-size: clamp(140px, 38vw, 220px);
-  line-height: 0.8;
+  font-size: clamp(120px, 30vw, 220px);
+  line-height: 0.85;
   letter-spacing: -0.04em;
   color: var(--ink);
-  flex-shrink: 0;
 }
 .poster-num-side {
-  padding-bottom: 14px;
-  flex: 0 1 auto;
+  margin-top: 10px;
+  text-align: center;
 }
 .poster-num-label {
   font-family: 'Archivo Black', sans-serif;
-  font-size: 22px;
+  font-size: clamp(14px, 3.5vw, 20px);
   line-height: 1;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.06em;
   color: var(--accent);
   text-transform: uppercase;
+  white-space: nowrap;
 }
-.poster-num-divider {
-  height: 2px;
-  width: 100%;
-  background: var(--accent);
-  margin: 8px 0;
-}
-.poster-num-sub {
-  font-family: 'Inter', sans-serif;
-  font-weight: 800;
-  font-size: 12px;
-  letter-spacing: 0.15em;
-  color: var(--ink);
-  text-transform: uppercase;
+.poster-num-divider, .poster-num-sub { display: none; }
+
+@media (min-width: 720px) {
+  .poster-main {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: flex-start;
+    text-align: left;
+    gap: 14px;
+  }
+  .poster-num-side {
+    margin-top: 0;
+    padding-bottom: 14px;
+    text-align: left;
+  }
+  .poster-num-label {
+    font-size: 22px;
+  }
 }
 
 .poster-bottom {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px 8px;
+  align-items: end;
   position: relative;
   z-index: 2;
   padding: 14px 0 18px;
   border-top: 1px solid var(--line-soft);
 }
+.poster-bottom > div:nth-child(2) { text-align: right; }
+.poster-bottom > div:nth-child(3) { text-align: left; }
+.poster-bottom > div:nth-child(4) { display: none; }
+@media (min-width: 720px) {
+  .poster-bottom {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+  .poster-bottom > div:nth-child(2) { text-align: center; }
+  .poster-bottom > div:nth-child(3) { text-align: center; }
+  .poster-bottom > div:nth-child(4) { display: block; text-align: right; }
+}
 .poster-tag {
   font-family: 'Inter', sans-serif;
   font-weight: 800;
   font-size: 11px;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--ink);
+  white-space: nowrap;
 }
 .poster-tag.accent { color: var(--accent); }
 .poster-tag-rule {
@@ -463,7 +481,7 @@ main {
 .timeline-wrap {
   position: relative;
   margin: 0;
-  padding: 14px 0 20px;
+  padding: 26px 0 24px;
   z-index: 2;
 }
 .timeline-track {
@@ -513,6 +531,10 @@ main {
   color: var(--ink-faint);
   white-space: nowrap;
   transform: translateX(-50%);
+}
+.timeline-label.above {
+  top: auto;
+  bottom: calc(50% + 12px);
 }
 .timeline-label.warsaw { color: var(--accent); font-weight: 800; }
 .timeline-label.past { color: var(--ink-faint); opacity: 0.6; }
@@ -1614,9 +1636,7 @@ footer {
     <div class="poster-main">
       <div class="poster-num" id="dashDays">—</div>
       <div class="poster-num-side">
-        <div class="poster-num-label">DAYS<br>TO GO</div>
-        <div class="poster-num-divider"></div>
-        <div class="poster-num-sub" id="dashWeeks">— WEEKS</div>
+        <div class="poster-num-label">DAYS TO GO</div>
       </div>
     </div>
 
@@ -1627,7 +1647,6 @@ footer {
         <div id="timelineMarkers"></div>
         <div class="timeline-now" id="timelineNow" style="left:0%"></div>
       </div>
-      <div class="timeline-endcap left">DAY 1</div>
       <div class="timeline-endcap right">WARSAW</div>
     </div>
 
@@ -1696,6 +1715,14 @@ footer {
       <div class="section-title">Daily Habits</div>
       <div class="section-meta" id="todayDateLabel">—</div>
     </div>
+    <div id="habitDateNav" style="display:none;background:var(--bg-elev);border:1px solid var(--accent);padding:10px 14px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;gap:10px">
+      <button onclick="changeHabitDate(-1)" id="habitDateBack" style="background:none;border:none;color:var(--ink);font-family:'Inter',sans-serif;font-weight:800;font-size:11px;letter-spacing:0.18em;cursor:pointer;padding:6px 8px;text-transform:uppercase">← PREV</button>
+      <div style="text-align:center;flex:1">
+        <div id="habitDateLabel" style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:0;color:var(--accent);line-height:1">VIEWING TODAY</div>
+        <button onclick="resetHabitDate()" id="habitDateReset" style="background:none;border:none;color:var(--ink-faint);font-family:'Inter',sans-serif;font-weight:700;font-size:9px;letter-spacing:0.18em;cursor:pointer;text-transform:uppercase;margin-top:2px;display:none">↺ RETURN TO TODAY</button>
+      </div>
+      <button onclick="changeHabitDate(1)" id="habitDateFwd" style="background:none;border:none;color:var(--ink);font-family:'Inter',sans-serif;font-weight:800;font-size:11px;letter-spacing:0.18em;cursor:pointer;padding:6px 8px;text-transform:uppercase">NEXT →</button>
+    </div>
     <div class="card" style="display:flex;align-items:center;gap:18px;padding:16px 18px;margin-bottom:8px">
       <svg viewBox="0 0 80 80" style="width:64px;height:64px;flex-shrink:0">
         <circle class="ring-bg-arc" cx="40" cy="40" r="32" fill="none" stroke-width="6"/>
@@ -1709,6 +1736,9 @@ footer {
       </div>
     </div>
     <div id="dashHabitList"></div>
+    <div style="text-align:right;margin-top:8px">
+      <button onclick="toggleHabitDateNav()" id="habitEditPastBtn" style="background:none;border:none;color:var(--ink-faint);font-family:'Inter',sans-serif;font-weight:700;font-size:10px;letter-spacing:0.18em;cursor:pointer;text-transform:uppercase">EDIT PAST DAY ↻</button>
+    </div>
   </div>
 
   <!-- Stats -->
@@ -4210,10 +4240,85 @@ function incWeekly(id) {
   pushWeek(weekStrFor()); renderToday();
 }
 function toggleHabit(id) {
-  const day = getDay(TODAY()); if (!day.habits) day.habits = {};
+  const dateStr = state.activeHabitDate || TODAY();
+  const day = getDay(dateStr); if (!day.habits) day.habits = {};
   day.habits[id] = !day.habits[id];
   if (navigator.vibrate) navigator.vibrate(40);
-  pushDay(TODAY()); renderToday(); renderDash();
+  pushDay(dateStr); renderToday(); renderDash();
+}
+
+function toggleHabitDateNav() {
+  const nav = document.getElementById('habitDateNav');
+  const btn = document.getElementById('habitEditPastBtn');
+  if (!nav || !btn) return;
+  if (nav.style.display === 'none' || nav.style.display === '') {
+    nav.style.display = 'flex';
+    btn.style.display = 'none';
+    if (!state.activeHabitDate) state.activeHabitDate = TODAY();
+    updateHabitDateUI();
+  } else {
+    nav.style.display = 'none';
+    btn.style.display = 'inline-block';
+    state.activeHabitDate = null;
+    renderDash();
+  }
+}
+
+function changeHabitDate(delta) {
+  if (!state.activeHabitDate) state.activeHabitDate = TODAY();
+  const d = new Date(state.activeHabitDate);
+  d.setDate(d.getDate() + delta);
+  const newDate = d.toISOString().slice(0, 10);
+  // Safeguard: prevent future dates
+  if (newDate > TODAY()) return;
+  // Safeguard: limit to last 7 days
+  const todayDate = new Date(TODAY());
+  const cutoff = new Date(todayDate); cutoff.setDate(todayDate.getDate() - 7);
+  if (d < cutoff) return;
+  state.activeHabitDate = newDate;
+  if (navigator.vibrate) navigator.vibrate(20);
+  renderDash();
+  updateHabitDateUI();
+}
+
+function resetHabitDate() {
+  state.activeHabitDate = TODAY();
+  renderDash();
+  updateHabitDateUI();
+}
+
+function updateHabitDateUI() {
+  const date = state.activeHabitDate || TODAY();
+  const isToday = date === TODAY();
+  const labelEl = document.getElementById('habitDateLabel');
+  const resetEl = document.getElementById('habitDateReset');
+  const fwdEl = document.getElementById('habitDateFwd');
+  const backEl = document.getElementById('habitDateBack');
+  if (!labelEl) return;
+  if (isToday) {
+    labelEl.textContent = 'VIEWING TODAY';
+    if (resetEl) resetEl.style.display = 'none';
+  } else {
+    const d = new Date(date);
+    const dayShort = ['SUN','MON','TUE','WED','THU','FRI','SAT'][d.getDay()];
+    const monthShort = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'][d.getMonth()];
+    labelEl.textContent = `${dayShort} ${d.getDate()} ${monthShort}`;
+    if (resetEl) resetEl.style.display = 'inline-block';
+  }
+  // Disable forward button at today, back button at 7-day limit
+  if (fwdEl) {
+    fwdEl.disabled = isToday;
+    fwdEl.style.opacity = isToday ? '0.3' : '1';
+    fwdEl.style.cursor = isToday ? 'not-allowed' : 'pointer';
+  }
+  if (backEl) {
+    const todayDate = new Date(TODAY());
+    const cutoff = new Date(todayDate); cutoff.setDate(todayDate.getDate() - 7);
+    const atLimit = new Date(date) <= cutoff;
+    backEl.disabled = atLimit;
+    backEl.style.opacity = atLimit ? '0.3' : '1';
+    backEl.style.cursor = atLimit ? 'not-allowed' : 'pointer';
+  }
 }
 function toggleSupp(id) {
   const date = TODAY(); if (!state.supps[date]) state.supps[date] = {};
@@ -4938,13 +5043,30 @@ function renderDash() {
   if (tlNow) tlNow.style.left = pct + '%';
   const tlMarkers = document.getElementById('timelineMarkers');
   if (tlMarkers) {
-    // Build dots + labels — only races within plan window
-    let markerHTML = '';
+    const validRaces = [];
     RACES.forEach(r => {
       const raceDate = new Date(r.date);
       if (raceDate < PLAN_START || raceDate > RACE_DATE) return;
       const fraction = (raceDate - PLAN_START) / 86400000 / totalDays;
-      const leftPct = Math.max(0, Math.min(100, fraction * 100));
+      validRaces.push({ r, raceDate, fraction, leftPct: Math.max(0, Math.min(100, fraction * 100)) });
+    });
+    validRaces.sort((a, b) => a.fraction - b.fraction);
+
+    // Hide a label if the previous SHOWN label is within threshold % to the left
+    // OR if it's within threshold % of Warsaw (right edge) or Day 1 (left edge)
+    const COLLISION_THRESHOLD = 11;
+    let lastShownLeftPct = -100;
+    validRaces.forEach((v) => {
+      const isWarsaw = v.r.name && v.r.name.toLowerCase().includes('warsaw');
+      const tooCloseToLast = (v.leftPct - lastShownLeftPct) < COLLISION_THRESHOLD;
+      const tooCloseToWarsaw = !isWarsaw && (100 - v.leftPct) < COLLISION_THRESHOLD;
+      const tooCloseToStart = v.leftPct < COLLISION_THRESHOLD - 3; // Day 1 endcap
+      v.showLabel = !tooCloseToLast && !tooCloseToWarsaw && !tooCloseToStart && !isWarsaw;
+      if (v.showLabel) lastShownLeftPct = v.leftPct;
+    });
+
+    let markerHTML = '';
+    validRaces.forEach(({ r, raceDate, leftPct, showLabel }) => {
       const isWarsaw = r.name && r.name.toLowerCase().includes('warsaw');
       const isPast = raceDate < today;
       let cls = 'timeline-marker ';
@@ -4952,7 +5074,6 @@ function renderDash() {
       if (isWarsaw) { cls += 'warsaw'; labelCls += 'warsaw'; }
       else if (isPast) { cls += 'past'; labelCls += 'past'; }
       else { cls += 'future'; }
-      // Short labels for the timeline
       const shortLabel = r.name
         .replace('Mid Cheshire 5K', '5K')
         .replace('Stockholm Marathon', 'STK')
@@ -4960,8 +5081,7 @@ function renderDash() {
         .replace('Stockport 10K', '10K·T')
         .replace('Great North Run', 'GNR')
         .replace('Warsaw Marathon', 'WARSAW');
-      // Don't render label for Warsaw (covered by endcap)
-      const labelHTML = isWarsaw ? '' : `<div class="${labelCls}" style="left:${leftPct}%">${shortLabel}</div>`;
+      const labelHTML = showLabel ? `<div class="${labelCls}" style="left:${leftPct}%">${shortLabel}</div>` : '';
       markerHTML += `<div class="${cls}" style="left:${leftPct}%" title="${r.name} · ${r.date}"></div>${labelHTML}`;
     });
     tlMarkers.innerHTML = markerHTML;
@@ -4979,20 +5099,27 @@ function renderDash() {
 
   const cw = getCurrentWeek();
   document.getElementById('dashWeek').textContent = cw ? `WK ${cw.wk} · ${cw.miles}MI` : '—';
-  const day = state.days[TODAY()] || { dailyTasks: [], habits: {} };
-  const habitCount = Object.values(day.habits || {}).filter(Boolean).length;
+
+  // Compute all-time habit stats — used by hero tag AND stats grid below
+  const habitStats = calcHabitStats();
   const habitTotal = HABITS.length;
-  const habitPctToday = habitTotal > 0 ? Math.round((habitCount / habitTotal) * 100) : 0;
   const dashHabitsTodayEl = document.getElementById('dashHabitsToday');
-  if (dashHabitsTodayEl) dashHabitsTodayEl.textContent = `${habitPctToday}% HABITS`;
+  if (dashHabitsTodayEl) {
+    const allTimePct = habitStats.overall === null || isNaN(habitStats.overall) ? null : habitStats.overall;
+    dashHabitsTodayEl.textContent = allTimePct === null ? '— HABITS' : `${allTimePct}% HABITS`;
+  }
+
+  // Daily Habits section uses active edit date (defaults to today)
+  const habitDate = state.activeHabitDate || TODAY();
+  const day = state.days[habitDate] || { dailyTasks: [], habits: {} };
+  const habitCount = Object.values(day.habits || {}).filter(Boolean).length;
 
   document.getElementById('ringHabitsText').textContent = `${habitCount}/${habitTotal}`;
   setRing('ringHabits', habitCount, habitTotal);
 
   document.getElementById('dashStreak').textContent = calcStreak();
 
-  // Habit completion stats (all-time since first logged day)
-  const habitStats = calcHabitStats();
+  // All-time pct also feeds the Numbers stat grid card
   const dashHabitPctEl = document.getElementById('dashHabitPct');
   if (dashHabitPctEl) {
     dashHabitPctEl.textContent = habitStats.overall === null ? '—' : habitStats.overall + '%';
@@ -5031,14 +5158,17 @@ function renderDash() {
     const statusEl = document.getElementById('dashHabitsStatus');
     if (statusEl) {
       const pct = habitTotal > 0 ? Math.round((habitCount / habitTotal) * 100) : 0;
+      const isToday = habitDate === TODAY();
+      const dayLabel = isToday ? 'TODAY' : 'THIS DAY';
       if (habitCount === 0) {
-        statusEl.textContent = 'TICK BELOW TO START';
+        statusEl.textContent = isToday ? 'TICK BELOW TO START' : `NONE LOGGED FOR THIS DAY`;
       } else if (habitCount === habitTotal) {
-        statusEl.textContent = 'ALL HABITS COMPLETE';
+        statusEl.textContent = isToday ? 'ALL HABITS COMPLETE' : `ALL COMPLETE FOR THIS DAY`;
       } else {
-        statusEl.textContent = `${pct}% COMPLETE TODAY`;
+        statusEl.textContent = `${pct}% COMPLETE ${dayLabel}`;
       }
     }
+    updateHabitDateUI();
   }
 
   const ws = weekStrFor();
