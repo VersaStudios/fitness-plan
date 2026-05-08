@@ -4787,22 +4787,6 @@ function renderRecoveryCard() {
   const maxSleep = 9;
   const dayShort = ['S','M','T','W','T','F','S'];
 
-  // Single metric block — big number, label, status pill, optional avg line
-  const metricBlock = (bigValue, unit, labelText, statusObj, avgLine, scoreLine) => {
-    const isEmpty = bigValue === '—';
-    return `
-      <div style="text-align:center">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:${isEmpty ? '28px' : '44px'};line-height:0.85;color:${isEmpty ? 'var(--ink-faint)' : 'var(--ink)'};letter-spacing:-0.01em">${bigValue}${unit && !isEmpty ? `<span style="font-size:14px;color:var(--ink-faint);font-family:'Inter';font-weight:700;letter-spacing:0.18em;margin-left:3px">${unit}</span>` : ''}</div>
-        <div style="font-family:'Inter',sans-serif;font-weight:800;font-size:10px;letter-spacing:0.22em;color:var(--ink-faint);margin-top:8px">${labelText}</div>
-        ${!isEmpty && statusObj.label !== '—' && statusObj.label !== 'NO BASELINE' ? `
-          <div style="display:inline-block;margin-top:8px;padding:3px 8px;background:${statusObj.color};color:var(--bg);font-family:'Inter',sans-serif;font-weight:700;font-size:9px;letter-spacing:0.18em;text-transform:uppercase">${statusObj.label}</div>
-        ` : ''}
-        ${avgLine ? `<div class="card-meta" style="margin-top:8px;color:var(--ink-faint);font-size:10px">${avgLine}</div>` : ''}
-        ${scoreLine ? `<div class="card-meta" style="margin-top:2px;color:var(--ink-faint);font-size:10px">${scoreLine}</div>` : ''}
-      </div>
-    `;
-  };
-
   // Format decimal hours as "7H 30M" — clearer than "7.5H"
   const fmtSleep = (decimalHours) => {
     if (decimalHours == null || isNaN(decimalHours)) return '—';
@@ -4813,43 +4797,55 @@ function renderRecoveryCard() {
     return `${h}H ${m}M`;
   };
 
+  // Single uniform metric column — all three metrics use this exact shape
+  const metricBlock = (bigValue, labelText, statusObj, contextLine) => {
+    const isEmpty = bigValue === '—';
+    const dotColor = !isEmpty && statusObj && statusObj.color ? statusObj.color : 'transparent';
+    return `
+      <div style="text-align:center;padding:0 4px">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:${isEmpty ? '24px' : '32px'};line-height:1;color:${isEmpty ? 'var(--ink-faint)' : 'var(--ink)'};letter-spacing:-0.01em;height:36px;display:flex;align-items:center;justify-content:center">${bigValue}</div>
+        <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:10px">
+          ${!isEmpty && dotColor !== 'transparent' ? `<span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:${dotColor};flex-shrink:0"></span>` : ''}
+          <div style="font-family:'Inter',sans-serif;font-weight:800;font-size:10px;letter-spacing:0.2em;color:var(--ink-faint)">${labelText}</div>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-weight:600;font-size:10px;color:var(--ink-faint);margin-top:8px;letter-spacing:0.04em;min-height:14px">${contextLine || ''}</div>
+      </div>
+    `;
+  };
+
   const sleepBig = todayRec.sleep_hours != null ? fmtSleep(todayRec.sleep_hours) : '—';
   const stepsBig = todayRec.steps ? (todayRec.steps >= 1000 ? (todayRec.steps/1000).toFixed(1) + 'K' : String(todayRec.steps)) : '—';
-  const rhrBig = todayRec.resting_hr ?? '—';
+  const rhrBig = todayRec.resting_hr != null ? `${todayRec.resting_hr} BPM` : '—';
 
-  const sleepAvgLine = sleep7 != null ? `7D AVG ${fmtSleep(sleep7)}${sleepAll != null && allDates.length > 7 ? ` · ALL ${fmtSleep(sleepAll)}` : ''}` : '';
-  const stepsAvgLine = steps7 != null ? `7D AVG ${(steps7/1000).toFixed(1)}K${stepsAll != null && allDates.length > 7 ? ` · ALL ${(stepsAll/1000).toFixed(1)}K` : ''}` : '';
-  const rhrAvgLine = baselineRHR ? `BASELINE ${baselineRHR} BPM` : '';
-
-  const sleepScoreLine = todayRec.sleep_score ? `SCORE ${todayRec.sleep_score}/100` : '';
+  // Single context line per metric — all same format "7D · X"
+  const sleepCtx = sleep7 != null ? `7D · ${fmtSleep(sleep7)}` : '';
+  const stepsCtx = steps7 != null ? `7D · ${(steps7/1000).toFixed(1)}K` : '';
+  const rhrCtx = baselineRHR ? `BASE · ${baselineRHR}` : '';
 
   card.innerHTML = `
-    <div class="card" onclick="openRecoveryModal()" style="cursor:pointer;padding:22px 16px">
+    <div class="card" onclick="openRecoveryModal()" style="cursor:pointer;padding:18px 14px">
       <div style="display:grid;grid-template-columns:1fr 1px 1fr 1px 1fr;gap:0;align-items:start">
-        ${metricBlock(sleepBig, '', 'SLEEP', ss, sleepAvgLine, sleepScoreLine)}
-        <div style="background:var(--line-soft);width:1px;height:80px;align-self:center"></div>
-        ${metricBlock(stepsBig, '', 'STEPS', stps, stepsAvgLine, '')}
-        <div style="background:var(--line-soft);width:1px;height:80px;align-self:center"></div>
-        ${metricBlock(rhrBig, 'BPM', 'RESTING HR', rs, rhrAvgLine, '')}
+        ${metricBlock(sleepBig, 'SLEEP', ss, sleepCtx)}
+        <div style="background:var(--line-soft);width:1px;height:72px;align-self:center"></div>
+        ${metricBlock(stepsBig, 'STEPS', stps, stepsCtx)}
+        <div style="background:var(--line-soft);width:1px;height:72px;align-self:center"></div>
+        ${metricBlock(rhrBig, 'RESTING HR', rs, rhrCtx)}
       </div>
       ${showChart ? `
         <div style="border-top:1px solid var(--line-soft);padding-top:14px;margin-top:18px">
           <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px">
-            <div class="card-meta">7-DAY SLEEP</div>
-            <div class="card-meta" style="color:var(--ink-faint);font-size:9px">${sleepDataPoints} OF 7 LOGGED</div>
+            <div style="font-family:'Inter',sans-serif;font-weight:800;font-size:10px;letter-spacing:0.2em;color:var(--ink-faint)">7-DAY SLEEP</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--ink-faint);letter-spacing:0.04em">${sleepDataPoints}/7 LOGGED</div>
           </div>
           <svg viewBox="0 0 280 60" style="width:100%;height:50px;display:block" preserveAspectRatio="none">
             ${sleepValues.map((v, i) => {
               const x = (i / 6) * 260 + 10;
-              const h = v > 0 ? Math.min(50, (v / maxSleep) * 50) : 0;
-              const y = 55 - h;
-              const colour = v === 0 ? 'transparent' : v < 6 ? 'var(--warn)' : v < 7 ? '#d4a017' : 'var(--accent)';
-              const stroke = v === 0 ? 'var(--line-soft)' : 'none';
-              const strokeWidth = v === 0 ? '1' : '0';
-              const strokeDash = v === 0 ? '2,2' : 'none';
               if (v === 0) {
-                return `<line x1="${x - 18}" y1="55" x2="${x + 18}" y2="55" stroke="var(--line-soft)" stroke-width="1.5" stroke-dasharray="2,2"/>`;
+                return `<rect x="${x - 18}" y="50" width="36" height="3" fill="var(--line-soft)" rx="1"/>`;
               }
+              const h = Math.min(50, (v / maxSleep) * 50);
+              const y = 55 - h;
+              const colour = v < 6 ? 'var(--warn)' : v < 7 ? '#d4a017' : 'var(--accent)';
               return `<rect x="${x - 18}" y="${y}" width="36" height="${h}" fill="${colour}" rx="2"/>`;
             }).join('')}
           </svg>
@@ -5320,12 +5316,34 @@ function renderDash() {
       const kcalPct = Math.min(100, (kcal / kcalTarget) * 100);
       const proteinPct = Math.min(100, (protein / proteinTarget) * 100);
 
+      // Compute 7-day averages (today + previous 6 days)
+      const last7 = [];
+      for (let i = 0; i < 7; i++) {
+        const d = new Date();
+        d.setDate(d.getDate() - i);
+        last7.push(d.toISOString().slice(0, 10));
+      }
+      const avgVal = (arr) => {
+        const valid = arr.filter(v => v != null && !isNaN(v) && v > 0);
+        if (valid.length === 0) return null;
+        return valid.reduce((a, b) => a + b, 0) / valid.length;
+      };
+      const kcal7 = avgVal(last7.map(d => state.macros[d]?.kcal));
+      const protein7 = avgVal(last7.map(d => state.macros[d]?.protein_g));
+      const allMacroDates = Object.keys(state.macros);
+      const kcalAll = avgVal(allMacroDates.map(d => state.macros[d]?.kcal));
+      const proteinAll = avgVal(allMacroDates.map(d => state.macros[d]?.protein_g));
+
+      const kcalCtx = kcal7 != null ? `7D · ${Math.round(kcal7)}${kcalAll != null && allMacroDates.length > 7 ? ` · ALL ${Math.round(kcalAll)}` : ''}` : '';
+      const proteinCtx = protein7 != null ? `7D · ${Math.round(protein7)}G${proteinAll != null && allMacroDates.length > 7 ? ` · ALL ${Math.round(proteinAll)}G` : ''}` : '';
+
       macrosCard.innerHTML = `
         <div class="card" style="padding:18px">
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
             <div>
               <div style="font-family:'Bebas Neue',sans-serif;font-size:42px;line-height:0.85;color:var(--ink)">${kcal || '—'}<span style="font-size:14px;color:var(--ink-faint);font-family:'Inter';font-weight:700;letter-spacing:0.18em;margin-left:4px">/${kcalTarget}</span></div>
               <div class="card-meta" style="margin-top:6px">CALORIES · <span style="color:${kcalStatusColor}">${kcalStatusText}</span></div>
+              ${kcalCtx ? `<div style="font-family:'JetBrains Mono',monospace;font-weight:600;font-size:10px;color:var(--ink-faint);margin-top:4px;letter-spacing:0.04em">${kcalCtx}</div>` : ''}
               <div style="height:4px;background:var(--line-soft);margin-top:8px;position:relative;overflow:hidden">
                 <div style="height:100%;background:${kcalStatusColor};width:${kcalPct}%;transition:width 0.5s"></div>
               </div>
@@ -5333,6 +5351,7 @@ function renderDash() {
             <div>
               <div style="font-family:'Bebas Neue',sans-serif;font-size:42px;line-height:0.85;color:var(--ink)">${protein || '—'}<span style="font-size:14px;color:var(--ink-faint);font-family:'Inter';font-weight:700;letter-spacing:0.18em;margin-left:4px">/${proteinTarget}G</span></div>
               <div class="card-meta" style="margin-top:6px">PROTEIN · <span style="color:${proteinStatusColor}">${proteinStatusText}</span></div>
+              ${proteinCtx ? `<div style="font-family:'JetBrains Mono',monospace;font-weight:600;font-size:10px;color:var(--ink-faint);margin-top:4px;letter-spacing:0.04em">${proteinCtx}</div>` : ''}
               <div style="height:4px;background:var(--line-soft);margin-top:8px;position:relative;overflow:hidden">
                 <div style="height:100%;background:${proteinStatusColor};width:${proteinPct}%;transition:width 0.5s"></div>
               </div>
