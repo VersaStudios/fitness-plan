@@ -1715,7 +1715,7 @@ footer {
       <div class="section-title">Daily Habits</div>
       <div class="section-meta" id="todayDateLabel">—</div>
     </div>
-    <div id="habitDateNav" style="display:none;background:var(--bg-elev);border:1px solid var(--accent);padding:10px 14px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;gap:10px">
+    <div id="habitDateNav" style="display:none;background:var(--bg-elev);border:1px solid var(--accent);padding:10px 14px;margin-bottom:8px;align-items:center;justify-content:space-between;gap:10px">
       <button onclick="changeHabitDate(-1)" id="habitDateBack" style="background:none;border:none;color:var(--ink);font-family:'Inter',sans-serif;font-weight:800;font-size:11px;letter-spacing:0.18em;cursor:pointer;padding:6px 8px;text-transform:uppercase">← PREV</button>
       <div style="text-align:center;flex:1">
         <div id="habitDateLabel" style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:0;color:var(--accent);line-height:1">VIEWING TODAY</div>
@@ -1736,7 +1736,8 @@ footer {
       </div>
     </div>
     <div id="dashHabitList"></div>
-    <div style="text-align:right;margin-top:8px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
+      <button onclick="resetAllHabits()" style="background:none;border:none;color:var(--ink-faint);font-family:'Inter',sans-serif;font-weight:700;font-size:10px;letter-spacing:0.18em;cursor:pointer;text-transform:uppercase;opacity:0.6">RESET HISTORY</button>
       <button onclick="toggleHabitDateNav()" id="habitEditPastBtn" style="background:none;border:none;color:var(--ink-faint);font-family:'Inter',sans-serif;font-weight:700;font-size:10px;letter-spacing:0.18em;cursor:pointer;text-transform:uppercase">EDIT PAST DAY ↻</button>
     </div>
   </div>
@@ -2735,21 +2736,21 @@ const PLAN_WEEKS = [
   { wk: 18, start: '2026-05-25', miles: 15, lr: 'Stockholm', notes: 'Stockholm walked · low miles' },
   { wk: 17, start: '2026-06-01', miles: 39, lr: '15', notes: 'First MP touch' },
   { wk: 16, start: '2026-06-08', miles: 31, lr: '10K race', notes: 'Colshaw Sun · race week' },
-  { wk: 15, start: '2026-06-15', miles: 46, lr: '16 + 4mi MP', notes: 'First MP-in-LR' },
-  { wk: 14, start: '2026-06-22', miles: 60, lr: '17 + 6mi MP', notes: '' },
-  { wk: 13, start: '2026-06-29', miles: 58, lr: '18 + 8mi MP', notes: '' },
-  { wk: 12, start: '2026-07-06', miles: 62, lr: '19 + 8mi MP', notes: '' },
-  { wk: 11, start: '2026-07-13', miles: 34, lr: 'Stockport 10K tempo', notes: 'DELOAD + race-as-tempo Sun', deload: true },
-  { wk: 10, start: '2026-07-20', miles: 55, lr: '20 + 10mi MP', notes: '' },
-  { wk: 9,  start: '2026-07-27', miles: 63, lr: '22 + 12mi MP', notes: 'Peak LR #1' },
-  { wk: 8,  start: '2026-08-03', miles: 65, lr: '20 + 14mi MP', notes: 'Highest mileage' },
-  { wk: 7,  start: '2026-08-10', miles: 68, lr: '24 + 14mi MP', notes: 'Peak LR #2' },
-  { wk: 6,  start: '2026-08-17', miles: 40, lr: '14', notes: 'DELOAD', deload: true },
-  { wk: 5,  start: '2026-08-24', miles: 61, lr: '20 + 12mi MP', notes: '' },
-  { wk: 4,  start: '2026-08-31', miles: 65, lr: '22 + 16mi MP', notes: 'Decisive workout' },
-  { wk: 3,  start: '2026-09-07', miles: 35, lr: 'GNR tune-up', notes: '4 easy + 8 MP + 1 easy · low taper' },
-  { wk: 2,  start: '2026-09-14', miles: 37, lr: '12 steady', notes: 'TAPER' },
-  { wk: 1,  start: '2026-09-21', miles: 44, lr: '4 + strides', notes: 'RACE WEEK · incl. marathon', race: true }
+  { wk: 15, start: '2026-06-15', miles: 48, lr: '14 + 3mi MP', notes: 'Lead-in · first MP touch · track Thu' },
+  { wk: 14, start: '2026-06-22', miles: 54, lr: '16 + 4mi MP', notes: 'Block 1 · track Thu' },
+  { wk: 13, start: '2026-06-29', miles: 57, lr: '18 + 6mi MP', notes: 'Block 1' },
+  { wk: 12, start: '2026-07-06', miles: 60, lr: '20 + 8mi MP', notes: 'Block 1' },
+  { wk: 11, start: '2026-07-13', miles: 35, lr: 'Stockport 10K tempo', notes: 'Stockport Sun · race-as-tempo', deload: true },
+  { wk: 10, start: '2026-07-20', miles: 47, lr: '12 easy', notes: 'Easier · post-Stockport' },
+  { wk: 9,  start: '2026-07-27', miles: 33, lr: '10 easy', notes: 'DOWN WEEK · no club', deload: true },
+  { wk: 8,  start: '2026-08-03', miles: 55, lr: '16 + 8mi MP', notes: 'Block 2 · track Thu' },
+  { wk: 7,  start: '2026-08-10', miles: 61, lr: '18 + 10mi MP', notes: 'Block 2' },
+  { wk: 6,  start: '2026-08-17', miles: 60, lr: '20 + 14mi MP', notes: 'KEY MP session' },
+  { wk: 5,  start: '2026-08-24', miles: 61, lr: '23 + 12mi MP', notes: 'PEAK long run' },
+  { wk: 4,  start: '2026-08-31', miles: 60, lr: '21 + 16mi MP', notes: 'DECISIVE · sub-2:55 test' },
+  { wk: 3,  start: '2026-09-07', miles: 37, lr: 'GNR 13.1 at MP', notes: 'Great North Run tune-up' },
+  { wk: 2,  start: '2026-09-14', miles: 45, lr: '13 steady', notes: 'TAPER' },
+  { wk: 1,  start: '2026-09-21', miles: 48, lr: '4 + strides', notes: 'RACE WEEK · incl. marathon', race: true }
 ];
 const PACES = [
   { label: 'Marathon', mi: '6:38', km: '4:08' },
@@ -3058,166 +3059,167 @@ const DAILY_PLAN = {
     6: { name: 'Parkrun easy', detail: '8:00/mi with Albert.', type: 'easy' },
     0: { name: 'Long 15mi · first MP touch', detail: '12mi easy 8:15 + 3mi at MP (6:38/mi). Test the legs.', type: 'long' }
   },
-  // ============ WK 16 · w/c 8 Jun · 10K RACE WEEK · 42mi ============
+  // ============ WK 16 · w/c 8 Jun · 10K RACE WEEK · 31mi ============
   '2026-06-08': {
-    1: { name: 'Rest + Upper Gym', detail: 'Light. Lower gym off this week.', type: 'gym' },
-    2: { name: 'Easy 5mi', detail: '8:15/mi.', type: 'easy' },
-    3: { name: 'Easy 6mi + Core', detail: '8:15/mi. Core 10 min.', type: 'easy' },
-    4: { name: '5×1mi at 5:55', detail: '10K-pace work · 75s jog recovery. Sharpener.', type: 'quality' },
-    5: { name: 'Easy 4mi + 4 strides', detail: '8:30/mi. Strides 4×20s.', type: 'easy' },
-    6: { name: 'Rest', detail: 'Off legs. Hydrate.', type: 'rest' },
+    1: { name: 'Easy 5mi', detail: '8:15/mi. Easy.', type: 'easy' },
+    2: { name: 'Stoke Club 6mi', detail: 'Club quality PM. Keep it controlled — racing Colshaw Sunday.', type: 'quality' },
+    3: { name: 'Recovery 6mi', detail: '8:30/mi very easy. Loosen the legs.', type: 'easy' },
+    4: { name: 'Easy 5mi', detail: '8:15/mi. Keep it easy — listen to the legs.', type: 'easy' },
+    5: { name: 'Rest', detail: 'Off legs. Hydrate.', type: 'rest' },
+    6: { name: 'Easy 3mi + strides', detail: '8:30/mi shake-out + 4×75m strides. Pre-race primer.', type: 'easy' },
     0: { name: 'COLSHAW 10K', detail: 'sub-39 target · 3:54/km · 9:30am. Flat past Jodrell Bank.', type: 'race' }
   },
-  // ============ WK 15 · w/c 15 Jun · BUILD · 53mi ============
+  // ============ WK 15 · w/c 2026-06-15 · BUILD · lead-in ============
   '2026-06-15': {
-    1: { name: 'Rest + Upper Gym', detail: 'Lower gym back if Colshaw recovery good.', type: 'gym' },
-    2: { name: 'Treadmill 4 AM + Stoke Club PM', detail: 'Club: 4×1mi at threshold (6:00/mi), 90s jog.', type: 'quality' },
-    3: { name: 'Easy 6mi + Lower Gym', detail: '8:15/mi. Lower gym — goblet, RDL, hip thrust, calf.', type: 'easy' },
-    4: { name: 'Easy 5mi', detail: '8:15/mi. Recovery between sessions.', type: 'easy' },
-    5: { name: 'Easy 5mi + Football', detail: '8:15/mi.', type: 'easy' },
-    6: { name: 'Parkrun easy', detail: '8:00/mi with Albert.', type: 'easy' },
-    0: { name: 'Long 16mi · 4mi MP', detail: '12mi easy 8:15 + 4mi at MP (6:38) + cool down. First MP-in-LR.', type: 'long' }
+    1: { name: 'Recovery 3mi', detail: '8:30/mi shake-out. Easy.', type: 'easy' },
+    2: { name: 'Stoke Club 7mi', detail: 'Coach-led quality PM (intervals/threshold). + Strength AM (submax).', type: 'quality' },
+    3: { name: 'Recovery 8mi', detail: '8:30/mi easy.', type: 'easy' },
+    4: { name: 'Track session 8mi', detail: 'Club/track intervals. ~8mi incl WU+CD at 8:15.', type: 'quality' },
+    5: { name: 'Rest', detail: 'Core/prehab (Session B). Off legs from running.', type: 'rest' },
+    6: { name: 'Easy 8mi + strides', detail: '8:15/mi + 4×75m strides.', type: 'easy' },
+    0: { name: 'Long 14mi · 3mi MP', detail: '11mi easy 8:15 + 3mi at MP (6:38). First MP touch.', type: 'long' }
   },
-  // ============ WK 14 · w/c 22 Jun · BUILD · 55mi ============
+  // ============ WK 14 · w/c 2026-06-22 · BLOCK 1 ============
   '2026-06-22': {
-    1: { name: 'Rest + Upper Gym', detail: 'Full upper.', type: 'gym' },
-    2: { name: 'Treadmill 4 AM + Stoke Club PM', detail: 'Club: 5×1km at 5K pace, 90s float.', type: 'quality' },
-    3: { name: 'Easy 7mi + Lower Gym', detail: '8:15/mi.', type: 'easy' },
-    4: { name: '4×3mi at MP', detail: '12mi total. 4×3mi at 6:38, 1mi float at 7:50 between.', type: 'quality' },
-    5: { name: 'Easy 5mi + Football', detail: '8:15/mi.', type: 'easy' },
-    6: { name: 'Rest', detail: 'Off legs before long run.', type: 'rest' },
-    0: { name: 'Long 17mi · 6mi MP', detail: '11mi easy 8:15 + 6mi at MP (6:38) + cool down.', type: 'long' }
+    1: { name: 'Easy 5mi', detail: '8:15/mi.', type: 'easy' },
+    2: { name: 'Stoke Club 7mi', detail: 'Coach-led quality PM. + Strength AM (submax).', type: 'quality' },
+    3: { name: 'Recovery 8mi', detail: '8:30/mi.', type: 'easy' },
+    4: { name: 'Track session 8mi', detail: 'Club/track intervals. ~8mi incl WU+CD.', type: 'quality' },
+    5: { name: 'Rest', detail: 'Core/prehab (Session B).', type: 'rest' },
+    6: { name: 'Easy 10mi', detail: '8:15/mi.', type: 'easy' },
+    0: { name: 'Long 16mi · 4mi MP', detail: '12mi easy 8:15 + 4mi at MP (6:38).', type: 'long' }
   },
-  // ============ WK 13 · w/c 29 Jun · BUILD · 57mi ============
+  // ============ WK 13 · w/c 2026-06-29 · BLOCK 1 ============
   '2026-06-29': {
-    1: { name: 'Rest + Upper Gym', detail: 'Full upper.', type: 'gym' },
-    2: { name: 'Treadmill 4 AM + Stoke Club PM', detail: 'Club: 6×800m at 5K pace, 90s float.', type: 'quality' },
-    3: { name: 'Easy 7mi + Lower Gym', detail: '8:15/mi.', type: 'easy' },
-    4: { name: '5×2mi at MP', detail: '13mi total. 5×2mi at 6:38, 1km float between.', type: 'quality' },
-    5: { name: 'Easy 5mi + Football', detail: '8:15/mi.', type: 'easy' },
-    6: { name: 'Rest', detail: 'Off legs.', type: 'rest' },
-    0: { name: 'Long 18mi · 8mi MP', detail: '9mi easy 8:15 + 8mi at MP (6:38) + 1mi cool. Tough one.', type: 'long' }
+    1: { name: 'Easy 6mi', detail: '8:15/mi.', type: 'easy' },
+    2: { name: 'Stoke Club 7mi', detail: 'Coach-led quality PM. + Strength AM (submax).', type: 'quality' },
+    3: { name: 'Recovery 8mi', detail: '8:30/mi.', type: 'easy' },
+    4: { name: 'Tempo 8mi', detail: '8mi total: 1mi WU + 6mi at threshold (6:00) + 1mi CD.', type: 'quality' },
+    5: { name: 'Rest', detail: 'Core/prehab (Session B).', type: 'rest' },
+    6: { name: 'Easy 10mi', detail: '8:15/mi.', type: 'easy' },
+    0: { name: 'Long 18mi · 6mi MP', detail: '11mi easy 8:15 + 6mi at MP (6:38) + 1mi cool.', type: 'long' }
   },
-  // ============ WK 12 · w/c 6 Jul · BUILD · 58mi ============
+  // ============ WK 12 · w/c 2026-07-06 · BLOCK 1 ============
   '2026-07-06': {
-    1: { name: 'Rest + Upper Gym', detail: 'Full upper.', type: 'gym' },
-    2: { name: 'Treadmill 4 AM + Stoke Club PM', detail: 'Club: 4×1mi at threshold (6:00/mi), 90s jog.', type: 'quality' },
-    3: { name: 'Easy 7mi + Lower Gym', detail: '8:15/mi.', type: 'easy' },
-    4: { name: '3×4mi at MP', detail: '14mi total. 3×4mi at 6:38, 1mi float between.', type: 'quality' },
-    5: { name: 'Easy 5mi + Football', detail: '8:15/mi.', type: 'easy' },
-    6: { name: 'Rest', detail: 'Off legs.', type: 'rest' },
-    0: { name: 'Long 19mi · 8mi MP', detail: '10mi easy 8:15 + 8mi at MP (6:38) + 1mi cool.', type: 'long' }
+    1: { name: 'Easy 5mi', detail: '8:15/mi.', type: 'easy' },
+    2: { name: 'Stoke Club 7mi', detail: 'Coach-led quality PM. + Strength AM (submax).', type: 'quality' },
+    3: { name: 'Recovery 8mi', detail: '8:30/mi.', type: 'easy' },
+    4: { name: 'Easy 12mi', detail: '8:15/mi medium-long.', type: 'easy' },
+    5: { name: 'Rest', detail: 'Core/prehab (Session B).', type: 'rest' },
+    6: { name: 'Easy 8mi', detail: '8:15/mi.', type: 'easy' },
+    0: { name: 'Long 20mi · 8mi MP', detail: '11mi easy 8:15 + 8mi at MP (6:38) + 1mi cool.', type: 'long' }
   },
-  // ============ WK 11 · w/c 13 Jul · DELOAD + STOCKPORT 10K · 45mi ============
+  // ============ WK 11 · w/c 2026-07-13 · DELOAD + STOCKPORT 10K ============
   '2026-07-13': {
-    1: { name: 'Rest + Upper Gym', detail: 'Light upper, 70%. Reset.', type: 'gym' },
-    2: { name: 'Easy 6mi', detail: '8:15/mi. NO club this week — deload.', type: 'easy' },
-    3: { name: 'Easy 7mi + Core', detail: '8:15/mi. Core 10 min.', type: 'easy' },
-    4: { name: 'Easy 5mi', detail: '8:15/mi. Sharpen the legs for Sunday.', type: 'easy' },
-    5: { name: 'Easy 4mi + 6 strides', detail: '8:30/mi. Strides 6×20s. Last quality touch.', type: 'easy' },
-    6: { name: 'Rest', detail: 'Off legs. Light dinner. Race tomorrow.', type: 'rest' },
-    0: { name: 'STOCKPORT 10K — TEMPO', detail: '3mi easy WU 8:00 + 10K at 6:10/mi (38:30 target — DO NOT RACE) + 2mi cool. ~11.5mi total. Edgeley Park. Race-as-tempo, controlled effort.', type: 'race' }
+    1: { name: 'Easy 5mi', detail: '8:15/mi.', type: 'easy' },
+    2: { name: 'Stoke Club 7mi', detail: 'Coach-led PM — keep controlled, racing Sun. + light Strength AM.', type: 'quality' },
+    3: { name: 'Recovery 6mi', detail: '8:30/mi.', type: 'easy' },
+    4: { name: 'Easy 5mi', detail: '8:15/mi. Sharpen legs.', type: 'easy' },
+    5: { name: 'Rest', detail: 'Off legs. Light dinner.', type: 'rest' },
+    6: { name: 'Easy 3mi + strides', detail: '8:30/mi + 4×75m strides. Pre-race primer.', type: 'easy' },
+    0: { name: 'STOCKPORT 10K — TEMPO', detail: '2mi easy WU + 10K at tempo 6:10 (38:30 target — DO NOT RACE) + 1mi cool. ~9mi total. Edgeley Park.', type: 'race' }
   },
-  // ============ WK 10 · w/c 20 Jul · BUILD · 60mi ============
+  // ============ WK 10 · w/c 2026-07-20 · EASIER · post-race ============
   '2026-07-20': {
-    1: { name: 'Rest + Upper Gym', detail: 'Full upper.', type: 'gym' },
-    2: { name: 'Treadmill 4 AM + Stoke Club PM', detail: 'Club: 5×1km at 5K pace, 90s float.', type: 'quality' },
-    3: { name: 'Easy 7mi + Lower Gym', detail: '8:15/mi.', type: 'easy' },
-    4: { name: '6×1mi at threshold', detail: '13mi total. 6×1mi at 6:00, 60s jog between.', type: 'quality' },
-    5: { name: 'Easy 6mi + Football', detail: '8:15/mi.', type: 'easy' },
-    6: { name: 'Rest', detail: 'Off legs before peak LR.', type: 'rest' },
-    0: { name: 'Long 20mi · 10mi MP', detail: '8mi easy 8:15 + 10mi at MP (6:38) + 2mi cool.', type: 'long' }
+    1: { name: 'Recovery 3mi', detail: '8:30/mi.', type: 'easy' },
+    2: { name: 'Stoke Club 7mi', detail: 'Coach-led quality PM. + Strength AM (submax).', type: 'quality' },
+    3: { name: 'Recovery 8mi', detail: '8:30/mi.', type: 'easy' },
+    4: { name: 'Easy 10mi', detail: '8:15/mi.', type: 'easy' },
+    5: { name: 'Rest', detail: 'Core/prehab (Session B).', type: 'rest' },
+    6: { name: 'Easy 7mi + strides', detail: '8:15/mi + 4×75m strides.', type: 'easy' },
+    0: { name: 'Long 12mi', detail: '8:15/mi easy. Post-Stockport recovery long.', type: 'long' }
   },
-  // ============ WK 9 · w/c 27 Jul · PEAK · 60mi · 22mi LR ============
+  // ============ WK 9 · w/c 2026-07-27 · DOWN WEEK ============
   '2026-07-27': {
-    1: { name: 'Rest + Upper Gym', detail: 'Full upper.', type: 'gym' },
-    2: { name: 'Treadmill 4 AM + Stoke Club PM', detail: 'Club: 4×1mi at threshold (6:00/mi).', type: 'quality' },
-    3: { name: 'Easy 7mi + Lower Gym', detail: '8:15/mi.', type: 'easy' },
-    4: { name: '5×2mi at MP', detail: '13mi total. 5×2mi at 6:38, 1km float.', type: 'quality' },
-    5: { name: 'Easy 6mi', detail: '8:15/mi. SKIP football peak weeks.', type: 'easy' },
-    6: { name: 'Rest', detail: 'Off legs. Carb-heavy dinner.', type: 'rest' },
-    0: { name: 'Long 22mi · 12mi MP — PEAK #1', detail: '6mi easy 8:15 + 12mi at MP (6:38) + 4mi easy. Confidence builder.', type: 'long' }
+    1: { name: 'Rest', detail: 'Full rest or 30min walk.', type: 'rest' },
+    2: { name: 'Easy 5mi', detail: '8:15/mi. NO club — down week. Light core.', type: 'easy' },
+    3: { name: 'Recovery 6mi', detail: '8:30/mi.', type: 'easy' },
+    4: { name: 'Easy 6mi', detail: '8:15/mi.', type: 'easy' },
+    5: { name: 'Rest', detail: 'Off legs. Light mobility only.', type: 'rest' },
+    6: { name: 'Easy 6mi', detail: '8:15/mi.', type: 'easy' },
+    0: { name: 'Long 10mi', detail: '8:15/mi easy. Keep it gentle.', type: 'long' }
   },
-  // ============ WK 8 · w/c 3 Aug · HIGHEST MILEAGE · 62mi ============
+  // ============ WK 8 · w/c 2026-08-03 · BLOCK 2 ============
   '2026-08-03': {
-    1: { name: 'Rest + Upper Gym', detail: 'Full upper. Lower gym DROPS this week onward.', type: 'gym' },
-    2: { name: 'Treadmill 4 AM + Stoke Club PM', detail: 'Club: 10×800m Yasso at 2:55. Fitness check.', type: 'quality' },
-    3: { name: 'Easy 8mi + Core', detail: '8:15/mi. Core only — no lower gym.', type: 'easy' },
-    4: { name: '3×4mi at MP', detail: '14mi total. 3×4mi at 6:38, 1mi float.', type: 'quality' },
-    5: { name: 'Easy 6mi', detail: '8:15/mi. NO football.', type: 'easy' },
-    6: { name: 'Rest', detail: 'Off legs. Carb-heavy.', type: 'rest' },
-    0: { name: 'Long 20mi · 14mi MP', detail: '4mi easy 8:15 + 14mi at MP (6:38) + 2mi cool.', type: 'long' }
+    1: { name: 'Easy 6mi', detail: '8:15/mi.', type: 'easy' },
+    2: { name: 'Stoke Club 7mi', detail: 'Coach-led quality PM. + Strength AM (submax).', type: 'quality' },
+    3: { name: 'Recovery 8mi', detail: '8:30/mi.', type: 'easy' },
+    4: { name: 'Track session 8mi', detail: 'Club/track intervals. ~8mi incl WU+CD.', type: 'quality' },
+    5: { name: 'Rest', detail: 'Core/prehab (Session B).', type: 'rest' },
+    6: { name: 'Easy 10mi', detail: '8:15/mi.', type: 'easy' },
+    0: { name: 'Long 16mi · 8mi MP', detail: '7mi easy 8:15 + 8mi at MP (6:38) + 1mi cool.', type: 'long' }
   },
-  // ============ WK 7 · w/c 10 Aug · LONGEST LR · 60mi ============
+  // ============ WK 7 · w/c 2026-08-10 · BLOCK 2 ============
   '2026-08-10': {
-    1: { name: 'Rest + Upper Gym', detail: 'Maintenance loads only.', type: 'gym' },
-    2: { name: 'Treadmill 4 AM + Stoke Club PM', detail: 'Club: 5×1mi at 5:55, 75s jog.', type: 'quality' },
-    3: { name: 'Easy 8mi + Core', detail: '8:15/mi.', type: 'easy' },
-    4: { name: '4×3mi at MP', detail: '14mi total. 4×3mi at 6:38, 1mi float.', type: 'quality' },
-    5: { name: 'Easy 5mi', detail: '8:15/mi. NO football.', type: 'easy' },
-    6: { name: 'Rest', detail: 'Off legs. Eat big.', type: 'rest' },
-    0: { name: 'Long 24mi · 14mi MP — DRESS REHEARSAL', detail: '6mi easy 8:15 + 14mi at MP (6:38) + 4mi easy. Same gels, same kit.', type: 'long' }
+    1: { name: 'Easy 7mi', detail: '8:15/mi.', type: 'easy' },
+    2: { name: 'Stoke Club 7mi', detail: 'Coach-led quality PM. + Strength AM (submax).', type: 'quality' },
+    3: { name: 'Recovery 9mi', detail: '8:30/mi.', type: 'easy' },
+    4: { name: 'Tempo 8mi', detail: '8mi total: 1mi WU + 6mi at threshold (6:00) + 1mi CD.', type: 'quality' },
+    5: { name: 'Rest', detail: 'Core/prehab (Session B).', type: 'rest' },
+    6: { name: 'Easy 12mi', detail: '8:15/mi.', type: 'easy' },
+    0: { name: 'Long 18mi · 10mi MP', detail: '7mi easy 8:15 + 10mi at MP (6:38) + 1mi cool.', type: 'long' }
   },
-  // ============ WK 6 · w/c 17 Aug · DELOAD · 48mi ============
+  // ============ WK 6 · w/c 2026-08-17 · BLOCK 2 · KEY MP ============
   '2026-08-17': {
-    1: { name: 'Rest + Upper Gym', detail: 'Light upper, 70%.', type: 'gym' },
-    2: { name: 'Easy 6mi', detail: '8:15/mi. NO club.', type: 'easy' },
-    3: { name: 'Easy 7mi + Core', detail: '8:15/mi.', type: 'easy' },
-    4: { name: 'Easy 5mi + 6 strides', detail: '8:15/mi. Strides 6×20s. NO MP work.', type: 'easy' },
-    5: { name: 'Easy 5mi', detail: '8:15/mi.', type: 'easy' },
-    6: { name: 'Parkrun easy', detail: '8:00/mi with Albert.', type: 'easy' },
-    0: { name: 'Long 14mi', detail: '8:15/mi steady. NO MP.', type: 'long' }
+    1: { name: 'Easy 5mi', detail: '8:15/mi.', type: 'easy' },
+    2: { name: 'Stoke Club 7mi', detail: 'Coach-led quality PM. + Strength AM (submax).', type: 'quality' },
+    3: { name: 'Recovery 8mi', detail: '8:30/mi.', type: 'easy' },
+    4: { name: 'Easy 12mi', detail: '8:15/mi medium-long.', type: 'easy' },
+    5: { name: 'Rest', detail: 'Core/prehab (Session B).', type: 'rest' },
+    6: { name: 'Easy 8mi', detail: '8:15/mi.', type: 'easy' },
+    0: { name: 'Long 20mi · 14mi MP', detail: '3mi easy 8:15 + 14mi at MP (6:38) + 3mi easy. KEY marathon-specific session.', type: 'long' }
   },
-  // ============ WK 5 · w/c 24 Aug · BUILD · 58mi ============
+  // ============ WK 5 · w/c 2026-08-24 · PEAK long run ============
   '2026-08-24': {
-    1: { name: 'Rest + Upper Gym', detail: 'Maintenance.', type: 'gym' },
-    2: { name: 'Treadmill 4 AM + Stoke Club PM', detail: 'Club: 4×1mi at threshold (6:00/mi).', type: 'quality' },
-    3: { name: 'Easy 7mi + Core', detail: '8:15/mi.', type: 'easy' },
-    4: { name: '5×2mi at MP', detail: '13mi total. 5×2mi at 6:38, 1km float.', type: 'quality' },
-    5: { name: 'Easy 6mi', detail: '8:15/mi. NO football.', type: 'easy' },
-    6: { name: 'Rest', detail: 'Off legs.', type: 'rest' },
-    0: { name: 'Long 20mi · 12mi MP', detail: '6mi easy 8:15 + 12mi at MP (6:38) + 2mi cool.', type: 'long' }
+    1: { name: 'Easy 5mi', detail: '8:15/mi.', type: 'easy' },
+    2: { name: 'Stoke Club 7mi', detail: 'Coach-led quality PM. + Strength AM (submax).', type: 'quality' },
+    3: { name: 'Easy 9mi', detail: '8:15/mi.', type: 'easy' },
+    4: { name: 'Easy 9mi', detail: '8:15/mi.', type: 'easy' },
+    5: { name: 'Rest', detail: 'Core/prehab (Session B).', type: 'rest' },
+    6: { name: 'Easy 8mi + strides', detail: '8:15/mi + 4×75m strides.', type: 'easy' },
+    0: { name: 'Long 23mi · 12mi MP', detail: '8mi easy 8:15 + 12mi at MP (6:38) + 3mi easy. Longest run of the block.', type: 'long' }
   },
-  // ============ WK 4 · w/c 31 Aug · PEAK · 60mi · DECISIVE LR ============
+  // ============ WK 4 · w/c 2026-08-31 · DECISIVE ============
   '2026-08-31': {
-    1: { name: 'Rest + Upper Gym', detail: 'Maintenance.', type: 'gym' },
-    2: { name: 'Treadmill 4 AM + Stoke Club PM', detail: 'Club: 4×1mi at threshold (6:00/mi).', type: 'quality' },
-    3: { name: 'Easy 7mi + Core', detail: '8:15/mi.', type: 'easy' },
-    4: { name: '3×4mi at MP', detail: '14mi total. 3×4mi at 6:38, 1mi float.', type: 'quality' },
-    5: { name: 'Easy 5mi', detail: '8:15/mi. NO football.', type: 'easy' },
-    6: { name: 'Rest', detail: 'Eat big. This is the decisive week.', type: 'rest' },
-    0: { name: 'Long 22mi · 16mi MP — DECISIVE', detail: '4mi easy 8:15 + 16mi at MP (6:38) + 2mi cool. If you nail this, sub-2:55 is on.', type: 'long' }
+    1: { name: 'Easy 5mi', detail: '8:15/mi.', type: 'easy' },
+    2: { name: 'Stoke Club 7mi', detail: 'Coach-led quality PM. + Strength AM (submax).', type: 'quality' },
+    3: { name: 'Recovery 8mi', detail: '8:30/mi.', type: 'easy' },
+    4: { name: 'Easy 12mi', detail: '8:15/mi medium-long.', type: 'easy' },
+    5: { name: 'Rest', detail: 'Core/prehab (Session B). Eat big — decisive week.', type: 'rest' },
+    6: { name: 'Easy 7mi + strides', detail: '8:15/mi + 4×75m strides.', type: 'easy' },
+    0: { name: 'Long 21mi · 16mi MP — DECISIVE', detail: '3mi easy 8:15 + 16mi at MP (6:38) + 2mi easy. If you nail this, sub-2:55 is on.', type: 'long' }
   },
-  // ============ WK 3 · w/c 7 Sep · GNR WEEK · 50mi ============
+  // ============ WK 3 · w/c 2026-09-07 · GNR tune-up ============
   '2026-09-07': {
-    1: { name: 'Rest + Upper Gym', detail: 'Light. Recovery from peak LR.', type: 'gym' },
-    2: { name: 'Easy 6mi', detail: '8:15/mi. NO club. Recovery legs.', type: 'easy' },
-    3: { name: 'Easy 7mi + 4 strides', detail: '8:15/mi. Strides 4×20s.', type: 'easy' },
-    4: { name: 'Easy 5mi', detail: '8:15/mi.', type: 'easy' },
-    5: { name: 'Easy 4mi', detail: '8:30/mi. Travel to Newcastle.', type: 'easy' },
-    6: { name: 'Rest', detail: 'Off legs. Pre-GNR shakeout 2mi only if needed.', type: 'rest' },
-    0: { name: 'GREAT NORTH RUN — MP tune-up', detail: '4mi easy WU 8:00 + 8mi at MP (6:38) + 1mi cool. NOT raced. ~1:33–1:35 finish.', type: 'race' }
+    1: { name: 'Rest', detail: 'Core/prehab. Recovery from decisive LR.', type: 'rest' },
+    2: { name: 'Stoke Club 7mi', detail: 'Coach-led PM — controlled, taper has started. + light Strength AM.', type: 'quality' },
+    3: { name: 'Recovery 7mi', detail: '8:30/mi.', type: 'easy' },
+    4: { name: 'Easy 7mi', detail: '8:15/mi.', type: 'easy' },
+    5: { name: 'Rest', detail: 'Off legs. Travel prep.', type: 'rest' },
+    6: { name: 'Easy 3mi + strides', detail: '8:30/mi shake-out + 4×75m strides. Travel to Newcastle.', type: 'easy' },
+    0: { name: 'GREAT NORTH RUN', detail: '13.1mi at goal MP (6:38) — CONTROLLED, not all-out. Dress rehearsal: gels, kit, race logistics.', type: 'race' }
   },
-  // ============ WK 2 · w/c 14 Sep · TAPER · 32mi ============
+  // ============ WK 2 · w/c 2026-09-14 · TAPER ============
   '2026-09-14': {
-    1: { name: 'Rest', detail: 'Walk only 30 min. Recovery from GNR.', type: 'rest' },
-    2: { name: 'Easy 5mi + 3×2mi MP', detail: '5mi easy WU + 3×2mi at MP (6:38), 90s jog. LAST MP touch.', type: 'quality' },
-    3: { name: 'Easy 5mi + 6 strides', detail: '8:15/mi. Strides 6×20s.', type: 'easy' },
-    4: { name: 'Easy 5mi', detail: '8:15/mi.', type: 'easy' },
-    5: { name: 'Easy 4mi', detail: '8:30/mi. Light.', type: 'easy' },
-    6: { name: 'Rest', detail: 'Off legs.', type: 'rest' },
-    0: { name: 'Long 12mi steady', detail: '8:00/mi flat. Last long-ish run.', type: 'long' }
+    1: { name: 'Easy 5mi', detail: '8:15/mi.', type: 'easy' },
+    2: { name: 'Stoke Club 7mi', detail: 'Coach-led PM — lighter, taper. + light Strength AM.', type: 'quality' },
+    3: { name: 'Recovery 6mi', detail: '8:30/mi.', type: 'easy' },
+    4: { name: 'Easy 8mi', detail: '8:15/mi.', type: 'easy' },
+    5: { name: 'Rest', detail: 'Light mobility only.', type: 'rest' },
+    6: { name: 'Easy 6mi + strides', detail: '8:15/mi + 4×75m strides.', type: 'easy' },
+    0: { name: 'Long 13mi', detail: '8:15/mi steady.', type: 'long' }
   },
-  // ============ WK 1 · w/c 21 Sep · RACE WEEK · 22mi ============
+  // ============ WK 1 · w/c 2026-09-21 · RACE WEEK ============
   '2026-09-21': {
-    1: { name: 'Easy 4mi + strides', detail: '8:30/mi. Strides 4×20s. Sharp legs.', type: 'easy' },
-    2: { name: 'Easy 5mi + 4×400m at MP', detail: '5mi easy + 4×400m at 6:38 (1:39). Race rhythm primer.', type: 'quality' },
-    3: { name: 'Easy 4mi', detail: '8:30/mi. Last day in UK.', type: 'easy' },
-    4: { name: 'Travel + 3mi shakeout', detail: 'Fly to Warsaw. 3mi very easy 8:30/mi.', type: 'easy' },
-    5: { name: 'Rest · Expo · Bib pickup', detail: 'Off legs. Expo ≤30 min only.', type: 'rest' },
-    6: { name: '2mi shakeout + 4 strides', detail: '8:30/mi + 4×20s strides. Off feet rest of day.', type: 'easy' },
-    0: { name: 'WARSAW MARATHON', detail: 'sub-2:55 · 6:38/mi · 2:54:00 goal. Lock onto pacer at gun.', type: 'race' }
+    1: { name: 'Rest', detail: 'Full rest. Legs up.', type: 'rest' },
+    2: { name: 'Easy 4mi', detail: '8:30/mi very easy.', type: 'easy' },
+    3: { name: '8mi · 2mi MP', detail: '8mi total: 5mi easy 8:15 + 2mi at MP (6:38) + 1mi easy. Last pace touch.', type: 'quality' },
+    4: { name: 'Easy 6mi', detail: '8:15/mi.', type: 'easy' },
+    5: { name: 'Easy 4mi + strides', detail: '8:30/mi + 4×75m strides. Prime the legs.', type: 'easy' },
+    6: { name: 'Rest', detail: 'Off legs. Hydrate, carb load. Travel.', type: 'rest' },
+    0: { name: 'WARSAW MARATHON', detail: 'A-RACE · sub-2:55 · target 6:38/mi. Trust the build.', type: 'race' }
   }
+
 };
 
 // Helper to find which Monday a date belongs to
@@ -3253,6 +3255,10 @@ function extractMiles(session) {
   if (name.includes('great north run') || name.includes('gnr')) return 13.1;
   if (name.includes('warsaw marathon')) return 26.2;
   if (name.includes('stockholm')) return 0; // walk
+
+  // Explicit "X mi total" stated in the session always wins over heuristics
+  const totalMatch = combined.match(/(\d+(?:\.\d+)?)\s*mi\s*total/);
+  if (totalMatch) return parseFloat(totalMatch[1]);
 
   // Reps sessions (e.g. "5×1mi at 5:55", "5×1km at 5K Pace", "10×800m Yasso")
   // These need WU + reps + recoveries + CD
@@ -3454,6 +3460,46 @@ async function pullAll() {
     renderAll();
   } catch (e) { console.error(e); setSync('error', 'Failed'); }
 }
+async function resetAllHabits() {
+  const dayCount = Object.keys(state.days).filter(d => {
+    const day = state.days[d];
+    return day && day.habits && Object.keys(day.habits).length > 0;
+  }).length;
+
+  const msg = `This will clear ALL habit ticks across ${dayCount} day${dayCount === 1 ? '' : 's'} and reset your streaks and all-time % to zero.\n\nYour runs, recovery, macros and workouts are NOT affected.\n\nThis cannot be undone. Continue?`;
+  if (!confirm(msg)) return;
+  // Double confirm — this is destructive
+  if (!confirm('Are you sure? This permanently clears habit history.')) return;
+
+  if (!db) { alert('Not connected to database.'); return; }
+  setSync('syncing', 'Resetting');
+
+  // Clear habits on every day locally + push empty habits to each affected row
+  const datesToClear = Object.keys(state.days).filter(d => {
+    const day = state.days[d];
+    return day && day.habits && Object.keys(day.habits).length > 0;
+  });
+
+  for (const date of datesToClear) {
+    state.days[date].habits = {};
+    const d = state.days[date];
+    await db.from('prehab_days').upsert({
+      date,
+      daily_tasks: d.dailyTasks || [],
+      habits: {},
+      notes: d.notes,
+      updated_at: new Date().toISOString()
+    });
+  }
+
+  state.activeHabitDate = null;
+  setSync('ok', 'Reset done');
+  if (navigator.vibrate) navigator.vibrate([60, 40, 60]);
+  renderDash();
+  renderToday();
+  alert('Habit history cleared. Fresh start from today — go tick what you\'ve done.');
+}
+
 async function pushDay(date) {
   if (!db) return;
   setSync('syncing', 'Saving');
