@@ -1682,6 +1682,49 @@ footer {
     <div id="todaySession"></div>
   </div>
 
+  <!-- Current week -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-title">This Week</div>
+      <div class="section-meta">RAN · LEFT · PROJECTED</div>
+    </div>
+    <div id="dashCurrentWeek"></div>
+  </div>
+
+  <!-- Race time predictor -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-title">Race Predictor</div>
+      <div class="section-meta" id="predictorMeta">FROM RECENT STRAVA RUNS</div>
+    </div>
+    <div id="predictorCard"></div>
+  </div>
+
+  <!-- Stats -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-title">Numbers</div>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-num" id="dashWeekMiles">0</div>
+        <div class="stat-label"><span id="dashWeekMilesLabel">This Week mi</span></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num accent" id="dashDialledPct">—</div>
+        <div class="stat-label">Easy On Target</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="dashTotalMiles">0</div>
+        <div class="stat-label">Total Miles</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="dashWeeksToGo">0</div>
+        <div class="stat-label">Weeks to Race</div>
+      </div>
+    </div>
+  </div>
+
   <!-- Macros today -->
   <div class="section">
     <div class="section-head">
@@ -1698,15 +1741,6 @@ footer {
       <div class="section-meta" id="recoveryMeta">—</div>
     </div>
     <div id="recoveryCard"></div>
-  </div>
-
-  <!-- Weekly mileage progress -->
-  <div class="section">
-    <div class="section-head">
-      <div class="section-title">Week Mileage</div>
-      <div class="section-meta" id="weekMileageMeta">—</div>
-    </div>
-    <div id="weekMileageCard"></div>
   </div>
 
   <!-- Daily habits with inline ring -->
@@ -1740,56 +1774,6 @@ footer {
       <button onclick="resetAllHabits()" style="background:none;border:none;color:var(--ink-faint);font-family:'Inter',sans-serif;font-weight:700;font-size:10px;letter-spacing:0.18em;cursor:pointer;text-transform:uppercase;opacity:0.6">RESET HISTORY</button>
       <button onclick="toggleHabitDateNav()" id="habitEditPastBtn" style="background:none;border:none;color:var(--ink-faint);font-family:'Inter',sans-serif;font-weight:700;font-size:10px;letter-spacing:0.18em;cursor:pointer;text-transform:uppercase">EDIT PAST DAY ↻</button>
     </div>
-  </div>
-
-  <!-- Stats -->
-  <div class="section">
-    <div class="section-head">
-      <div class="section-title">Numbers</div>
-    </div>
-    <div class="stat-grid">
-      <div class="stat-card">
-        <div class="stat-num accent" id="dashStreak">0</div>
-        <div class="stat-label">Habit Streak</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-num accent" id="dashHabitPct">—</div>
-        <div class="stat-label">Habit % All-Time</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-num" id="dashTotalMiles">0</div>
-        <div class="stat-label">Total Miles</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-num" id="dashWeeksToGo">0</div>
-        <div class="stat-label">Weeks to Race</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Race time predictor -->
-  <div class="section">
-    <div class="section-head">
-      <div class="section-title">Race Predictor</div>
-      <div class="section-meta" id="predictorMeta">FROM RECENT STRAVA RUNS</div>
-    </div>
-    <div id="predictorCard"></div>
-  </div>
-
-  <div class="section">
-    <div class="section-head">
-      <div class="section-title">Next 7 Days</div>
-      <div class="section-meta" id="next7Meta">ROLLING WEEK</div>
-    </div>
-    <div id="dashNext7"></div>
-  </div>
-
-  <div class="section">
-    <div class="section-head">
-      <div class="section-title">This Week's Plan</div>
-      <div class="section-meta" id="thisWeekMeta">—</div>
-    </div>
-    <div id="dashThisWeek"></div>
   </div>
 
   <div class="section">
@@ -1978,6 +1962,7 @@ footer {
     <button data-logsub="gym">Gym</button>
     <button data-logsub="body">Body</button>
     <button data-logsub="massage">Massage</button>
+    <button data-logsub="trends">Trends</button>
   </div>
 
   <div class="subtab active" id="logsub-runs">
@@ -2066,6 +2051,16 @@ footer {
     <div class="section">
       <div class="section-head"><div class="section-title">History</div></div>
       <div id="massageList"></div>
+    </div>
+  </div>
+
+  <div class="subtab" id="logsub-trends">
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title">Zone Balance</div>
+        <div class="section-meta">TIME BY HR ZONE · PER WEEK</div>
+      </div>
+      <div id="zoneWeeks"></div>
     </div>
   </div>
 </div>
@@ -2736,7 +2731,7 @@ const PLAN_WEEKS = [
   { wk: 18, start: '2026-05-25', miles: 15, lr: 'Stockholm', notes: 'Stockholm walked · low miles' },
   { wk: 17, start: '2026-06-01', miles: 39, lr: '15', notes: 'First MP touch' },
   { wk: 16, start: '2026-06-08', miles: 31, lr: '10K race', notes: 'Colshaw Sun · race week' },
-  { wk: 15, start: '2026-06-15', miles: 48, lr: '14 + 3mi MP', notes: 'Lead-in · first MP touch · track Thu' },
+  { wk: 15, start: '2026-06-15', miles: 43, lr: '14 + 3mi MP', notes: 'Lead-in · cautious Tue · track Thu · first MP touch' },
   { wk: 14, start: '2026-06-22', miles: 54, lr: '16 + 4mi MP', notes: 'Block 1 · track Thu' },
   { wk: 13, start: '2026-06-29', miles: 57, lr: '18 + 6mi MP', notes: 'Block 1' },
   { wk: 12, start: '2026-07-06', miles: 60, lr: '20 + 8mi MP', notes: 'Block 1' },
@@ -3062,7 +3057,7 @@ const DAILY_PLAN = {
   // ============ WK 16 · w/c 8 Jun · 10K RACE WEEK · 31mi ============
   '2026-06-08': {
     1: { name: 'Easy 5mi', detail: '8:15/mi. Easy.', type: 'easy' },
-    2: { name: 'Stoke Club 6mi', detail: 'Club quality PM. Keep it controlled — racing Colshaw Sunday.', type: 'quality' },
+    2: { name: 'Stoke Club 6mi', detail: 'Coach-led — keep controlled, racing this week.', type: 'quality' },
     3: { name: 'Recovery 6mi', detail: '8:30/mi very easy. Loosen the legs.', type: 'easy' },
     4: { name: 'Easy 5mi', detail: '8:15/mi. Keep it easy — listen to the legs.', type: 'easy' },
     5: { name: 'Rest', detail: 'Off legs. Hydrate.', type: 'rest' },
@@ -3072,9 +3067,9 @@ const DAILY_PLAN = {
   // ============ WK 15 · w/c 2026-06-15 · BUILD · lead-in ============
   '2026-06-15': {
     1: { name: 'Recovery 3mi', detail: '8:30/mi shake-out. Easy.', type: 'easy' },
-    2: { name: 'Stoke Club 7mi', detail: 'Coach-led quality PM (intervals/threshold). + Strength AM (submax).', type: 'quality' },
-    3: { name: 'Recovery 8mi', detail: '8:30/mi easy.', type: 'easy' },
-    4: { name: 'Track session 8mi', detail: 'Club/track intervals. ~8mi incl WU+CD at 8:15.', type: 'quality' },
+    2: { name: 'Easy 4mi', detail: '8:15/mi easy. Skipped club session — cautious 2 days post-race.', type: 'easy' },
+    3: { name: 'Steady 8mi', detail: '8:00-8:15/mi relaxed. Building the legs back up.', type: 'easy' },
+    4: { name: 'Track 6mi', detail: 'Coach-led track session.', type: 'quality' },
     5: { name: 'Rest', detail: 'Core/prehab (Session B). Off legs from running.', type: 'rest' },
     6: { name: 'Easy 8mi + strides', detail: '8:15/mi + 4×75m strides.', type: 'easy' },
     0: { name: 'Long 14mi · 3mi MP', detail: '11mi easy 8:15 + 3mi at MP (6:38). First MP touch.', type: 'long' }
@@ -3082,9 +3077,9 @@ const DAILY_PLAN = {
   // ============ WK 14 · w/c 2026-06-22 · BLOCK 1 ============
   '2026-06-22': {
     1: { name: 'Easy 5mi', detail: '8:15/mi.', type: 'easy' },
-    2: { name: 'Stoke Club 7mi', detail: 'Coach-led quality PM. + Strength AM (submax).', type: 'quality' },
+    2: { name: 'Stoke Club 7mi', detail: 'Coach-led. + Strength AM.', type: 'quality' },
     3: { name: 'Recovery 8mi', detail: '8:30/mi.', type: 'easy' },
-    4: { name: 'Track session 8mi', detail: 'Club/track intervals. ~8mi incl WU+CD.', type: 'quality' },
+    4: { name: 'Track session 8mi', detail: 'Coach-led track session.', type: 'quality' },
     5: { name: 'Rest', detail: 'Core/prehab (Session B).', type: 'rest' },
     6: { name: 'Easy 10mi', detail: '8:15/mi.', type: 'easy' },
     0: { name: 'Long 16mi · 4mi MP', detail: '12mi easy 8:15 + 4mi at MP (6:38).', type: 'long' }
@@ -3092,7 +3087,7 @@ const DAILY_PLAN = {
   // ============ WK 13 · w/c 2026-06-29 · BLOCK 1 ============
   '2026-06-29': {
     1: { name: 'Easy 6mi', detail: '8:15/mi.', type: 'easy' },
-    2: { name: 'Stoke Club 7mi', detail: 'Coach-led quality PM. + Strength AM (submax).', type: 'quality' },
+    2: { name: 'Stoke Club 7mi', detail: 'Coach-led. + Strength AM.', type: 'quality' },
     3: { name: 'Recovery 8mi', detail: '8:30/mi.', type: 'easy' },
     4: { name: 'Tempo 8mi', detail: '8mi total: 1mi WU + 6mi at threshold (6:00) + 1mi CD.', type: 'quality' },
     5: { name: 'Rest', detail: 'Core/prehab (Session B).', type: 'rest' },
@@ -3102,7 +3097,7 @@ const DAILY_PLAN = {
   // ============ WK 12 · w/c 2026-07-06 · BLOCK 1 ============
   '2026-07-06': {
     1: { name: 'Easy 5mi', detail: '8:15/mi.', type: 'easy' },
-    2: { name: 'Stoke Club 7mi', detail: 'Coach-led quality PM. + Strength AM (submax).', type: 'quality' },
+    2: { name: 'Stoke Club 7mi', detail: 'Coach-led. + Strength AM.', type: 'quality' },
     3: { name: 'Recovery 8mi', detail: '8:30/mi.', type: 'easy' },
     4: { name: 'Easy 12mi', detail: '8:15/mi medium-long.', type: 'easy' },
     5: { name: 'Rest', detail: 'Core/prehab (Session B).', type: 'rest' },
@@ -3112,7 +3107,7 @@ const DAILY_PLAN = {
   // ============ WK 11 · w/c 2026-07-13 · DELOAD + STOCKPORT 10K ============
   '2026-07-13': {
     1: { name: 'Easy 5mi', detail: '8:15/mi.', type: 'easy' },
-    2: { name: 'Stoke Club 7mi', detail: 'Coach-led PM — keep controlled, racing Sun. + light Strength AM.', type: 'quality' },
+    2: { name: 'Stoke Club 7mi', detail: 'Coach-led — keep controlled, racing this week. + Strength AM.', type: 'quality' },
     3: { name: 'Recovery 6mi', detail: '8:30/mi.', type: 'easy' },
     4: { name: 'Easy 5mi', detail: '8:15/mi. Sharpen legs.', type: 'easy' },
     5: { name: 'Rest', detail: 'Off legs. Light dinner.', type: 'rest' },
@@ -3122,7 +3117,7 @@ const DAILY_PLAN = {
   // ============ WK 10 · w/c 2026-07-20 · EASIER · post-race ============
   '2026-07-20': {
     1: { name: 'Recovery 3mi', detail: '8:30/mi.', type: 'easy' },
-    2: { name: 'Stoke Club 7mi', detail: 'Coach-led quality PM. + Strength AM (submax).', type: 'quality' },
+    2: { name: 'Stoke Club 7mi', detail: 'Coach-led. + Strength AM.', type: 'quality' },
     3: { name: 'Recovery 8mi', detail: '8:30/mi.', type: 'easy' },
     4: { name: 'Easy 10mi', detail: '8:15/mi.', type: 'easy' },
     5: { name: 'Rest', detail: 'Core/prehab (Session B).', type: 'rest' },
@@ -3142,9 +3137,9 @@ const DAILY_PLAN = {
   // ============ WK 8 · w/c 2026-08-03 · BLOCK 2 ============
   '2026-08-03': {
     1: { name: 'Easy 6mi', detail: '8:15/mi.', type: 'easy' },
-    2: { name: 'Stoke Club 7mi', detail: 'Coach-led quality PM. + Strength AM (submax).', type: 'quality' },
+    2: { name: 'Stoke Club 7mi', detail: 'Coach-led. + Strength AM.', type: 'quality' },
     3: { name: 'Recovery 8mi', detail: '8:30/mi.', type: 'easy' },
-    4: { name: 'Track session 8mi', detail: 'Club/track intervals. ~8mi incl WU+CD.', type: 'quality' },
+    4: { name: 'Track session 8mi', detail: 'Coach-led track session.', type: 'quality' },
     5: { name: 'Rest', detail: 'Core/prehab (Session B).', type: 'rest' },
     6: { name: 'Easy 10mi', detail: '8:15/mi.', type: 'easy' },
     0: { name: 'Long 16mi · 8mi MP', detail: '7mi easy 8:15 + 8mi at MP (6:38) + 1mi cool.', type: 'long' }
@@ -3152,7 +3147,7 @@ const DAILY_PLAN = {
   // ============ WK 7 · w/c 2026-08-10 · BLOCK 2 ============
   '2026-08-10': {
     1: { name: 'Easy 7mi', detail: '8:15/mi.', type: 'easy' },
-    2: { name: 'Stoke Club 7mi', detail: 'Coach-led quality PM. + Strength AM (submax).', type: 'quality' },
+    2: { name: 'Stoke Club 7mi', detail: 'Coach-led. + Strength AM.', type: 'quality' },
     3: { name: 'Recovery 9mi', detail: '8:30/mi.', type: 'easy' },
     4: { name: 'Tempo 8mi', detail: '8mi total: 1mi WU + 6mi at threshold (6:00) + 1mi CD.', type: 'quality' },
     5: { name: 'Rest', detail: 'Core/prehab (Session B).', type: 'rest' },
@@ -3162,7 +3157,7 @@ const DAILY_PLAN = {
   // ============ WK 6 · w/c 2026-08-17 · BLOCK 2 · KEY MP ============
   '2026-08-17': {
     1: { name: 'Easy 5mi', detail: '8:15/mi.', type: 'easy' },
-    2: { name: 'Stoke Club 7mi', detail: 'Coach-led quality PM. + Strength AM (submax).', type: 'quality' },
+    2: { name: 'Stoke Club 7mi', detail: 'Coach-led. + Strength AM.', type: 'quality' },
     3: { name: 'Recovery 8mi', detail: '8:30/mi.', type: 'easy' },
     4: { name: 'Easy 12mi', detail: '8:15/mi medium-long.', type: 'easy' },
     5: { name: 'Rest', detail: 'Core/prehab (Session B).', type: 'rest' },
@@ -3172,7 +3167,7 @@ const DAILY_PLAN = {
   // ============ WK 5 · w/c 2026-08-24 · PEAK long run ============
   '2026-08-24': {
     1: { name: 'Easy 5mi', detail: '8:15/mi.', type: 'easy' },
-    2: { name: 'Stoke Club 7mi', detail: 'Coach-led quality PM. + Strength AM (submax).', type: 'quality' },
+    2: { name: 'Stoke Club 7mi', detail: 'Coach-led. + Strength AM.', type: 'quality' },
     3: { name: 'Easy 9mi', detail: '8:15/mi.', type: 'easy' },
     4: { name: 'Easy 9mi', detail: '8:15/mi.', type: 'easy' },
     5: { name: 'Rest', detail: 'Core/prehab (Session B).', type: 'rest' },
@@ -3182,7 +3177,7 @@ const DAILY_PLAN = {
   // ============ WK 4 · w/c 2026-08-31 · DECISIVE ============
   '2026-08-31': {
     1: { name: 'Easy 5mi', detail: '8:15/mi.', type: 'easy' },
-    2: { name: 'Stoke Club 7mi', detail: 'Coach-led quality PM. + Strength AM (submax).', type: 'quality' },
+    2: { name: 'Stoke Club 7mi', detail: 'Coach-led. + Strength AM.', type: 'quality' },
     3: { name: 'Recovery 8mi', detail: '8:30/mi.', type: 'easy' },
     4: { name: 'Easy 12mi', detail: '8:15/mi medium-long.', type: 'easy' },
     5: { name: 'Rest', detail: 'Core/prehab (Session B). Eat big — decisive week.', type: 'rest' },
@@ -3192,7 +3187,7 @@ const DAILY_PLAN = {
   // ============ WK 3 · w/c 2026-09-07 · GNR tune-up ============
   '2026-09-07': {
     1: { name: 'Rest', detail: 'Core/prehab. Recovery from decisive LR.', type: 'rest' },
-    2: { name: 'Stoke Club 7mi', detail: 'Coach-led PM — controlled, taper has started. + light Strength AM.', type: 'quality' },
+    2: { name: 'Stoke Club 7mi', detail: 'Coach-led — lighter, taper. + Strength AM.', type: 'quality' },
     3: { name: 'Recovery 7mi', detail: '8:30/mi.', type: 'easy' },
     4: { name: 'Easy 7mi', detail: '8:15/mi.', type: 'easy' },
     5: { name: 'Rest', detail: 'Off legs. Travel prep.', type: 'rest' },
@@ -3202,7 +3197,7 @@ const DAILY_PLAN = {
   // ============ WK 2 · w/c 2026-09-14 · TAPER ============
   '2026-09-14': {
     1: { name: 'Easy 5mi', detail: '8:15/mi.', type: 'easy' },
-    2: { name: 'Stoke Club 7mi', detail: 'Coach-led PM — lighter, taper. + light Strength AM.', type: 'quality' },
+    2: { name: 'Stoke Club 7mi', detail: 'Coach-led — lighter, taper. + Strength AM.', type: 'quality' },
     3: { name: 'Recovery 6mi', detail: '8:30/mi.', type: 'easy' },
     4: { name: 'Easy 8mi', detail: '8:15/mi.', type: 'easy' },
     5: { name: 'Rest', detail: 'Light mobility only.', type: 'rest' },
@@ -4443,7 +4438,20 @@ function renderWeekDetail(weekStart) {
 
   // Build days in M-T-W-T-F-S-S order
   const order = [1, 2, 3, 4, 5, 6, 0];
-  let html = bannerHtml;
+
+  // Week mileage summary: ran (actual on done days) + left (planned on remaining days) = projected total
+  let ranMiles = 0, leftMiles = 0;
+  order.forEach(dow => {
+    const dd = new Date(weekStart);
+    dd.setDate(dd.getDate() + (dow === 0 ? 6 : dow - 1));
+    const ds = dd.toISOString().slice(0, 10);
+    const drs = (state.runs || []).filter(r => r.date === ds);
+    if (drs.length) ranMiles += drs.reduce((s, r) => s + (parseFloat(r.distance_mi) || 0), 0);
+    else { const sess = getTodaySession(dd); if (sess) leftMiles += extractMiles(sess); }
+  });
+  const summaryCard = weekSummaryHTML(ranMiles, leftMiles);
+
+  let html = bannerHtml + summaryCard;
   order.forEach(dow => {
     const dayDate = new Date(weekStart);
     dayDate.setDate(dayDate.getDate() + (dow === 0 ? 6 : dow - 1));
@@ -4473,6 +4481,21 @@ function renderWeekDetail(weekStart) {
     const tagLabel = typeLabels[session.type] || (session.type || '').toUpperCase();
     const swappedFlag = isSwapped ? '<span class="tag warn" style="margin-left:6px">SWAPPED</span>' : '';
 
+    // Completion — match synced runs to this date
+    const dayRuns = (state.runs || []).filter(r => r.date === dateStr);
+    let doneFlag = '', actualLine = '';
+    if (dayRuns.length) {
+      const totMi = dayRuns.reduce((s, r) => s + (parseFloat(r.distance_mi) || 0), 0);
+      const primary = dayRuns.slice().sort((a, b) => (parseFloat(b.distance_mi) || 0) - (parseFloat(a.distance_mi) || 0))[0];
+      const hot = dayRuns.some(r => { const vv = runVerdict(r); return vv && vv.color === 'var(--warn)'; });
+      const doneColor = hot ? 'var(--warn)' : 'var(--good)';
+      doneFlag = `<span class="tag" style="margin-left:6px;background:${doneColor};color:var(--bg)">✓ DONE</span>`;
+      const extra = dayRuns.length === 1
+        ? `${primary.pace || ''}${primary.avg_hr ? ' · HR ' + primary.avg_hr : ''}`
+        : `${dayRuns.length} runs`;
+      actualLine = `<div style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:${doneColor};margin-top:7px">RAN ${totMi.toFixed(1)}MI${extra ? ' · ' + extra.toUpperCase() : ''}</div>`;
+    }
+
     html += `
       <div class="card" style="padding:14px 16px;display:flex;gap:14px;align-items:flex-start;${cardStyle}" onclick="onSwapPick('${weekStart}', '${dateStr}')">
         <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;line-height:0.95;color:${dayLabelColor};min-width:62px;flex-shrink:0">
@@ -4481,7 +4504,8 @@ function renderWeekDetail(weekStart) {
         <div style="flex:1;min-width:0">
           <div style="font-family:'Inter',sans-serif;font-weight:800;font-size:14px;text-transform:uppercase;letter-spacing:0.01em;line-height:1.2;margin-bottom:6px">${session.name}</div>
           <div style="font-size:12px;color:${isPicked ? 'var(--ink)' : 'var(--ink-soft)'};line-height:1.5;margin-bottom:8px">${session.detail || ''}</div>
-          <span class="tag ${tagColor}">${tagLabel}</span>${swappedFlag}
+          <span class="tag ${tagColor}">${tagLabel}</span>${swappedFlag}${doneFlag}
+          ${actualLine}
         </div>
       </div>`;
   });
@@ -4592,6 +4616,145 @@ async function saveRunNotes() {
   _editingRunId = null;
   closeModal('runNotesModal');
   renderLog();
+}
+
+// Shared week-mileage summary card (ran / left / projected + progress bar)
+function weekSummaryHTML(ranMiles, leftMiles) {
+  const projTotal = ranMiles + leftMiles;
+  const pctDone = projTotal > 0 ? Math.min(100, ranMiles / projTotal * 100) : 0;
+  return `
+    <div class="card" style="padding:16px 18px;margin-bottom:12px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:11px">
+        <span style="font-family:'Inter',sans-serif;font-weight:800;font-size:12px;letter-spacing:0.14em;color:var(--ink-soft)">THIS WEEK</span>
+        <span style="font-family:'Bebas Neue',sans-serif;font-size:40px;line-height:0.85;color:var(--ink)">${ranMiles.toFixed(1)}<span style="font-size:18px;color:var(--ink-faint)"> / ${projTotal.toFixed(0)} MI</span></span>
+      </div>
+      <div style="display:flex;height:12px;border-radius:3px;overflow:hidden;background:var(--bg-deep)">
+        <div style="width:${pctDone.toFixed(1)}%;background:var(--good)"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:9px;font-family:'Inter',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.06em">
+        <span style="color:var(--good)">${ranMiles.toFixed(1)} RUN</span>
+        <span style="color:var(--ink-faint)">${leftMiles.toFixed(1)} LEFT</span>
+      </div>
+    </div>`;
+}
+
+// Home "This Week" section: current week summary + day-by-day with done/planned status
+function renderDashCurrentWeek() {
+  const el = document.getElementById('dashCurrentWeek');
+  if (!el) return;
+  const t = new Date();
+  const tStr = `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, '0')}-${String(t.getDate()).padStart(2, '0')}`;
+  let cwIdx = -1;
+  PLAN_WEEKS.forEach((p, i) => { if (p.start <= tStr && (cwIdx < 0 || p.start > PLAN_WEEKS[cwIdx].start)) cwIdx = i; });
+  if (cwIdx < 0) { el.innerHTML = ''; return; }
+  const cw = PLAN_WEEKS[cwIdx];
+  const nextW = PLAN_WEEKS[cwIdx + 1] || null;
+  const weekStart = cw.start;
+  const dayNames = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+  const monthNames = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+  const typeColors = { long: 'accent', quality: 'warn', rest: 'dark', race: 'accent', easy: '', gym: 'dark' };
+  const typeLabels = { long: 'LONG', quality: 'QUALITY', rest: 'REST', race: 'RACE', easy: 'EASY', gym: 'GYM' };
+  const order = [1, 2, 3, 4, 5, 6, 0];
+  let ranMiles = 0, leftMiles = 0, cards = '';
+  order.forEach(dow => {
+    const dd = new Date(weekStart);
+    dd.setDate(dd.getDate() + (dow === 0 ? 6 : dow - 1));
+    const ds = dd.toISOString().slice(0, 10);
+    const isToday = ds === tStr;
+    const dayLabel = dayNames[dow];
+    const dateLabel = `${dd.getDate()} ${monthNames[dd.getMonth()]}`;
+    const drs = (state.runs || []).filter(r => r.date === ds);
+    const session = getTodaySession(dd);
+    const tagColor = session ? (typeColors[session.type] || '') : '';
+    const tagLabel = session ? (typeLabels[session.type] || (session.type || '').toUpperCase()) : '—';
+
+    let statusHtml;
+    if (drs.length) {
+      const mi = drs.reduce((s, r) => s + (parseFloat(r.distance_mi) || 0), 0);
+      ranMiles += mi;
+      const hot = drs.some(r => { const v = runVerdict(r); return v && v.color === 'var(--warn)'; });
+      const c = hot ? 'var(--warn)' : 'var(--good)';
+      statusHtml = `<div style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:${c};flex:none">✓ ${mi.toFixed(1)}MI</div>`;
+    } else {
+      const pm = session ? extractMiles(session) : 0;
+      if (session) leftMiles += pm;
+      if (isToday) statusHtml = `<div style="font-family:'Inter',sans-serif;font-size:11px;font-weight:800;letter-spacing:0.14em;color:var(--accent);flex:none">TODAY</div>`;
+      else statusHtml = `<div style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--ink-faint);flex:none">${pm > 0 ? pm + 'MI' : '—'}</div>`;
+    }
+    const dayColor = isToday ? 'var(--accent)' : 'var(--ink-faint)';
+    cards += `
+      <div class="card" style="display:flex;align-items:center;gap:14px;padding:14px 16px;${isToday ? 'border:1px solid var(--accent)' : ''}">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;line-height:0.95;color:${dayColor};min-width:60px;flex-shrink:0">
+          ${dayLabel}<br><span style="font-size:10px;font-family:'Inter',sans-serif;font-weight:700;letter-spacing:0.18em;color:${dayColor}">${dateLabel}</span>
+        </div>
+        <div style="flex:1;min-width:0">
+          <div style="font-family:'Inter',sans-serif;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:0.01em;line-height:1.2">${session ? session.name : 'No session'}</div>
+          <div style="margin-top:6px"><span class="tag ${tagColor}">${tagLabel}</span></div>
+        </div>
+        ${statusHtml}
+      </div>`;
+  });
+  const nextLink = nextW
+    ? `<div style="text-align:center;margin-top:12px"><span onclick="openWeekDetail('${nextW.start}')" style="cursor:pointer;font-family:'Inter',sans-serif;font-size:11px;font-weight:800;letter-spacing:0.12em;color:var(--accent-deep)">NEXT WEEK · WK ${nextW.wk} →</span></div>`
+    : '';
+  el.innerHTML = `
+    <div onclick="openWeekDetail('${weekStart}')" style="cursor:pointer">
+      ${weekSummaryHTML(ranMiles, leftMiles)}
+      ${cards}
+    </div>
+    ${nextLink}`;
+}
+
+function renderDashRecentRuns() {
+  const el = document.getElementById('dashRecentRuns');
+  if (!el) return;
+  const all = state.runs || [];
+  if (all.length === 0) {
+    el.innerHTML = `<div class="card"><div class="card-detail">No runs synced yet — they'll appear here automatically from Strava.</div></div>`;
+    return;
+  }
+
+  // Discipline strip — graded easy/recovery runs, oldest → newest (left → right)
+  const graded = all.map(r => ({ r, v: runVerdict(r) })).filter(x => x.v).slice(0, 14).reverse();
+  const dialled = graded.filter(x => x.v.color === 'var(--accent-deep)').length;
+  const hot = graded.length - dialled;
+
+  const strip = graded.length ? `
+    <div style="display:flex;gap:3px;margin-bottom:9px">
+      ${graded.map(x => `<div title="${x.v.text}" style="flex:1;height:14px;border-radius:3px;background:${x.v.color}"></div>`).join('')}
+    </div>
+    <div class="card-meta" style="margin-bottom:16px;letter-spacing:0.04em">
+      <span style="color:var(--accent-deep);font-weight:800">${dialled}</span> ON TARGET ·
+      <span style="color:var(--warn);font-weight:800">${hot}</span> RAN HOT
+      <span style="color:var(--ink-faint)"> · LAST ${graded.length} EASY/RECOVERY</span>
+    </div>` : '';
+
+  // Last 6 runs (all types), each with verdict + coloured dot
+  const list = all.slice(0, 6).map(r => {
+    const dm = fmtDayMonth(r.date);
+    const v = runVerdict(r);
+    const dot = v ? v.color : 'var(--ink-faint)';
+    const hrPart = r.avg_hr ? ` · HR ${r.avg_hr}` : '';
+    const verdictLine = v ? `<div style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.06em;color:${v.color};margin-top:3px">${v.text}</div>` : '';
+    return `
+      <div style="display:flex;align-items:flex-start;gap:11px;padding:10px 0;border-bottom:1px solid var(--line-soft)">
+        <div style="width:9px;height:9px;border-radius:50%;background:${dot};margin-top:5px;flex:none"></div>
+        <div style="flex:1;min-width:0">
+          <div style="font-family:'Inter',sans-serif;font-size:13px;font-weight:700;color:var(--ink)">${parseFloat(r.distance_mi || 0).toFixed(2)}mi · ${r.pace || '—'}${hrPart}</div>
+          <div class="card-meta" style="margin-top:2px">${(r.type || '').toUpperCase()}${r.activity_name ? ' · ' + r.activity_name.toUpperCase() : ''} · ${dm.day} ${dm.month}</div>
+          ${verdictLine}
+        </div>
+      </div>`;
+  }).join('');
+
+  el.innerHTML = `
+    <div class="card" style="padding:16px">
+      ${strip}
+      ${list}
+      <div style="text-align:center;margin-top:13px">
+        <span onclick="switchTab('log')" style="cursor:pointer;font-family:'Inter',sans-serif;font-size:11px;font-weight:800;letter-spacing:0.12em;color:var(--accent-deep)">VIEW FULL LOG →</span>
+      </div>
+    </div>`;
 }
 
 function renderRacePredictor() {
@@ -5159,7 +5322,8 @@ function renderDash() {
   document.getElementById('ringHabitsText').textContent = `${habitCount}/${habitTotal}`;
   setRing('ringHabits', habitCount, habitTotal);
 
-  document.getElementById('dashStreak').textContent = calcStreak();
+  const _streakEl = document.getElementById('dashStreak');
+  if (_streakEl) _streakEl.textContent = calcStreak();
 
   // All-time pct also feeds the Numbers stat grid card
   const dashHabitPctEl = document.getElementById('dashHabitPct');
@@ -5224,6 +5388,16 @@ function renderDash() {
 
   document.getElementById('dashTotalMiles').textContent = state.runs.reduce((s, r) => s + (parseFloat(r.distance_mi) || 0), 0).toFixed(0);
   document.getElementById('dashWeeksToGo').textContent = Math.ceil(days / 7);
+
+  // Running-centric Numbers stats
+  const _wm = document.getElementById('dashWeekMiles');
+  if (_wm) _wm.textContent = weekMiles.toFixed(0);
+  const _wml = document.getElementById('dashWeekMilesLabel');
+  if (_wml) _wml.textContent = `of ${Math.round(targetMiles)} this wk`;
+  const _graded = (state.runs || []).map(r => runVerdict(r)).filter(Boolean);
+  const _dialled = _graded.filter(v => v.color === 'var(--accent-deep)').length;
+  const _dp = document.getElementById('dashDialledPct');
+  if (_dp) _dp.textContent = _graded.length ? Math.round(_dialled / _graded.length * 100) + '%' : '—';
 
   document.getElementById('todayDateLabel').textContent = fmtDateFull(today);
 
@@ -5438,6 +5612,7 @@ function renderDash() {
   renderRecoveryCard();
   // ====== RACE PREDICTOR ======
   renderRacePredictor();
+  renderDashCurrentWeek();
 
   const next7El = document.getElementById('dashNext7');
   if (next7El) {
@@ -5484,7 +5659,7 @@ function renderDash() {
   // This week summary card
   const tw = document.getElementById('dashThisWeek');
   const thisWeekMetaEl = document.getElementById('thisWeekMeta');
-  if (cw) {
+  if (tw && cw) {
     if (thisWeekMetaEl) thisWeekMetaEl.textContent = `WK ${cw.wk} · ${cw.miles}MI`;
     tw.innerHTML = `
       <div class="card">
@@ -5497,7 +5672,7 @@ function renderDash() {
           <div style="font-family:'Bebas Neue';font-size:48px;line-height:0.9;color:var(--accent-deep)" id="twMileage">${cw.miles}</div>
         </div>
       </div>`;
-  } else {
+  } else if (tw) {
     if (thisWeekMetaEl) thisWeekMetaEl.textContent = '—';
     tw.innerHTML = `<div class="card"><div class="card-detail">Outside plan window.</div></div>`;
   }
@@ -5612,7 +5787,129 @@ function renderPlan() {
   }).join('');
 }
 
+// Run Review — grade easy/recovery runs against HR + pace targets, flag the ones run too hot.
+// HR is the governor; pace is supporting context. Races/quality mislabelled as easy are skipped.
+function runVerdict(r) {
+  const type = (r.type || '').toLowerCase();
+  if (type !== 'easy' && type !== 'recovery') return null;  // only police easy/recovery discipline
+
+  const hr = r.avg_hr ? parseInt(r.avg_hr, 10) : null;
+  const dist = parseFloat(r.distance_mi) || 0;
+  const paceSec = (r.duration_sec && dist) ? parseFloat(r.duration_sec) / dist : null;
+  const name = (r.activity_name || '').toLowerCase();
+
+  // Guard: a hard effort or race mislabelled as easy — don't apply the easy-discipline flag
+  const raceWords = ['10k', '5k', 'parkrun', 'half', 'marathon', 'race', 'colshaw', 'stockport', 'gnr', 'tempo', 'threshold', 'interval', 'rep'];
+  const looksHard = (hr && hr >= 165) || (paceSec && paceSec <= 405) || raceWords.some(w => name.includes(w));
+  if (looksHard) return null;
+
+  const isRec = type === 'recovery';
+  const cap = isRec ? 145 : 152;          // HR cap
+  const paceTarget = isRec ? 510 : 495;   // 8:30 / 8:15 per mile, in seconds
+  const label = isRec ? 'RECOVERY' : 'EASY';
+
+  if (hr) {
+    const over = hr - cap;
+    if (over <= 0) return { color: 'var(--accent-deep)', text: `${label} — ON TARGET` };
+    const quick = (paceSec && paceSec < paceTarget - 20) ? ` · ${Math.round(paceTarget - paceSec)}S/MI QUICK` : '';
+    if (over <= 5) return { color: 'var(--warn)', text: `${label} — OFF TARGET · ${over} BPM HOT${quick}` };
+    return { color: 'var(--warn)', text: `${label} — OFF TARGET · ${over} BPM OVER CAP${quick}` };
+  }
+
+  // No HR — fall back to pace
+  if (paceSec && paceSec < paceTarget - 20) {
+    return { color: 'var(--warn)', text: `${label} — OFF TARGET · ${Math.round(paceTarget - paceSec)}S/MI QUICK` };
+  }
+  return { color: 'var(--accent-deep)', text: `${label} — ON TARGET` };
+}
+
+// ---- Zone Balance (per-week time-in-HR-zone, classified by each run's avg HR) ----
+const HR_ZONES = [
+  { key: 'Z1', name: 'Recovery',  max: 144, color: 'var(--ink-faint)' },
+  { key: 'Z2', name: 'Easy',      max: 154, color: 'var(--good)' },
+  { key: 'Z3', name: 'Steady',    max: 164, color: '#c79a3e' },
+  { key: 'Z4', name: 'Threshold', max: 173, color: 'var(--warn)' },
+  { key: 'Z5', name: 'VO2/Track', max: 999, color: 'var(--accent)' },
+];
+function hrZoneIdx(hr) { for (let i = 0; i < HR_ZONES.length; i++) { if (hr <= HR_ZONES[i].max) return i; } return 4; }
+function zoneRangeLabel(i) {
+  if (i === 0) return '<' + (HR_ZONES[0].max + 1);
+  if (i === HR_ZONES.length - 1) return (HR_ZONES[i - 1].max + 1) + '+';
+  return (HR_ZONES[i - 1].max + 1) + '–' + HR_ZONES[i].max;
+}
+function fmtZoneTime(sec) { const m = Math.round(sec / 60); if (m < 60) return m + 'm'; const h = Math.floor(m / 60), mm = m % 60; return mm ? `${h}h${mm}m` : `${h}h`; }
+function zoneMonday(dateStr) {
+  const d = new Date(dateStr + 'T00:00:00');
+  const day = (d.getDay() + 6) % 7;
+  d.setDate(d.getDate() - day);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+function zoneWeekRange(monday) {
+  const d1 = new Date(monday + 'T00:00:00'), d2 = new Date(d1); d2.setDate(d2.getDate() + 6);
+  const mo = d => d.toLocaleDateString('en-GB', { month: 'short' });
+  return d1.getMonth() === d2.getMonth() ? `${d1.getDate()}–${d2.getDate()} ${mo(d2)}` : `${d1.getDate()} ${mo(d1)} – ${d2.getDate()} ${mo(d2)}`;
+}
+function renderZones() {
+  const el = document.getElementById('zoneWeeks');
+  if (!el) return;
+  const runs = (state.runs || []).filter(r => r.avg_hr && r.duration_sec);
+  if (!runs.length) { el.innerHTML = `<div class="card"><div class="card-detail">No HR data synced yet — zone balance needs runs with heart rate.</div></div>`; return; }
+  const weeks = {};
+  runs.forEach(r => { const k = zoneMonday(r.date); (weeks[k] = weeks[k] || []).push(r); });
+  const keys = Object.keys(weeks).sort().reverse().slice(0, 8);
+
+  const block = (k, detailed) => {
+    const rs = weeks[k];
+    const zt = [0, 0, 0, 0, 0]; let total = 0, miles = 0;
+    rs.forEach(r => { const i = hrZoneIdx(parseInt(r.avg_hr, 10)); const d = parseFloat(r.duration_sec) || 0; zt[i] += d; total += d; miles += parseFloat(r.distance_mi) || 0; });
+    if (total <= 0) return '';
+    const easyPct = Math.round((zt[0] + zt[1]) / total * 100);
+    const segs = HR_ZONES.map((z, i) => zt[i] > 0 ? `<div style="width:${(zt[i] / total * 100).toFixed(2)}%;background:${z.color}"></div>` : '').join('');
+    const bar = `<div style="display:flex;height:${detailed ? 16 : 11}px;border-radius:3px;overflow:hidden;gap:1px;background:var(--bg-deep)">${segs}</div>`;
+    let vColor, vText;
+    if (easyPct >= 70 && easyPct <= 85) { vColor = 'var(--good)'; vText = `${easyPct}% easy — in the 70–80% sweet spot.`; }
+    else if (easyPct < 70) { vColor = 'var(--warn)'; vText = `${easyPct}% easy — below the 70–80% target. Shift a run from Z3 to easy.`; }
+    else { vColor = 'var(--ink-soft)'; vText = `${easyPct}% easy — plenty easy; room for a touch more quality.`; }
+    const range = zoneWeekRange(k);
+    if (detailed) {
+      const cards = HR_ZONES.map((z, i) => `
+        <div style="flex:1;text-align:center;padding:8px 2px;background:var(--bg-elev);border-radius:6px">
+          <div style="font-family:'Inter',sans-serif;font-weight:800;font-size:11px;letter-spacing:0.08em;color:${z.color}">${z.key}</div>
+          <div style="font-family:'Inter',sans-serif;font-weight:600;font-size:8px;color:var(--ink-faint);margin:1px 0 5px">${zoneRangeLabel(i)}</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;line-height:0.9;color:var(--ink)">${fmtZoneTime(zt[i])}</div>
+          <div style="font-family:'Inter',sans-serif;font-weight:700;font-size:9px;color:var(--ink-faint);margin-top:2px">${Math.round(zt[i] / total * 100)}%</div>
+        </div>`).join('');
+      return `
+        <div class="card" style="padding:16px;margin-bottom:14px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px">
+            <div style="font-family:'Inter',sans-serif;font-weight:800;font-size:11px;letter-spacing:0.14em;color:var(--ink-soft)">${range.toUpperCase()} · TRAINING SHAPE</div>
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--ink)">${miles.toFixed(0)}<span style="font-size:11px;color:var(--ink-faint)"> MI</span></div>
+          </div>
+          ${bar}
+          <div style="display:flex;gap:5px;margin-top:12px">${cards}</div>
+          <div style="margin-top:12px;padding:10px 12px;border-radius:6px;background:var(--bg-deep);font-family:'Inter',sans-serif;font-weight:600;font-size:12px;line-height:1.4;color:${vColor}">${vText}</div>
+        </div>`;
+    }
+    return `
+      <div style="padding:11px 0;border-bottom:1px solid var(--line-soft)">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+          <span style="font-family:'Inter',sans-serif;font-weight:800;font-size:11px;letter-spacing:0.1em;color:var(--ink-soft)">${range.toUpperCase()}</span>
+          <span style="font-family:'Inter',sans-serif;font-weight:700;font-size:11px;color:${vColor}">${easyPct}% EASY</span>
+        </div>
+        ${bar}
+      </div>`;
+  };
+
+  let html = block(keys[0], true);
+  if (keys.length > 1) {
+    html += `<div class="section-meta" style="margin:6px 2px 8px">EARLIER WEEKS</div>`;
+    html += `<div class="card" style="padding:4px 16px">` + keys.slice(1).map(k => block(k, false)).join('') + `</div>`;
+  }
+  el.innerHTML = html;
+}
+
 function renderLog() {
+  renderZones();
   const ws = weekStrFor();
   const weekRuns = state.runs.filter(r => weekStrFor(new Date(r.date)) === ws);
   document.getElementById('runWeekTotal').textContent = weekRuns.reduce((s, r) => s + (parseFloat(r.distance_mi) || 0), 0).toFixed(1);
@@ -5628,12 +5925,15 @@ function renderLog() {
         const feelPart = r.feel ? `feel ${r.feel}/10` : '';
         const kneePart = r.knee_ankle && r.knee_ankle !== 'green' ? ` · KNEE ${r.knee_ankle.toUpperCase()}` : '';
         const notesBlock = r.user_notes ? `<div style="font-size:12px;color:var(--ink-soft);font-style:italic;margin-top:6px;border-left:2px solid var(--accent-deep);padding-left:8px">"${r.user_notes}"</div>` : '';
+        const verdict = runVerdict(r);
+        const verdictBlock = verdict ? `<div class="run-verdict" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.08em;margin-top:5px;color:${verdict.color}">${verdict.text}</div>` : '';
         return `
           <div class="log-entry" onclick="openRunNotes('${r.id}')" style="cursor:pointer">
             <div>
               <div class="log-distance">${r.distance_mi || 0}<span class="unit">MI</span>${isStrava ? ' <span class="log-pb" style="background:#fc4c02">STRAVA</span>' : ''}</div>
               <div class="log-meta">${r.pace || '—'} · ${fmtDuration(r.duration_sec)}${hrPart}${elevPart}${feelPart ? ' · ' + feelPart : ''}</div>
               <div class="log-type">${(r.type || '').toUpperCase()}${kneePart}${r.activity_name ? ' · ' + r.activity_name.toUpperCase() : ''}</div>
+              ${verdictBlock}
               ${notesBlock}
             </div>
             <div class="log-date">
