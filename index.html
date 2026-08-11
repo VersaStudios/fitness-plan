@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Project 2:55">
-<title>Project 2:55</title>
+<meta name="apple-mobile-web-app-title" content="Project 1:25">
+<title>Project 1:25</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -920,13 +920,6 @@ main {
   border-color: var(--ink);
 }
 .plan-week.current .plan-week-detail { color: var(--accent); }
-.plan-week-num {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 32px;
-  line-height: 0.9;
-  min-width: 50px;
-  letter-spacing: -0.01em;
-}
 .plan-week-info { flex: 1; min-width: 0; }
 .plan-week-detail {
   font-family: 'Inter', sans-serif;
@@ -1581,8 +1574,8 @@ footer {
 <!-- ============== SIDEBAR / BOTTOM NAV ============== -->
 <nav class="bottom-nav" id="appNav" style="display:none">
   <div class="nav-brand" style="display:none">
-    <div class="nav-brand-title">PROJECT<span style="color:var(--accent-deep)"> 2:55</span></div>
-    <div class="nav-brand-sub">Warsaw 2026</div>
+    <div class="nav-brand-title">PROJECT<span style="color:var(--accent-deep)"> 1:25</span></div>
+    <div class="nav-brand-sub">Great North Run 2026</div>
   </div>
   <button class="active" data-tab="dash"><span class="nav-icon">◐</span>Home</button>
   <button data-tab="plan"><span class="nav-icon">▤</span>Plan</button>
@@ -1596,7 +1589,7 @@ footer {
   <div class="h-row">
     <div class="h-titles">
       <div class="h-title-main" id="dynamicTitle">Dashboard</div>
-      <div class="h-title-sub" id="dynamicSubtitle">Project 2:55</div>
+      <div class="h-title-sub" id="dynamicSubtitle">Project 1:25</div>
     </div>
     <div class="h-controls">
       <button class="theme-btn" onclick="toggleTheme()" id="themeBtn" title="Toggle theme">
@@ -1617,13 +1610,13 @@ footer {
 
   <!-- Hero countdown -->
   <div class="hero">
-    <!-- Poster header: chapter card + Warsaw meta + mountain icon -->
+    <!-- Poster header: chapter card + race meta + mountain icon -->
     <div class="poster-top">
       <div class="poster-chapter">
         <div class="chapter-card" id="posterChapter">21</div>
         <div class="poster-meta">
-          WARSAW MARATHON<br>
-          27 SEP 2026
+          GREAT NORTH RUN<br>
+          13 SEP 2026
         </div>
       </div>
       <svg class="poster-mountain" viewBox="0 0 36 24" fill="currentColor" style="display:none">
@@ -1647,7 +1640,7 @@ footer {
         <div id="timelineMarkers"></div>
         <div class="timeline-now" id="timelineNow" style="left:0%"></div>
       </div>
-      <div class="timeline-endcap right">WARSAW</div>
+      <div class="timeline-endcap right">GNR</div>
     </div>
 
     <!-- Bottom row: phase / habits / week -->
@@ -1656,7 +1649,7 @@ footer {
         <div class="poster-tag accent" id="dashPhase">—</div>
         <div class="poster-tag-rule"></div>
       </div>
-      <div style="text-align:center">
+      <div style="text-align:center;display:none">
         <div class="poster-tag" id="dashHabitsToday">—</div>
       </div>
       <div style="text-align:center">
@@ -1670,7 +1663,7 @@ footer {
 
   </div>
 
-  <!-- Post-Warsaw transition banner (only renders after race day) -->
+  <!-- Post-race transition banner (only renders after race day) -->
   <div id="postWarsawBanner"></div>
 
   <!-- Today's session -->
@@ -1743,8 +1736,8 @@ footer {
     <div id="recoveryCard"></div>
   </div>
 
-  <!-- Daily habits with inline ring -->
-  <div class="section">
+  <!-- Daily habits with inline ring — PAUSED Aug 2026, set display:'' to restore -->
+  <div class="section" id="habitSection" style="display:none">
     <div class="section-head">
       <div class="section-title">Daily Habits</div>
       <div class="section-meta" id="todayDateLabel">—</div>
@@ -1802,12 +1795,12 @@ footer {
   <div class="subtab active" id="plansub-weeks">
     <div class="section">
       <div class="section-head">
-        <div class="section-title">22-Week Build</div>
-        <div class="section-meta">Sub-2:55 Warsaw</div>
+        <div class="section-title">Season Build</div>
+        <div class="section-meta">Sub-1:26 Great North Run</div>
       </div>
       <div class="bar-chart" id="mileageChart"></div>
       <div style="display:flex;justify-content:space-between;font-family:'Inter';font-weight:700;font-size:9px;color:var(--ink-faint);text-transform:uppercase;letter-spacing:0.18em;padding:0 2px;margin-bottom:16px">
-        <span>Wk 22</span><span>Wk 1</span>
+        <span>Wk 22</span><span>RACE</span>
       </div>
       <div id="planWeeks"></div>
     </div>
@@ -1815,13 +1808,13 @@ footer {
 
   <div class="subtab" id="plansub-paces">
     <div class="section">
-      <div class="section-head"><div class="section-title">Sub-2:55 Targets</div></div>
+      <div class="section-head"><div class="section-title">Sub-1:26 Targets</div></div>
       <div id="paceList"></div>
     </div>
     <div class="section">
       <div class="section-head"><div class="section-title">Decision Rule</div></div>
       <div class="card">
-        <div class="card-detail">If Mid Cheshire goes sub-18 and Colshaw sub-39, sub-2:55 is on. If either misses by &gt;30s, MP target drops to 6:45/mi. <strong style="color:var(--ink)">Train for 2:55, race for 2:57.</strong></div>
+        <div class="card-detail">The 16mi with 8 at 6:30 on Sun 23 Aug is the test. If it feels controlled, race 6:28/mi. If it is a grind, race 6:35/mi. Mid Cheshire on 28 Aug confirms top-end sharpness but tells you less about durability. <strong style="color:var(--ink)">Train for 1:25, race for 1:26.</strong></div>
       </div>
     </div>
   </div>
@@ -1829,9 +1822,9 @@ footer {
   <div class="subtab" id="plansub-strength">
     <div class="section">
       <div class="hero" style="margin:0 0 20px">
-        <div class="hero-eyebrow">DURING THE BUILD</div>
-        <div class="hero-num" style="font-size:32px">MAINTAIN</div>
-        <div class="hero-label">Don't lose strength while running high mileage</div>
+        <div class="hero-eyebrow">NOW → 13 SEP</div>
+        <div class="hero-num" style="font-size:32px">2×/WEEK</div>
+        <div class="hero-label">Lift to support the running. Body comp comes after GNR.</div>
       </div>
     </div>
 
@@ -1840,7 +1833,7 @@ footer {
         <div class="section-title">Why This Matters</div>
       </div>
       <div class="card">
-        <div class="card-detail">Skinny + weak = injury equation. Quad-dominant running, weak core, poor late-marathon form. Most sub-3 runners have functional strength even though they look skinny. Goal: build durability, not mass.</div>
+        <div class="card-detail">Fat loss, muscle gain and a half marathon PB pull in different directions. Until 13 Sep the running wins: two short sessions a week, heavy-ish, low volume, eaten at maintenance. This improves running economy and fixes the push/pull imbalance — it will not build visible size, and it is not meant to. The real body-comp block starts the week after GNR.</div>
       </div>
     </div>
 
@@ -1857,14 +1850,14 @@ footer {
         <div class="section-title">Phase Plan</div>
       </div>
       <div class="card" style="border-left:3px solid var(--accent-deep)">
-        <div class="card-title">May–Sep · Marathon Build</div>
-        <div class="card-meta">MAINTAIN PHASE</div>
-        <div class="card-detail">Upper Mon, Lower Wed, Core Fri. Moderate loads (8–12 reps). Build core specifically — plank progressions, side planks, dead bugs. No hypertrophy push.</div>
+        <div class="card-title">Aug–Sep · GNR Build</div>
+        <div class="card-meta">SUPPORT PHASE · 2×/WEEK</div>
+        <div class="card-detail">Session A (Lower) Tuesday after the AM run. Session B (Upper) Thursday. Session C (Accessory) optional Saturday. Two reps in reserve on everything. Eat at maintenance — do not diet into a race.</div>
       </div>
       <div class="card" style="margin-top:8px;border-left:3px solid var(--accent)">
-        <div class="card-title">Oct 2026 onwards · Hypertrophy Block</div>
-        <div class="card-meta">BUILD PHASE · POST-WARSAW</div>
-        <div class="card-detail">After A-race recovery (2 weeks easy). Caloric surplus +250–400 kcal. Lift 3–4×/week, heavy (4–8 reps). Reduce running to 30–40mi base. 4–6 month block to genuinely add muscle. Spring 2027 marathon would benefit from this strength.</div>
+        <div class="card-title">28 Sep–8 Nov 2026 · Hypertrophy Block</div>
+        <div class="card-meta">BUILD PHASE · POST-GNR</div>
+        <div class="card-detail">The muscle window. Six weeks at 45–50mi with 10K/5K racing ahead means less recovery cost than marathon training — the only stretch all year where muscle can be built without robbing the running. Lift 3×/week, 6–10 reps, surplus +200–250. Expect visible change from late November.<br><br><strong style="color:var(--ink)">Then taper the lifting, not the eating:</strong> from 9 Nov drop to 2×/week and back to maintenance calories so you race Abbey Dash lean off the build. Jan onwards it stays at 2×/week maintenance while marathon mileage climbs.</div>
       </div>
     </div>
 
@@ -1874,9 +1867,10 @@ footer {
       </div>
       <div class="card">
         <div class="card-detail" style="line-height:1.7">
-          <strong style="color:var(--ink)">Core 3×/week</strong> — even on tired weeks. Plank + side plank + dead bug + Pallof press. 10 minutes.<br>
-          <strong style="color:var(--ink)">Posterior chain weekly</strong> — RDLs or single-leg RDLs. Fix the quad-dominant pattern.<br>
-          <strong style="color:var(--ink)">Don't skip Upper</strong> — atrophy at high mileage is real. Maintain bench, row, pull.
+          <strong style="color:var(--ink)">Pulls before pushes</strong> — chest press 30kg vs mid pull 7.5kg is 4:1. That imbalance is the single thing most likely to make you look worse, not better. High row and mid pull get progressed aggressively.<br>
+          <strong style="color:var(--ink)">Lift on hard running days</strong> — Tue and Thu, never the day before a session. Easy days must stay easy.<br>
+          <strong style="color:var(--ink)">Hamstrings weekly</strong> — leg curls. Best injury insurance available to a runner.<br>
+          <strong style="color:var(--ink)">No loaded lifting in race week</strong> — bodyweight core only from 7 Sep.
         </div>
       </div>
     </div>
@@ -1899,7 +1893,20 @@ footer {
 
   <div class="subtab" id="plansub-races">
     <div class="section">
-      <div class="section-head"><div class="section-title">2026 Calendar</div></div>
+      <div class="section-head">
+        <div class="section-title">Season Roadmap</div>
+        <div class="section-meta">Sep 26 → Apr 27</div>
+      </div>
+      <div class="card" style="margin-bottom:12px">
+        <div class="card-detail">Week-by-week sessions are now built through to <strong style="color:var(--ink)">3 Jan 2027</strong> — recovery, the build, both autumn races and Christmas base. Only the marathon block itself is still phase-level: that gets written in December once the race is chosen and Abbey Dash has given a real number.</div>
+      </div>
+      <div id="seasonList"></div>
+    </div>
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title">Race Calendar</div>
+        <div class="section-meta">2026–27</div>
+      </div>
       <div id="raceList"></div>
     </div>
   </div>
@@ -1907,38 +1914,38 @@ footer {
   <div class="subtab" id="plansub-raceday">
     <div class="section">
       <div class="hero" style="margin:0 0 20px">
-        <div class="hero-eyebrow">Sun 27 Sep 2026</div>
-        <div class="hero-num">2:54</div>
-        <div class="hero-label">Goal Finish</div>
+        <div class="hero-eyebrow">Sun 13 Sep 2026 · Newcastle</div>
+        <div class="hero-num">1:25</div>
+        <div class="hero-label">Goal Finish · 6:30/mi</div>
       </div>
     </div>
     <div class="section">
       <div class="section-head"><div class="section-title">Pacing</div></div>
       <div class="card">
         <div style="font-family:'JetBrains Mono', monospace;font-size:13px;line-height:1.9">
-          5K · 20:34<br>
-          10K · 41:09<br>
-          HM · 1:26:55<br>
-          30K · 2:03:30<br>
-          <strong style="font-family:Inter;font-weight:800;letter-spacing:0.1em">FIN · 2:54:00</strong>
+          5K · 20:11<br>
+          10K · 40:22<br>
+          10MI · 1:05:00<br>
+          20K · 1:20:45<br>
+          <strong style="font-family:Inter;font-weight:800;letter-spacing:0.1em">FIN · 1:25:12</strong>
         </div>
       </div>
     </div>
     <div class="section">
       <div class="section-head"><div class="section-title">Fuelling</div></div>
       <div class="card">
-        <div class="card-detail">Gel every 30–35 min: 0:30 · 1:00 · 1:30 · 2:00 · 2:30 — 5 gels = 125g carbs.<br>Caffeine gel at 90 min and 2:15. Sip electrolyte at every aid station.</div>
-        <div class="card-meta" style="margin-top:10px">PRE · BEETROOT −2:30 · CAFFEINE 230MG −45 · GEL −10</div>
+        <div class="card-detail">Two gels only: 0:30 and 1:00. A half does not need marathon fuelling — carrying five gels costs more than it gives.<br>Sip water at 3 and 6 miles. Nothing new on race day.</div>
+        <div class="card-meta" style="margin-top:10px">PRE · BEETROOT −2:30 · CAFFEINE 200MG −45 · GEL −10</div>
       </div>
     </div>
     <div class="section">
       <div class="section-head"><div class="section-title">Carb Load</div></div>
       <div class="card">
         <div style="font-family:'JetBrains Mono', monospace;font-size:12px;line-height:1.8">
-          <strong style="font-family:Inter;font-weight:800;letter-spacing:0.1em">WED–THU</strong> · 500g, normal fibre<br>
-          <strong style="font-family:Inter;font-weight:800;letter-spacing:0.1em">FRI</strong> · 600g, reduce fibre<br>
-          <strong style="font-family:Inter;font-weight:800;letter-spacing:0.1em">SAT</strong> · 650g, low fibre<br>
-          <strong style="font-family:Inter;font-weight:800;letter-spacing:0.1em">RACE AM −3HR</strong> · 110g
+          <strong style="font-family:Inter;font-weight:800;letter-spacing:0.1em">FRI</strong> · 450g, normal fibre<br>
+          <strong style="font-family:Inter;font-weight:800;letter-spacing:0.1em">SAT</strong> · 500g, low fibre<br>
+          <strong style="font-family:Inter;font-weight:800;letter-spacing:0.1em">RACE AM −3HR</strong> · 90g<br>
+          <span style="font-family:Inter;font-size:11px;color:var(--ink-faint)">No full 3-day load needed for 13.1mi</span>
         </div>
       </div>
     </div>
@@ -1946,9 +1953,10 @@ footer {
       <div class="section-head"><div class="section-title">Danger Zones</div></div>
       <div class="card">
         <div class="card-detail">
-          <strong style="color:var(--ink)">MILE 8–13</strong> · don't get pulled by sub-2:50 group<br>
-          <strong style="color:var(--ink)">MILE 18–22</strong> · sub-2:55 won or lost here<br>
-          <strong style="color:var(--ink)">MILE 23–26</strong> · nothing fancy
+          <strong style="color:var(--ink)">MILE 1–3</strong> · net downhill — do NOT bank time, hold 6:30<br>
+          <strong style="color:var(--ink)">MILE 9–11</strong> · John Reid Rd drag. The race is won or lost here<br>
+          <strong style="color:var(--ink)">MILE 12–13.1</strong> · fast drop to the coast. Spend everything<br>
+          <strong style="color:var(--ink)">START PEN</strong> · 60,000 runners. Honest predicted time or you weave
         </div>
       </div>
     </div>
@@ -2149,7 +2157,7 @@ footer {
       </div>
       <div class="card">
         <div class="card-detail" style="line-height:1.7">
-          <strong style="color:var(--ink)">5 phases.</strong> Marathon performance (sub-2:55 Warsaw) sets the runway. The aesthetic build happens in two windows: skin/teeth/feet routine locks in NOW, the muscle build happens POST-Warsaw. By spring 2027 (45th birthday) the package should be in place.
+          <strong style="color:var(--ink)">5 phases.</strong> Half marathon performance (sub-1:26 GNR) sets the runway. The aesthetic build happens in two windows: skin/teeth/feet routine locks in NOW, the muscle build happens POST-GNR from mid-Sep. By spring 2027 (45th birthday) the package should be in place.
         </div>
       </div>
     </div>
@@ -2274,7 +2282,7 @@ footer {
         <div class="section-meta">SEE STRENGTH TAB FOR FULL DETAIL</div>
       </div>
       <div class="card">
-        <div class="card-detail">During the marathon build → maintain. Post-Warsaw → genuine hypertrophy block, caloric surplus, heavy lifting 4×/week. Target by spring 2027 (45): visible muscle, ~6kg lean mass added, body fat ≤15%.</div>
+        <div class="card-detail">During the GNR build → 2 sessions/week, maintain and fix the push/pull imbalance. Post-GNR → genuine hypertrophy block, small surplus, lifting 3–4×/week, running down to 35–40mi. Target by spring 2027 (45): visible muscle, ~5kg lean mass added, body fat ≤15%.</div>
       </div>
     </div>
     <div class="section">
@@ -2314,8 +2322,8 @@ footer {
       <div class="card">
         <div class="card-detail" style="line-height:1.7">
           <strong style="color:var(--ink)">Today (Wk 21 start)</strong> — baseline.<br>
-          <strong style="color:var(--ink)">Pre-Warsaw (mid-Sep)</strong> — peak fitness, lean.<br>
-          <strong style="color:var(--ink)">Post-Warsaw (mid-Oct)</strong> — start of hypertrophy block.<br>
+          <strong style="color:var(--ink)">Pre-GNR (early Sep)</strong> — peak fitness, lean.<br>
+          <strong style="color:var(--ink)">Post-GNR (late Sep)</strong> — start of hypertrophy block.<br>
           <strong style="color:var(--ink)">Christmas 2026</strong> — 8 weeks into build.<br>
           <strong style="color:var(--ink)">Birthday Feb 2027</strong> — 16 weeks into build.<br>
           <strong style="color:var(--ink)">Spring 2027</strong> — peak aesthetic.
@@ -2381,7 +2389,7 @@ footer {
 
 </main>
 
-<footer style="display:none" id="appFooter">PROJECT 2:55 · Andrew Rowell · Warsaw 2026</footer>
+<footer style="display:none" id="appFooter">PROJECT 1:25 · Andrew Rowell · Great North Run 2026</footer>
 
 <!-- ============== MODALS ============== -->
 <div class="modal-bg" id="runModal">
@@ -2443,8 +2451,9 @@ footer {
     <input type="date" class="field-input" id="gymDate">
     <label class="field">Session</label>
     <select class="field-input" id="gymSession">
-      <option value="upper">Upper</option>
-      <option value="lower">Lower</option>
+      <option value="lower">Lower (A)</option>
+      <option value="upper">Upper (B)</option>
+      <option value="accessory">Accessory (C)</option>
       <option value="core">Core</option>
     </select>
     <label class="field">Exercise</label>
@@ -2679,29 +2688,16 @@ footer {
 const SUPABASE_URL = 'https://afgkkuwzhobjjbkijmjd.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFmZ2trdXd6aG9iampia2lqbWpkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc4MDI5NTEsImV4cCI6MjA5MzM3ODk1MX0.xPUXI6g5A6r-pxNIrTrpedIJDsGKBkbpxA8JMETazTc';
 
-const RACE_DATE = new Date('2026-09-27');
+const RACE_DATE = new Date('2026-09-13');
 const PLAN_START = new Date('2026-05-04');  // Wk 21 rebuild start (Wk 22 was post-London recovery walk-only)
 const TODAY = () => new Date().toISOString().slice(0, 10);
 
 // ============== DATA ==============
 const DAILY_TASKS = [];
 const WEEKLY_TASKS = [];
-const HABITS = [
-  // ===== MORNING =====
-  { id: 'skinAM', label: 'Skincare AM', meta: 'CLEANSE · C · SPF' },
-  { id: 'morningSupps', label: 'Morning Supps', meta: 'B12 · D3 · OMEGA · CREATINE · K2 · IODINE · ZINC' },
-  { id: 'creatine', label: 'Creatine 5G', meta: 'IN SMOOTHIE' },
-  { id: 'smoothie', label: 'Post-Run Smoothie', meta: '50G PROTEIN' },
-  // ===== DAYTIME =====
-  { id: 'water', label: 'Water Target', meta: '2.5–3L EASY · 3–3.5L HARD' },
-  { id: 'core', label: 'Core / Mobility', meta: '10 MIN' },
-  // ===== AFTERNOON =====
-  { id: 'shake', label: '3:30PM Shake', meta: '35G PROTEIN' },
-  // ===== EVENING =====
-  { id: 'noScreens', label: 'No Screens 9PM', meta: 'SLEEP 10–10:30PM' },
-  { id: 'skinPM', label: 'PM Glow Stack', meta: 'SKINCARE · FLOSS · FOOT CREAM' },
-  { id: 'magPM', label: 'Magnesium PM', meta: '300–400MG BEFORE BED' }
-];
+// Habits paused Aug 2026 — refocus on running + strength.
+// Historical habit data remains in Supabase; repopulate this array to switch it back on.
+const HABITS = [];
 const SUPPS_AM = [
   { id: 'b12', label: 'B12 Methylcobalamin', meta: '500 MCG' },
   { id: 'd3', label: 'Vitamin D3', meta: '4000 IU · 2000 JUN–AUG' },
@@ -2720,8 +2716,24 @@ const RACES = [
   { date: '2026-05-30', name: 'Stockholm Marathon', goal: 'walk/slow jog', type: 'easy' },
   { date: '2026-06-14', name: 'Colshaw 10K', goal: 'sub-39 · 3:54/km', type: 'race' },
   { date: '2026-07-19', name: 'Stockport 10K', goal: 'TEMPO · 6:10/mi · 38:30 max · do not race', type: 'tempo' },
-  { date: '2026-09-13', name: 'Great North Run', goal: 'MP tune-up · 4 easy + 8 MP + 1 easy', type: 'tuneup' },
-  { date: '2026-09-27', name: 'Warsaw Marathon', goal: 'A-RACE · sub-2:55', type: 'a-race' }
+  { date: '2026-08-28', name: 'Mid Cheshire 5K', goal: 'ONLY 5K PB SHOT THIS YEAR · 17:55–18:10 · Kingsley 19:15 · flat, closed roads, seeded', type: 'race' },
+  { date: '2026-09-13', name: 'Great North Run', goal: 'A-RACE · sub-1:26 · 6:30/mi · Newcastle', type: 'a-race' },
+  { date: '2026-11-29', name: 'Leeds Abbey Dash 10K', goal: 'A-RACE · sub-37:30 (36:xx ceiling) · flat out-and-back, England Athletics 10K Champs · ENTER EARLY', type: 'a-race' },
+  { date: '2026-12-20', name: 'Audley Festive 5K', goal: 'HARD EFFORT · ~18:15 · hilly village course, 11am, Audley CC ST7 8DL · sells out, enter when open', type: 'race' },
+  { date: '2027-03-28', name: 'Half Marathon · TBC', goal: 'DATE + VENUE TBC · Wilmslow the likely candidate. Purpose decided Jan: marathon rehearsal at 6:40 (recommended) or half PB attempt', type: 'tempo' },
+  { date: '2027-04-18', name: 'Spring Marathon · TBC', goal: 'RACE TBC · sub-2:55 · decide in Dec once Abbey Dash gives a real number. Manchester / London / Rotterdam / Paris', type: 'a-race' }
+];
+
+// ===== SEASON ROADMAP · Sep 2026 → Apr 2027 =====
+// Zoomed-out view. The week-by-week DAILY_PLAN only runs to GNR;
+// everything after 13 Sep is phase-level until the marathon is chosen.
+const SEASON_PHASES = [
+  { name: 'GNR Build',       range: 'NOW → 13 SEP',      miles: '50–58', focus: 'Half-specific. Threshold + HMP long runs. Lift 2×/wk, eat at maintenance.', status: 'current' },
+  { name: 'Recovery',        range: '14 → 27 SEP',       miles: '25–35', focus: 'Easy only. No quality. Lifting steps UP to 3×/wk — this is the handover.', status: 'next' },
+  { name: 'Build',           range: '28 SEP → 8 NOV',    miles: '45–50', focus: 'THE MUSCLE WINDOW. Strength + speed base. Lift 3×/wk, small surplus (+200–250). Only stretch all year where muscle can be built without robbing the running.', status: 'future' },
+  { name: '10K Sharpen',     range: '9 → 29 NOV',        miles: '45',    focus: '10K-specific reps. Lifting back to 2×. Calories to maintenance — race lean off the build.', status: 'future' },
+  { name: 'Audley + Base',   range: '30 NOV → 20 DEC',   miles: '45',    focus: 'NO taper for Audley — hilly course will not reward it. One short-rep session/wk, race it hard off a light week, then straight into marathon base. Two weeks head start on January.', status: 'future' },
+  { name: 'Marathon Block',  range: 'JAN → APR 2027',    miles: '50→70', focus: 'Sub-2:55. Lifting drops to maintenance 2×/wk. March half as rehearsal at 6:40. NOT YET WRITTEN — needs the race choosing first.', status: 'future' }
 ];
 const PLAN_WEEKS = [
   { wk: 22, start: '2026-04-27', miles: 4, lr: 'walk only', notes: 'Recovery — walks only this week' },
@@ -2738,55 +2750,79 @@ const PLAN_WEEKS = [
   { wk: 11, start: '2026-07-13', miles: 35, lr: 'Stockport 10K tempo', notes: 'Stockport Sun · race-as-tempo', deload: true },
   { wk: 10, start: '2026-07-20', miles: 47, lr: '12 easy', notes: 'Easier · post-Stockport' },
   { wk: 9,  start: '2026-07-27', miles: 33, lr: '10 easy', notes: 'DOWN WEEK · no club', deload: true },
-  { wk: 8,  start: '2026-08-03', miles: 55, lr: '16 + 8mi MP', notes: 'Block 2 · track Thu' },
-  { wk: 7,  start: '2026-08-10', miles: 61, lr: '18 + 10mi MP', notes: 'Block 2' },
-  { wk: 6,  start: '2026-08-17', miles: 60, lr: '20 + 14mi MP', notes: 'KEY MP session' },
-  { wk: 5,  start: '2026-08-24', miles: 61, lr: '23 + 12mi MP', notes: 'PEAK long run' },
-  { wk: 4,  start: '2026-08-31', miles: 60, lr: '21 + 16mi MP', notes: 'DECISIVE · sub-2:55 test' },
-  { wk: 3,  start: '2026-09-07', miles: 37, lr: 'GNR 13.1 at MP', notes: 'Great North Run tune-up' },
-  { wk: 2,  start: '2026-09-14', miles: 45, lr: '13 steady', notes: 'TAPER' },
-  { wk: 1,  start: '2026-09-21', miles: 48, lr: '4 + strides', notes: 'RACE WEEK · incl. marathon', race: true }
+  { wk: 6,  start: '2026-08-03', miles: 28, lr: '11 easy', notes: 'Holiday · heat · easy only', phase: 'GNR Build', deload: true },
+  { wk: 5,  start: '2026-08-10', miles: 50, lr: '14 + 4mi HMP', notes: 'Quality returns · Thu 4×1mi threshold', phase: 'GNR Build' },
+  { wk: 4,  start: '2026-08-17', miles: 58, lr: '16 + 8mi HMP', notes: 'PEAK · KEY half-specific session Sun', phase: 'GNR Build' },
+  { wk: 3,  start: '2026-08-24', miles: 48, lr: '13 easy', notes: 'Mid Cheshire 5K Fri · mini-taper', phase: 'GNR Build', race: true },
+  { wk: 2,  start: '2026-08-31', miles: 50, lr: '12 + 5mi HMP', notes: 'Last quality week', phase: 'GNR Build' },
+  { wk: 1,  start: '2026-09-07', miles: 38, lr: 'GNR 13.1', notes: 'TAPER · RACE WEEK · Great North Run', phase: 'GNR Build', race: true },
+  { wk: 11, start: '2026-09-14', miles: 25, lr: '7 easy', notes: 'RECOVERY · no quality · lifting steps up to 3×', phase: 'Recovery', deload: true },
+  { wk: 10, start: '2026-09-21', miles: 35, lr: '10 easy', notes: 'RECOVERY · strides return end of week', phase: 'Recovery' },
+  // ===== BUILD · the muscle window · 45–50mi =====
+  { wk: 9,  start: '2026-09-28', miles: 45, lr: '12 easy', notes: 'BUILD wk1 · quality returns · surplus starts', phase: 'Build' },
+  { wk: 8,  start: '2026-10-05', miles: 47, lr: '12 + 3 steady', notes: 'BUILD wk2', phase: 'Build' },
+  { wk: 7,  start: '2026-10-12', miles: 48, lr: '13 easy', notes: 'BUILD wk3 · hills introduced', phase: 'Build' },
+  { wk: 6,  start: '2026-10-19', miles: 50, lr: '14 + 4 steady', notes: 'BUILD wk4 · biggest week of the phase', phase: 'Build' },
+  { wk: 5,  start: '2026-10-26', miles: 42, lr: '11 easy', notes: 'BUILD wk5 · DOWN WEEK · absorb it', phase: 'Build', deload: true },
+  { wk: 4,  start: '2026-11-02', miles: 50, lr: '13 + 5 @ 10K+20s', notes: 'BUILD wk6 · last surplus week', phase: 'Build' },
+  // ===== 10K SHARPEN · lifting to 2× · calories to maintenance =====
+  { wk: 3,  start: '2026-11-09', miles: 48, lr: '12 easy', notes: '10K SHARPEN · threshold volume', phase: '10K Sharpen' },
+  { wk: 2,  start: '2026-11-16', miles: 45, lr: '11 easy', notes: '10K SHARPEN · race-pace reps', phase: '10K Sharpen' },
+  { wk: 1,  start: '2026-11-23', miles: 38, lr: 'Abbey Dash 10K', notes: 'MINI-TAPER · LEEDS ABBEY DASH SUN 29', phase: '10K Sharpen', race: true },
+  // ===== AUDLEY + EARLY BASE (wk numbers count down to Audley, 20 Dec) =====
+  { wk: 3,  start: '2026-11-30', miles: 40, lr: '11 easy', notes: 'Recover from Abbey Dash · no quality Mon–Wed', phase: 'Audley + Base' },
+  { wk: 2,  start: '2026-12-07', miles: 45, lr: '13 easy', notes: 'One short-rep session · NO taper for Audley', phase: 'Audley + Base' },
+  { wk: 1,  start: '2026-12-14', miles: 45, lr: 'Audley 5K', notes: 'Light week, not a taper · AUDLEY SUN 20 · ~18:15', phase: 'Audley + Base', race: true },
+  // ===== MARATHON BASE (wk numbers count down to spring marathon, date TBC) =====
+  { wk: 17, start: '2026-12-21', miles: 42, lr: '14 easy', notes: 'BASE · head start on January · easy volume only', phase: 'Marathon Base' },
+  { wk: 16, start: '2026-12-28', miles: 45, lr: '15 easy', notes: 'BASE · long run climbing · marathon block proper starts Jan', phase: 'Marathon Base' }
 ];
 const PACES = [
-  { label: 'Marathon', mi: '6:38', km: '4:08' },
-  { label: 'Half MP', mi: '6:25', km: '3:59' },
-  { label: 'Threshold', mi: '6:00', km: '3:44' },
-  { label: '10K', mi: '5:55', km: '3:41' },
-  { label: '5K', mi: '5:46', km: '3:35' },
+  { label: 'Half (goal)', mi: '6:30', km: '4:02' },
+  { label: 'Threshold', mi: '6:15', km: '3:53' },
+  { label: '10K', mi: '6:00', km: '3:44' },
+  { label: '5K', mi: '5:45', km: '3:34' },
+  { label: 'Rep / 800s', mi: '5:35', km: '3:28' },
   { label: 'Easy', mi: '8:00–8:30', km: '5:00–5:18' }
 ];
 
-// Strength benchmarks for marathon-build maintenance
-// Goal during build = MAINTAIN strength, not build mass
-// "Start" = honest baseline assumption for someone returning to lifting
-// "Maintain" = end-of-build target (dropping ≤10% is fine)
-// Post-Warsaw "Build" = hypertrophy block target
+// Strength benchmarks — baselines logged 10 Aug 2026 at the work gym (Technogym)
+// START   = actual measured load
+// BY GNR  = realistic target on 13 Sep at 2 sessions/week
+// BUILD ▸ = post-GNR hypertrophy block target (Oct–Dec)
+// Note: Smith machine bar is counterbalanced — track plates loaded, not absolute weight.
 const STRENGTH_BENCHMARKS = [
-  { lift: 'Bench Press', unit: 'kg × 8', start: '40', maintain: '40–45', build: '55+', why: 'Upper body durability for arm drive late in marathon.' },
-  { lift: 'Single-arm Row', unit: 'kg × 10', start: '20', maintain: '20–25', build: '30+', why: 'Upper back strength prevents shoulder roll-forward at fatigue.' },
-  { lift: 'Goblet Squat', unit: 'kg × 8', start: '24', maintain: '24–28', build: '40+', why: 'Quad + glute strength = force production efficiency.' },
-  { lift: 'Romanian Deadlift', unit: 'kg × 10', start: '40', maintain: '45–55', build: '70+', why: 'Posterior chain — fixes quad-dominant running.' },
-  { lift: 'Plank Hold', unit: 'seconds', start: '60', maintain: '90–120', build: '180+', why: 'Trunk stability — prevents form breakdown in final 10K.' },
-  { lift: 'Side Plank', unit: 'seconds each', start: '30', maintain: '45–60', build: '90+', why: 'Hip stability — prevents ITB / lateral knee issues.' },
-  { lift: 'Pull-ups', unit: 'reps', start: '3', maintain: '5–8', build: '10+', why: 'Functional upper body — durability indicator.' },
-  { lift: 'Push-ups', unit: 'reps', start: '15', maintain: '25–30', build: '40+', why: 'Press strength + core stability under fatigue.' }
+  { lift: 'High Row', unit: 'kg × 10', start: '10', maintain: '20', build: '30+', why: 'Priority lift. Pulling is 4× behind pressing — this is the imbalance to fix first.' },
+  { lift: 'Mid Pull', unit: 'kg × 10', start: '7.5', maintain: '15', build: '25+', why: 'Mid-back. Directly counters desk posture and shoulder roll-forward at fatigue.' },
+  { lift: 'Chest Press', unit: 'kg × 10', start: '30', maintain: '37.5', build: '50+', why: 'Already the strongest lift. Progress it slowly — pulls need to catch up first.' },
+  { lift: 'Smith Bench', unit: 'kg + bar × 8', start: '20', maintain: '30', build: '45+', why: 'Press strength and upper-body durability under fatigue.' },
+  { lift: 'Smith Seated Press', unit: 'kg + bar × 8', start: '15', maintain: '22.5', build: '35+', why: 'Overhead press — shoulder health and arm drive late in a race.' },
+  { lift: 'Smith Squat', unit: 'kg + bar × 6', start: '20', maintain: '40', build: '60+', why: 'Force production. Improves running economy without adding bulk.' },
+  { lift: 'Seated Leg Curl', unit: 'kg × 10', start: '25', maintain: '40', build: '55+', why: 'Hamstring strength — the single best insurance against running injury.' },
+  { lift: 'DB Split Squat', unit: 'kg/hand × 8', start: '10', maintain: '16', build: '24+', why: 'Single-leg strength. Running is a one-legged sport; train it that way.' },
+  { lift: 'Lateral Raise', unit: 'kg/hand × 12', start: '6', maintain: '8', build: '12+', why: 'Shoulder width — the biggest visual return per unit of effort.' },
+  { lift: 'Plank Hold', unit: 'seconds', start: '60', maintain: '90–120', build: '180+', why: 'Trunk stability — prevents form breakdown in the final 5K.' }
 ];
 const SESSIONS = [
-  { name: '5×1km @ 5K Pace', detail: '90s float between · Phase 1–2', tag: 'speed' },
-  { name: '6×800m @ 5K Pace', detail: '90s float · Pre-Mid Cheshire', tag: 'speed' },
-  { name: '4×1mi @ Threshold', detail: '6:00/mi · 90s jog', tag: 'thresh' },
-  { name: '5×1mi @ 5:55', detail: '75s jog · Pre-Colshaw', tag: 'speed' },
-  { name: '4×3mi @ MP', detail: '1mi float at easy+15s · Phase 3–4', tag: 'mp' },
-  { name: '5×2mi @ MP', detail: '1km float · Phase 3–4', tag: 'mp' },
-  { name: '3×4mi @ MP', detail: '1mi float · Phase 3–4', tag: 'mp' },
-  { name: '6×1mi @ Threshold', detail: '60s jog · Phase 3–4 maintenance', tag: 'thresh' },
-  { name: '10×800m Yasso (2:55)', detail: 'Wk 8 fitness check', tag: 'spec' },
-  { name: 'MP-in-LR', detail: '4mi MP/16mi LR → 16mi MP/22mi LR', tag: 'mp' }
+  { name: '4×1mi @ Threshold', detail: '6:15/mi · 90s jog · Wk 5 reintroduction', tag: 'thresh' },
+  { name: '5×1mi @ Threshold', detail: '6:15/mi · 75s jog · Wk 4 peak', tag: 'thresh' },
+  { name: '3×2mi @ 6:25', detail: '90s jog · sustained threshold, Wk 2', tag: 'thresh' },
+  { name: '6×800m @ 5:35', detail: '90s float · top-end sharpener', tag: 'speed' },
+  { name: '6×400m @ 5:20', detail: 'Full recovery · pre-5K primer only', tag: 'speed' },
+  { name: '14mi · 4mi @ HMP', detail: '6:30/mi block at the end · Wk 5', tag: 'mp' },
+  { name: '16mi · 8mi @ HMP', detail: 'THE session. 4 easy + 8 at 6:30 + 4 easy · Wk 4', tag: 'mp' },
+  { name: '12mi · 5mi @ HMP', detail: 'Final long quality touch · Wk 2', tag: 'mp' },
+  { name: 'Mid Cheshire 5K', detail: 'Fri 28 Aug 19:15 · Kingsley · sub-18 target', tag: 'spec' },
+  { name: '3mi + strides', detail: 'Race-week shake-out · 4×20s', tag: 'spec' }
 ];
 const NUT_PHASES = [
   { name: 'Cut', range: 'APR–MID JUN', kcal: '2,400–2,500', kcalLow: 2400, kcalHigh: 2500, proteinTarget: 170, detail: 'Lean phase. Push protein to upper end (170g).', start: '2026-04-26', end: '2026-06-15' },
   { name: 'Maintain', range: 'MID JUN–MID JUL', kcal: '2,400–2,600', kcalLow: 2400, kcalHigh: 2600, proteinTarget: 160, detail: 'Hold body comp. Through deload week.', start: '2026-06-16', end: '2026-07-19' },
-  { name: 'Fuel', range: 'LATE JUL–SEP', kcal: '2,500–2,800', kcalLow: 2500, kcalHigh: 2800, proteinTarget: 155, detail: 'Marathon fuel. Cals up, lean stays.', start: '2026-07-20', end: '2026-09-27' }
+  { name: 'Fuel', range: '20 JUL–13 SEP', kcal: '2,500–2,700', kcalLow: 2500, kcalHigh: 2700, proteinTarget: 160, detail: 'Maintenance through GNR. Do NOT cut before the race.', start: '2026-07-20', end: '2026-09-13' },
+  { name: 'Reset', range: '14–27 SEP', kcal: '2,500–2,700', kcalLow: 2500, kcalHigh: 2700, proteinTarget: 165, detail: 'Post-GNR recovery. Maintenance. Lifting steps up to 3×/wk.', start: '2026-09-14', end: '2026-09-27' },
+  { name: 'Build', range: '28 SEP–8 NOV', kcal: '2,800–3,000', kcalLow: 2800, kcalHigh: 3000, proteinTarget: 175, detail: 'THE MUSCLE WINDOW. Small surplus +200–250. Protein up, running at 45–50mi.', start: '2026-09-28', end: '2026-11-08' },
+  { name: 'Race Lean', range: '9 NOV–20 DEC', kcal: '2,600–2,800', kcalLow: 2600, kcalHigh: 2800, proteinTarget: 170, detail: 'Back to maintenance for Abbey Dash + Audley. Every extra kg costs ~8–10s over 10K.', start: '2026-11-09', end: '2026-12-20' },
+  { name: 'Marathon Fuel', range: 'JAN–APR 2027', kcal: '2,800–3,200', kcalLow: 2800, kcalHigh: 3200, proteinTarget: 165, detail: 'Mileage climbing 50→70. Fuel the block. Lifting drops to 2×/wk maintenance.', start: '2027-01-01', end: '2027-04-30' }
 ];
 const DAY_PLAN = [
   { time: '5:30AM', meal: 'Wake', detail: 'Water + magnesium' },
@@ -2825,8 +2861,8 @@ const HYDRO = [
 const GLOW_PHASES = [
   { name: 'Foundation', range: '4 MAY → 14 JUN', detail: 'Marathon rebuild + glow-up basics. Skin routine locked in. Teeth strips week 1. Foot care weekly. Habits restart.', start: '2026-05-04', end: '2026-06-14' },
   { name: 'Refine', range: '15 JUN → 19 JUL', detail: 'Marathon build + maintenance. Skin actives ramp. Posture daily. Brows monthly. Bloods drawn.', start: '2026-06-15', end: '2026-07-19' },
-  { name: 'Peak Form', range: '20 JUL → 27 SEP', detail: 'Marathon peak + taper. Maintenance only — no new actives, no new products. Photos pre-Warsaw.', start: '2026-07-20', end: '2026-09-27' },
-  { name: 'Recovery', range: '28 SEP → 11 OCT', detail: 'Post-Warsaw. Body resets. Foot care intensive. Sleep priority. Massage week 1+2.', start: '2026-09-28', end: '2026-10-11' },
+  { name: 'Peak Form', range: '20 JUL → 13 SEP', detail: 'Race peak + taper. Maintenance only — no new actives, no new products. Photos pre-GNR.', start: '2026-07-20', end: '2026-09-13' },
+  { name: 'Recovery', range: '14 SEP → 27 SEP', detail: 'Post-GNR. Body resets. Foot care intensive. Sleep priority. Massage week 1+2. Hypertrophy block starts after.', start: '2026-09-14', end: '2026-09-27' },
   { name: 'Hypertrophy + Glow', range: '12 OCT → MARCH 2027', detail: 'The big build. Caloric surplus. Heavy lifting 4×/wk. Mass + visible muscle. Aesthetic peak by birthday.', start: '2026-10-12', end: '2027-03-31' }
 ];
 const UPPER = [
@@ -3134,87 +3170,225 @@ const DAILY_PLAN = {
     6: { name: 'Easy 6mi', detail: '8:15/mi.', type: 'easy' },
     0: { name: 'Long 10mi', detail: '8:15/mi easy. Keep it gentle.', type: 'long' }
   },
-  // ============ WK 8 · w/c 2026-08-03 · BLOCK 2 ============
+  // ============ WK 6 · w/c 2026-08-03 · HOLIDAY · heat · 28mi actual ============
   '2026-08-03': {
-    1: { name: 'Easy 6mi', detail: '8:15/mi.', type: 'easy' },
-    2: { name: 'Stoke Club 7mi', detail: 'Coach-led. + Strength AM.', type: 'quality' },
-    3: { name: 'Recovery 8mi', detail: '8:30/mi.', type: 'easy' },
-    4: { name: 'Track session 8mi', detail: 'Coach-led track session.', type: 'quality' },
-    5: { name: 'Rest', detail: 'Core/prehab (Session B).', type: 'rest' },
-    6: { name: 'Easy 10mi', detail: '8:15/mi.', type: 'easy' },
-    0: { name: 'Long 16mi · 8mi MP', detail: '7mi easy 8:15 + 8mi at MP (6:38) + 1mi cool.', type: 'long' }
+    1: { name: 'Rest', detail: 'Holiday. Travel/heat.', type: 'rest' },
+    2: { name: 'Rest', detail: 'Holiday. Travel/heat.', type: 'rest' },
+    3: { name: 'Easy 5.7mi', detail: '8:05/mi in heat.', type: 'easy' },
+    4: { name: 'Easy 6mi', detail: '8:05/mi in heat.', type: 'easy' },
+    5: { name: 'Rest', detail: 'Travel home.', type: 'rest' },
+    6: { name: 'parkrun 3.1mi + 2mi', detail: 'Ran 19:31 (6:19/mi) + WU/CD.', type: 'easy' },
+    0: { name: 'Long 11.3mi', detail: '8:08/mi easy.', type: 'long' }
   },
-  // ============ WK 7 · w/c 2026-08-10 · BLOCK 2 ============
+  // ============ WK 5 · w/c 2026-08-10 · QUALITY RETURNS · 50mi ============
   '2026-08-10': {
-    1: { name: 'Easy 7mi', detail: '8:15/mi.', type: 'easy' },
-    2: { name: 'Stoke Club 7mi', detail: 'Coach-led. + Strength AM.', type: 'quality' },
-    3: { name: 'Recovery 9mi', detail: '8:30/mi.', type: 'easy' },
-    4: { name: 'Tempo 8mi', detail: '8mi total: 1mi WU + 6mi at threshold (6:00) + 1mi CD.', type: 'quality' },
-    5: { name: 'Rest', detail: 'Core/prehab (Session B).', type: 'rest' },
-    6: { name: 'Easy 12mi', detail: '8:15/mi.', type: 'easy' },
-    0: { name: 'Long 18mi · 10mi MP', detail: '7mi easy 8:15 + 10mi at MP (6:38) + 1mi cool.', type: 'long' }
-  },
-  // ============ WK 6 · w/c 2026-08-17 · BLOCK 2 · KEY MP ============
-  '2026-08-17': {
-    1: { name: 'Easy 5mi', detail: '8:15/mi.', type: 'easy' },
-    2: { name: 'Stoke Club 7mi', detail: 'Coach-led. + Strength AM.', type: 'quality' },
-    3: { name: 'Recovery 8mi', detail: '8:30/mi.', type: 'easy' },
-    4: { name: 'Easy 12mi', detail: '8:15/mi medium-long.', type: 'easy' },
-    5: { name: 'Rest', detail: 'Core/prehab (Session B).', type: 'rest' },
-    6: { name: 'Easy 8mi', detail: '8:15/mi.', type: 'easy' },
-    0: { name: 'Long 20mi · 14mi MP', detail: '3mi easy 8:15 + 14mi at MP (6:38) + 3mi easy. KEY marathon-specific session.', type: 'long' }
-  },
-  // ============ WK 5 · w/c 2026-08-24 · PEAK long run ============
-  '2026-08-24': {
-    1: { name: 'Easy 5mi', detail: '8:15/mi.', type: 'easy' },
-    2: { name: 'Stoke Club 7mi', detail: 'Coach-led. + Strength AM.', type: 'quality' },
-    3: { name: 'Easy 9mi', detail: '8:15/mi.', type: 'easy' },
-    4: { name: 'Easy 9mi', detail: '8:15/mi.', type: 'easy' },
-    5: { name: 'Rest', detail: 'Core/prehab (Session B).', type: 'rest' },
-    6: { name: 'Easy 8mi + strides', detail: '8:15/mi + 4×75m strides.', type: 'easy' },
-    0: { name: 'Long 23mi · 12mi MP', detail: '8mi easy 8:15 + 12mi at MP (6:38) + 3mi easy. Longest run of the block.', type: 'long' }
-  },
-  // ============ WK 4 · w/c 2026-08-31 · DECISIVE ============
-  '2026-08-31': {
-    1: { name: 'Easy 5mi', detail: '8:15/mi.', type: 'easy' },
-    2: { name: 'Stoke Club 7mi', detail: 'Coach-led. + Strength AM.', type: 'quality' },
-    3: { name: 'Recovery 8mi', detail: '8:30/mi.', type: 'easy' },
-    4: { name: 'Easy 12mi', detail: '8:15/mi medium-long.', type: 'easy' },
-    5: { name: 'Rest', detail: 'Core/prehab (Session B). Eat big — decisive week.', type: 'rest' },
-    6: { name: 'Easy 7mi + strides', detail: '8:15/mi + 4×75m strides.', type: 'easy' },
-    0: { name: 'Long 21mi · 16mi MP — DECISIVE', detail: '3mi easy 8:15 + 16mi at MP (6:38) + 2mi easy. If you nail this, sub-2:55 is on.', type: 'long' }
-  },
-  // ============ WK 3 · w/c 2026-09-07 · GNR tune-up ============
-  '2026-09-07': {
-    1: { name: 'Rest', detail: 'Core/prehab. Recovery from decisive LR.', type: 'rest' },
-    2: { name: 'Stoke Club 7mi', detail: 'Coach-led — lighter, taper. + Strength AM.', type: 'quality' },
+    1: { name: 'Easy 6mi', detail: '8:15/mi. Ease back in after 28mi week.', type: 'easy' },
+    2: { name: 'Stoke Club 7mi', detail: 'Coach-led. + Strength A (lower) after.', type: 'quality' },
     3: { name: 'Recovery 7mi', detail: '8:30/mi.', type: 'easy' },
-    4: { name: 'Easy 7mi', detail: '8:15/mi.', type: 'easy' },
-    5: { name: 'Rest', detail: 'Off legs. Travel prep.', type: 'rest' },
-    6: { name: 'Easy 3mi + strides', detail: '8:30/mi shake-out + 4×75m strides. Travel to Newcastle.', type: 'easy' },
-    0: { name: 'GREAT NORTH RUN', detail: '13.1mi at goal MP (6:38) — CONTROLLED, not all-out. Dress rehearsal: gels, kit, race logistics.', type: 'race' }
+    4: { name: '4×1mi @ Threshold', detail: '8mi total: 2mi WU + 4×1mi at 6:15 (90s jog) + 2mi CD. First real quality in 5 weeks — do not overcook it.', type: 'quality' },
+    5: { name: 'Rest', detail: 'Strength B (upper). No running.', type: 'rest' },
+    6: { name: 'Easy 8mi', detail: '8:15/mi + 4×20s strides.', type: 'easy' },
+    0: { name: 'Long 14mi · 4mi HMP', detail: '9mi easy 8:15 + 4mi at 6:30 + 1mi cool.', type: 'long' }
   },
-  // ============ WK 2 · w/c 2026-09-14 · TAPER ============
-  '2026-09-14': {
-    1: { name: 'Easy 5mi', detail: '8:15/mi.', type: 'easy' },
-    2: { name: 'Stoke Club 7mi', detail: 'Coach-led — lighter, taper. + Strength AM.', type: 'quality' },
+  // ============ WK 4 · w/c 2026-08-17 · PEAK · KEY SESSION SUN · 58mi ============
+  '2026-08-17': {
+    1: { name: 'Easy 7mi', detail: '8:15/mi.', type: 'easy' },
+    2: { name: 'Stoke Club 7mi', detail: 'Coach-led. + Strength A (lower) after.', type: 'quality' },
+    3: { name: 'Recovery 8mi', detail: '8:30/mi.', type: 'easy' },
+    4: { name: '5×1mi @ Threshold', detail: '9mi total: 2mi WU + 5×1mi at 6:15 (75s jog) + 2mi CD.', type: 'quality' },
+    5: { name: 'Rest', detail: 'Strength B (upper). No running.', type: 'rest' },
+    6: { name: 'Easy 11mi', detail: '8:15/mi medium-long.', type: 'easy' },
+    0: { name: 'Long 16mi · 8mi HMP — KEY', detail: '4mi easy 8:15 + 8mi at 6:30 + 4mi easy. THE session of the block. Nail this and sub-1:26 is banked.', type: 'long' }
+  },
+  // ============ WK 3 · w/c 2026-08-24 · MID CHESHIRE 5K FRI · 48mi ============
+  '2026-08-24': {
+    1: { name: 'Easy 6mi', detail: '8:30/mi recovery from key session.', type: 'easy' },
+    2: { name: '6×400m sharp', detail: '6mi total: 2mi WU + 6×400m at 5:20/mi pace, full recovery + 2mi CD. Primer, not a session.', type: 'quality' },
     3: { name: 'Recovery 6mi', detail: '8:30/mi.', type: 'easy' },
-    4: { name: 'Easy 8mi', detail: '8:15/mi.', type: 'easy' },
-    5: { name: 'Rest', detail: 'Light mobility only.', type: 'rest' },
-    6: { name: 'Easy 6mi + strides', detail: '8:15/mi + 4×75m strides.', type: 'easy' },
-    0: { name: 'Long 13mi', detail: '8:15/mi steady.', type: 'long' }
+    4: { name: 'Easy 4mi + strides', detail: '8:30/mi + 4×20s. Legs sharp, not tired.', type: 'easy' },
+    5: { name: 'MID CHESHIRE 5K', detail: '10mi total: 2mi WU + 5K flat out (target 17:55–18:10) + 2mi CD. Kingsley, 19:15 start, WA6 8HL. Seeded waves.', type: 'race' },
+    6: { name: 'Recovery 4mi', detail: '8:45/mi very easy. Shake the race out.', type: 'easy' },
+    0: { name: 'Long 12mi', detail: '8:15/mi easy. No quality — you raced Friday.', type: 'long' }
   },
-  // ============ WK 1 · w/c 2026-09-21 · RACE WEEK ============
+  // ============ WK 2 · w/c 2026-08-31 · LAST QUALITY WEEK · 50mi ============
+  '2026-08-31': {
+    1: { name: 'Easy 6mi', detail: '8:15/mi.', type: 'easy' },
+    2: { name: 'Stoke Club 7mi', detail: 'Coach-led. + Strength A (lower) after.', type: 'quality' },
+    3: { name: 'Recovery 7mi', detail: '8:30/mi.', type: 'easy' },
+    4: { name: '3×2mi @ 6:25', detail: '9mi total: 2mi WU + 3×2mi at 6:25 (90s jog) + 1mi CD. Last hard session.', type: 'quality' },
+    5: { name: 'Rest', detail: 'Strength B (upper) — final loaded session before taper.', type: 'rest' },
+    6: { name: 'Easy 9mi', detail: '8:15/mi.', type: 'easy' },
+    0: { name: 'Long 12mi · 5mi HMP', detail: '6mi easy 8:15 + 5mi at 6:30 + 1mi cool. Final pace touch.', type: 'long' }
+  },
+  // ============ WK 1 · w/c 2026-09-07 · TAPER · GREAT NORTH RUN ============
+  '2026-09-07': {
+    1: { name: 'Easy 6mi', detail: '8:15/mi.', type: 'easy' },
+    2: { name: '6×2min @ HMP', detail: '6mi total: 2mi WU + 6×2min at 6:30 (2min jog) + 1mi CD. Sharpen, do not tire.', type: 'quality' },
+    3: { name: 'Recovery 5mi', detail: '8:30/mi.', type: 'easy' },
+    4: { name: 'Easy 5mi', detail: '8:15/mi. Bodyweight core only — no loaded lifting this week.', type: 'easy' },
+    5: { name: 'Rest', detail: 'Off legs. Travel to Newcastle. Kit and pen number checked.', type: 'rest' },
+    6: { name: 'Easy 3mi + strides', detail: '8:30/mi shake-out + 4×20s strides.', type: 'easy' },
+    0: { name: 'GREAT NORTH RUN', detail: 'A-RACE · 13.1mi at 6:30/mi = 1:25:12. Net downhill but NOT flat — long drag up John Reid Rd miles 9–11, then fast drop to the coast. Do not bank time on the early downhill.', type: 'race' }
+  },
+  '2026-09-14': {
+    1: { name: 'Rest', detail: 'Day after GNR. Walk only. Eat properly.', type: 'rest' },
+    2: { name: 'Easy 4mi', detail: '9:00/mi. Shuffle. If anything hurts, walk instead.', type: 'easy' },
+    3: { name: 'Easy 5mi', detail: '8:45/mi.', type: 'easy' },
+    4: { name: 'Rest', detail: 'Strength A (lower) — light. First proper lift back.', type: 'rest' },
+    5: { name: 'Easy 4mi', detail: '8:45/mi.', type: 'easy' },
+    6: { name: 'Easy 5mi', detail: '8:30/mi.', type: 'easy' },
+    0: { name: 'Easy 7mi', detail: '8:30/mi. No long run yet — resist it.', type: 'easy' }
+  },
+  // ============ RECOVERY 2 · w/c 2026-09-21 · 35mi ============
   '2026-09-21': {
-    1: { name: 'Rest', detail: 'Full rest. Legs up.', type: 'rest' },
-    2: { name: 'Easy 4mi', detail: '8:30/mi very easy.', type: 'easy' },
-    3: { name: '8mi · 2mi MP', detail: '8mi total: 5mi easy 8:15 + 2mi at MP (6:38) + 1mi easy. Last pace touch.', type: 'quality' },
-    4: { name: 'Easy 6mi', detail: '8:15/mi.', type: 'easy' },
-    5: { name: 'Easy 4mi + strides', detail: '8:30/mi + 4×75m strides. Prime the legs.', type: 'easy' },
-    6: { name: 'Rest', detail: 'Off legs. Hydrate, carb load. Travel.', type: 'rest' },
-    0: { name: 'WARSAW MARATHON', detail: 'A-RACE · sub-2:55 · target 6:38/mi. Trust the build.', type: 'race' }
+    1: { name: 'Rest', detail: 'Strength B (upper).', type: 'rest' },
+    2: { name: 'Easy 6mi + strides', detail: '8:30/mi + 4×20s. First turnover since the race.', type: 'easy' },
+    3: { name: 'Easy 6mi', detail: '8:30/mi.', type: 'easy' },
+    4: { name: 'Easy 5mi', detail: '8:30/mi. Strength A after.', type: 'easy' },
+    5: { name: 'Rest', detail: 'Strength C (accessory) optional.', type: 'rest' },
+    6: { name: 'Easy 8mi', detail: '8:15/mi + 4×20s strides.', type: 'easy' },
+    0: { name: 'Long 10mi', detail: '8:15/mi. Long run returns.', type: 'long' }
+  },
+  // ============ BUILD 1 · w/c 2026-09-28 · 45mi · SURPLUS STARTS ============
+  '2026-09-28': {
+    1: { name: 'Easy 4mi', detail: '8:30/mi. Strength A after.', type: 'easy' },
+    2: { name: 'Stoke Club 7mi', detail: 'Coach-led. First hard group session since GNR.', type: 'quality' },
+    3: { name: 'Recovery 6mi', detail: '8:30/mi.', type: 'easy' },
+    4: { name: '5×1km @ 6:00', detail: '8mi total: 2mi WU + 5×1km at 10K pace (90s jog) + 2mi CD. Strength B after or Fri.', type: 'quality' },
+    5: { name: 'Rest', detail: 'Strength B (upper). Lifting is 3×/wk now.', type: 'rest' },
+    6: { name: 'Easy 8mi', detail: '8:15/mi.', type: 'easy' },
+    0: { name: 'Long 12mi', detail: '8:15/mi easy.', type: 'long' }
+  },
+  // ============ BUILD 2 · w/c 2026-10-05 · 47mi ============
+  '2026-10-05': {
+    1: { name: 'Easy 5mi', detail: '8:30/mi. Strength A after.', type: 'easy' },
+    2: { name: 'Stoke Club 7mi', detail: 'Coach-led.', type: 'quality' },
+    3: { name: 'Recovery 6mi', detail: '8:30/mi.', type: 'easy' },
+    4: { name: '4×1mi @ 6:15', detail: '9mi total: 2mi WU + 4×1mi threshold (90s jog) + 2mi CD.', type: 'quality' },
+    5: { name: 'Rest', detail: 'Strength B (upper).', type: 'rest' },
+    6: { name: 'Easy 8mi', detail: '8:15/mi + strides. Strength C optional.', type: 'easy' },
+    0: { name: 'Long 12mi · 3 steady', detail: '9mi easy + 3mi at 7:15/mi.', type: 'long' }
+  },
+  // ============ BUILD 3 · w/c 2026-10-12 · 48mi · HILLS ============
+  '2026-10-12': {
+    1: { name: 'Easy 5mi', detail: '8:30/mi. Strength A after.', type: 'easy' },
+    2: { name: 'Stoke Club 7mi', detail: 'Coach-led.', type: 'quality' },
+    3: { name: 'Recovery 7mi', detail: '8:30/mi.', type: 'easy' },
+    4: { name: '8×90s hills', detail: '8mi total: 2mi WU + 8×90s hard uphill, jog down + 2mi CD. Strength without a barbell — builds the same force.', type: 'quality' },
+    5: { name: 'Rest', detail: 'Strength B (upper).', type: 'rest' },
+    6: { name: 'Easy 8mi', detail: '8:15/mi. Strength C optional.', type: 'easy' },
+    0: { name: 'Long 13mi', detail: '8:15/mi easy.', type: 'long' }
+  },
+  // ============ BUILD 4 · w/c 2026-10-19 · 50mi · PHASE PEAK ============
+  '2026-10-19': {
+    1: { name: 'Easy 6mi', detail: '8:30/mi. Strength A after.', type: 'easy' },
+    2: { name: 'Stoke Club 7mi', detail: 'Coach-led.', type: 'quality' },
+    3: { name: 'Recovery 7mi', detail: '8:30/mi.', type: 'easy' },
+    4: { name: '5×1mi @ 6:15', detail: '10mi total: 2mi WU + 5×1mi threshold (75s jog) + 2mi CD.', type: 'quality' },
+    5: { name: 'Rest', detail: 'Strength B (upper).', type: 'rest' },
+    6: { name: 'Easy 6mi', detail: '8:15/mi.', type: 'easy' },
+    0: { name: 'Long 14mi · 4 steady', detail: '10mi easy + 4mi at 7:15/mi.', type: 'long' }
+  },
+  // ============ BUILD 5 · w/c 2026-10-26 · 42mi · DOWN WEEK ============
+  '2026-10-26': {
+    1: { name: 'Rest', detail: 'Strength A (lower). Down week — take it properly.', type: 'rest' },
+    2: { name: 'Easy 7mi + strides', detail: '8:30/mi + 6×20s. No club session this week.', type: 'easy' },
+    3: { name: 'Recovery 8mi', detail: '8:30/mi.', type: 'easy' },
+    4: { name: '6×400m @ 5:35', detail: '7mi total: 2mi WU + 6×400 (full recovery) + 2mi CD. Sharp, short, easy.', type: 'quality' },
+    5: { name: 'Rest', detail: 'Strength B (upper). This is the week to push the lifts.', type: 'rest' },
+    6: { name: 'Easy 9mi', detail: '8:15/mi.', type: 'easy' },
+    0: { name: 'Long 11mi', detail: '8:15/mi easy.', type: 'long' }
+  },
+  // ============ BUILD 6 · w/c 2026-11-02 · 50mi · LAST SURPLUS WEEK ============
+  '2026-11-02': {
+    1: { name: 'Easy 6mi', detail: '8:30/mi. Strength A after.', type: 'easy' },
+    2: { name: 'Stoke Club 7mi', detail: 'Coach-led.', type: 'quality' },
+    3: { name: 'Recovery 7mi', detail: '8:30/mi.', type: 'easy' },
+    4: { name: '3×2mi @ 6:20', detail: '10mi total: 2mi WU + 3×2mi (90s jog) + 2mi CD.', type: 'quality' },
+    5: { name: 'Rest', detail: 'Strength B — last week at 3×. Drops to 2× from Monday.', type: 'rest' },
+    6: { name: 'Easy 7mi', detail: '8:15/mi.', type: 'easy' },
+    0: { name: 'Long 13mi · 5 @ 6:15', detail: '7mi easy + 5mi at threshold + 1mi cool.', type: 'long' }
+  },
+  // ============ 10K SHARPEN 1 · w/c 2026-11-09 · 48mi · MAINTENANCE CALS ============
+  '2026-11-09': {
+    1: { name: 'Easy 6mi', detail: '8:30/mi. Calories back to maintenance from today.', type: 'easy' },
+    2: { name: 'Stoke Club 7mi', detail: 'Coach-led. Strength A after — 2×/wk now.', type: 'quality' },
+    3: { name: 'Recovery 7mi', detail: '8:30/mi.', type: 'easy' },
+    4: { name: '6×1mi @ 6:15', detail: '11mi total: 2mi WU + 6×1mi threshold (60s jog) + 2mi CD. Biggest threshold session of the year.', type: 'quality' },
+    5: { name: 'Rest', detail: 'Strength B (upper).', type: 'rest' },
+    6: { name: 'Easy 5mi', detail: '8:15/mi + strides.', type: 'easy' },
+    0: { name: 'Long 12mi', detail: '8:15/mi easy.', type: 'long' }
+  },
+  // ============ 10K SHARPEN 2 · w/c 2026-11-16 · 45mi ============
+  '2026-11-16': {
+    1: { name: 'Easy 6mi', detail: '8:30/mi.', type: 'easy' },
+    2: { name: 'Stoke Club 7mi', detail: 'Coach-led. Strength A after.', type: 'quality' },
+    3: { name: 'Recovery 6mi', detail: '8:30/mi.', type: 'easy' },
+    4: { name: '5×1km @ 5:55', detail: '9mi total: 2mi WU + 5×1km at goal 10K pace (90s jog) + 2mi CD. Rehearse the pace.', type: 'quality' },
+    5: { name: 'Rest', detail: 'Strength B (upper) — last loaded upper before the race.', type: 'rest' },
+    6: { name: 'Easy 6mi', detail: '8:15/mi + strides.', type: 'easy' },
+    0: { name: 'Long 11mi', detail: '8:15/mi easy.', type: 'long' }
+  },
+  // ============ 10K RACE WEEK · w/c 2026-11-23 · 38mi · ABBEY DASH ============
+  '2026-11-23': {
+    1: { name: 'Easy 6mi', detail: '8:30/mi.', type: 'easy' },
+    2: { name: '4×1km @ 5:55', detail: '7mi total: 2mi WU + 4×1km + 2mi CD. Sharpen, do not tire.', type: 'quality' },
+    3: { name: 'Recovery 5mi', detail: '8:30/mi.', type: 'easy' },
+    4: { name: 'Easy 5mi', detail: '8:30/mi. Bodyweight core only — no loaded lifting.', type: 'easy' },
+    5: { name: 'Rest', detail: 'Off legs. Travel plan for Leeds sorted.', type: 'rest' },
+    6: { name: 'Easy 3mi + strides', detail: '8:30/mi + 4×20s.', type: 'easy' },
+    0: { name: 'LEEDS ABBEY DASH 10K', detail: 'A-RACE · 12mi total: 2.5mi WU + 10K flat out + 1.5mi CD. Target sub-37:30 (5:59/mi), 36:xx on a good day. Flat out-and-back from Wellington St. England Athletics Champs field — use it, do not chase it in mile 1.', type: 'race' }
+  },
+  // ============ RECOVER + BASE · w/c 2026-11-30 · 40mi ============
+  '2026-11-30': {
+    1: { name: 'Rest', detail: 'Day after a hard 10K. Walk only.', type: 'rest' },
+    2: { name: 'Easy 7mi', detail: '8:45/mi. Strength A back on.', type: 'easy' },
+    3: { name: 'Easy 6mi', detail: '8:30/mi.', type: 'easy' },
+    4: { name: 'Easy 8mi + strides', detail: '8:30/mi + 4×20s. No session this week.', type: 'easy' },
+    5: { name: 'Rest', detail: 'Strength B (upper).', type: 'rest' },
+    6: { name: 'Easy 8mi', detail: '8:15/mi.', type: 'easy' },
+    0: { name: 'Long 11mi', detail: '8:15/mi easy. Base building starts here.', type: 'long' }
+  },
+  // ============ BASE + SHORT REPS · w/c 2026-12-07 · 45mi ============
+  '2026-12-07': {
+    1: { name: 'Easy 6mi', detail: '8:30/mi. Strength A after.', type: 'easy' },
+    2: { name: 'Stoke Club 7mi', detail: 'Coach-led.', type: 'quality' },
+    3: { name: 'Recovery 6mi', detail: '8:30/mi.', type: 'easy' },
+    4: { name: '8×600m @ 5:40', detail: '8mi total: 2mi WU + 8×600 (75s jog) + 2mi CD. Keeps the top end alive through the base weeks.', type: 'quality' },
+    5: { name: 'Rest', detail: 'Strength B (upper).', type: 'rest' },
+    6: { name: 'Easy 5mi', detail: '8:15/mi.', type: 'easy' },
+    0: { name: 'Long 13mi', detail: '8:15/mi easy.', type: 'long' }
+  },
+  // ============ AUDLEY WEEK · w/c 2026-12-14 · 45mi · NO TAPER ============
+  '2026-12-14': {
+    1: { name: 'Easy 6mi', detail: '8:30/mi. Strength A after.', type: 'easy' },
+    2: { name: 'Stoke Club 7mi', detail: 'Coach-led. Run it as normal — Audley is not worth a taper.', type: 'quality' },
+    3: { name: 'Recovery 6mi', detail: '8:30/mi.', type: 'easy' },
+    4: { name: 'Easy 6mi + strides', detail: '8:30/mi + 6×20s.', type: 'easy' },
+    5: { name: 'Rest', detail: 'Strength B (upper). Light legs.', type: 'rest' },
+    6: { name: 'Easy 5mi', detail: '8:30/mi. Easy day before.', type: 'easy' },
+    0: { name: 'AUDLEY FESTIVE 5K', detail: 'HARD EFFORT · 15mi total: 2mi WU + 5K hard (~18:15) + 10mi steady after. Hilly village course, 11am, Audley CC ST7 8DL. Race it honestly but the course will not give a PB — the long run after is the real point.', type: 'race' }
+  },
+  // ============ BASE 1 · w/c 2026-12-21 · 42mi ============
+  '2026-12-21': {
+    1: { name: 'Easy 5mi', detail: '8:45/mi recovery.', type: 'easy' },
+    2: { name: 'Easy 7mi', detail: '8:30/mi + strides.', type: 'easy' },
+    3: { name: 'Rest', detail: 'Christmas Eve. Strength A if it fits.', type: 'rest' },
+    4: { name: 'Easy 6mi', detail: '8:30/mi. Christmas Day run — get it done early.', type: 'easy' },
+    5: { name: 'Easy 6mi', detail: '8:30/mi.', type: 'easy' },
+    6: { name: 'Easy 4mi', detail: '8:30/mi.', type: 'easy' },
+    0: { name: 'Long 14mi', detail: '8:15/mi easy. Long run climbing toward marathon range.', type: 'long' }
+  },
+  // ============ BASE 2 · w/c 2026-12-28 · 45mi ============
+  '2026-12-28': {
+    1: { name: 'Easy 6mi', detail: '8:30/mi. Strength A after.', type: 'easy' },
+    2: { name: 'Easy 7mi + strides', detail: '8:30/mi + 6×20s.', type: 'easy' },
+    3: { name: 'Recovery 5mi', detail: '8:30/mi. New Year Eve.', type: 'easy' },
+    4: { name: 'Easy 6mi', detail: '8:30/mi. New Year Day.', type: 'easy' },
+    5: { name: 'Rest', detail: 'Strength B (upper).', type: 'rest' },
+    6: { name: 'Easy 6mi', detail: '8:15/mi.', type: 'easy' },
+    0: { name: 'Long 15mi', detail: '8:15/mi easy. Marathon block proper starts next week — once the race is chosen.', type: 'long' }
   }
-
 };
 
 // Helper to find which Monday a date belongs to
@@ -3248,7 +3422,7 @@ function extractMiles(session) {
     return 11.5;
   }
   if (name.includes('great north run') || name.includes('gnr')) return 13.1;
-  if (name.includes('warsaw marathon')) return 26.2;
+  if (name.includes('great north run')) return 13.1;
   if (name.includes('stockholm')) return 0; // walk
 
   // Explicit "X mi total" stated in the session always wins over heuristics
@@ -3617,36 +3791,39 @@ function isTimeBased(name) {
 }
 
 const WORKOUT_TEMPLATES = {
-  upper: {
-    name: 'Upper',
+  // SESSION A · LOWER · Tuesday after the AM run · ~25 min
+  lower: {
+    name: 'Lower (A)',
+    notes: '25 min · Tuesday, after the AM session. Keep 2 reps in reserve. Lift on hard running days so easy days stay easy.',
     exercises: [
-      { name: 'Shoulder press', sets: 4, reps: 8 },
-      { name: 'Single-arm row', sets: 4, reps: 10 },
-      { name: 'DB bench press', sets: 4, reps: 8 },
-      { name: 'Lat pullover', sets: 3, reps: 12 },
-      { name: 'Rear delt fly', sets: 3, reps: 15 },
-      { name: 'Lateral raise', sets: 3, reps: 15 },
-      { name: 'Bicep curl', sets: 3, reps: 12 },
-      { name: 'Tricep extension', sets: 3, reps: 12 },
-      // ===== CORE FINISHER =====
-      { name: 'Plank', sets: 3, reps: 60 },
-      { name: 'Pallof press', sets: 2, reps: 12 }
+      { name: 'Smith squat', sets: 3, reps: 6 },
+      { name: 'DB split squat', sets: 2, reps: 8 },
+      { name: 'Seated leg curl', sets: 3, reps: 10 },
+      { name: 'Calf raise', sets: 3, reps: 15 }
     ]
   },
-  lower: {
-    name: 'Lower',
+  // SESSION B · UPPER · Thursday · ~35 min · PULLS LEAD
+  upper: {
+    name: 'Upper (B)',
+    notes: '35 min · Thursday. Pulls lead — high row and mid pull are the priority lifts. Progress those aggressively, press slowly.',
     exercises: [
-      { name: 'Goblet squat', sets: 4, reps: 8 },
-      { name: 'Romanian deadlift', sets: 4, reps: 10 },
-      { name: 'Bulgarian split squat', sets: 3, reps: 10 },
-      { name: 'Step-up', sets: 3, reps: 10 },
-      { name: 'Single-leg RDL', sets: 3, reps: 10 },
-      { name: 'Hip thrust', sets: 3, reps: 12 },
-      { name: 'Calf raise', sets: 3, reps: 20 },
-      // ===== CORE FINISHER (non-negotiable for runners) =====
-      { name: 'Plank', sets: 3, reps: 60 },
-      { name: 'Side plank', sets: 2, reps: 45 },
-      { name: 'Dead bug', sets: 2, reps: 10 }
+      { name: 'High row', sets: 3, reps: 10 },
+      { name: 'Mid pull', sets: 3, reps: 10 },
+      { name: 'Smith bench', sets: 3, reps: 8 },
+      { name: 'Smith seated press', sets: 3, reps: 8 },
+      { name: 'Lateral raise', sets: 3, reps: 12 },
+      { name: 'Face pull', sets: 3, reps: 15 }
+    ]
+  },
+  // SESSION C · OPTIONAL · Saturday · ~20 min
+  accessory: {
+    name: 'Accessory (C)',
+    notes: '20 min · optional Saturday. Skip it without guilt on heavy running weeks.',
+    exercises: [
+      { name: 'Chest press', sets: 3, reps: 10 },
+      { name: 'Single-arm cable row', sets: 3, reps: 10 },
+      { name: 'DB curl', sets: 3, reps: 12 },
+      { name: 'Plank', sets: 3, reps: 45 }
     ]
   },
   core: {
@@ -3877,7 +4054,20 @@ async function startWorkout(templateKey, opts) {
   if (sessErr) {
     setSync('error', 'Failed');
     console.error(sessErr);
-    alert('Could not start workout. Has the workout schema been run? Error: ' + sessErr.message);
+    // TypeError / "Load failed" / "Failed to fetch" = request never reached Supabase.
+    // A missing table returns a PostgREST error (code 42P01) instead.
+    const msg = String(sessErr.message || '');
+    const isNetwork = !sessErr.code && /load failed|failed to fetch|networkerror/i.test(msg);
+    if (isNetwork) {
+      alert('Could not reach Supabase — the request never left the browser.\n\n' +
+            'Usual cause: this page is open from file:// instead of https. ' +
+            'Open it from your Railway URL.\n\nAlso check: offline, VPN, or a paused Supabase project.\n\n' +
+            'Raw: ' + msg);
+    } else if (sessErr.code === '42P01') {
+      alert('The workout tables do not exist yet. Run the workout_sessions / workout_sets schema in the Supabase SQL editor.\n\nRaw: ' + msg);
+    } else {
+      alert('Could not start workout.\n\n' + (sessErr.code ? '[' + sessErr.code + '] ' : '') + msg);
+    }
     return;
   }
   const sess = sessData[0];
@@ -4098,7 +4288,7 @@ function isPrehabComplete(date) {
 }
 function isAllHabitsComplete(date) {
   const d = state.days[date]; if (!d || !d.habits) return false;
-  return HABITS.every(h => d.habits[h.id]);
+  return HABITS.length > 0 && HABITS.every(h => d.habits[h.id]);
 }
 function calcStreak() {
   let s = 0; const today = new Date();
@@ -4421,7 +4611,7 @@ function renderWeekDetail(weekStart) {
   if (w.deload) tags.push('<span class="tag warn">DELOAD</span>');
   if (w.race) tags.push('<span class="tag accent">RACE</span>');
 
-  document.getElementById('weekDetailTitle').textContent = `Week ${w.wk}`;
+  document.getElementById('weekDetailTitle').textContent = w.phase ? `${fmtDateShort(w.start)} · ${w.phase}` : `w/c ${fmtDateShort(w.start)}`;
   document.getElementById('weekDetailMeta').innerHTML = `${fmtDateShort(w.start)} · ${calculatedMiles}MI · LR ${w.lr} ${tags.join(' ')}`;
 
   // Banner explaining swap state
@@ -4695,7 +4885,7 @@ function renderDashCurrentWeek() {
       </div>`;
   });
   const nextLink = nextW
-    ? `<div style="text-align:center;margin-top:12px"><span onclick="openWeekDetail('${nextW.start}')" style="cursor:pointer;font-family:'Inter',sans-serif;font-size:11px;font-weight:800;letter-spacing:0.12em;color:var(--accent-deep)">NEXT WEEK · WK ${nextW.wk} →</span></div>`
+    ? `<div style="text-align:center;margin-top:12px"><span onclick="openWeekDetail('${nextW.start}')" style="cursor:pointer;font-family:'Inter',sans-serif;font-size:11px;font-weight:800;letter-spacing:0.12em;color:var(--accent-deep)">NEXT WEEK · ${fmtDateShort(nextW.start)} →</span></div>`
     : '';
   el.innerHTML = `
     <div onclick="openWeekDetail('${weekStart}')" style="cursor:pointer">
@@ -4820,14 +5010,14 @@ function renderRacePredictor() {
   for (const [name, info] of Object.entries(bandBest)) {
     const t1 = parseFloat(info.run.duration_sec);
     const d1 = parseFloat(info.run.distance_mi);
-    const d2 = 26.2;
+    const d2 = 13.1;
     const t2 = t1 * Math.pow(d2 / d1, RIEGEL);
     projections.push({
       band: name,
       run: info.run,
       runTime: t1,
       runDistance: d1,
-      projectedMarathon: t2
+      projectedHalf: t2
     });
   }
 
@@ -4837,11 +5027,11 @@ function renderRacePredictor() {
   projections.sort((a, b) => order.indexOf(a.band) - order.indexOf(b.band));
 
   // Best estimate = take median of projections, or the longest-distance one (more reliable)
-  const projectedSecs = projections.map(p => p.projectedMarathon);
+  const projectedSecs = projections.map(p => p.projectedHalf);
   const median = projectedSecs.slice().sort((a, b) => a - b)[Math.floor(projectedSecs.length / 2)];
 
-  // Compare vs goal 2:54 = 10440 sec
-  const goalSecs = 2 * 3600 + 54 * 60; // 2:54:00
+  // Compare vs goal 1:25:00 = 5100 sec
+  const goalSecs = 1 * 3600 + 25 * 60; // 1:25:00
   const delta = median - goalSecs;
   const onTrack = Math.abs(delta) < 180; // within 3 min
   const ahead = delta < -180;
@@ -4856,10 +5046,10 @@ function renderRacePredictor() {
       <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:14px;margin-bottom:14px">
         <div>
           <div style="font-family:'Bebas Neue',sans-serif;font-size:54px;line-height:0.85;color:var(--ink)">${fmtSecs(median, true)}</div>
-          <div class="card-meta" style="margin-top:6px">PROJECTED MARATHON</div>
+          <div class="card-meta" style="margin-top:6px">PROJECTED HALF</div>
         </div>
         <div style="text-align:right">
-          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-faint);font-weight:700;letter-spacing:0.04em">GOAL · 2:54:00</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-faint);font-weight:700;letter-spacing:0.04em">GOAL · 1:25:00</div>
           <div class="card-meta" style="margin-top:4px;color:${statusColor}">${statusLabel}</div>
         </div>
       </div>
@@ -4872,7 +5062,7 @@ function renderRacePredictor() {
             <div style="display:grid;grid-template-columns:48px 1fr auto;gap:10px;align-items:center;padding:6px 0;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-soft)">
               <span style="font-family:'Inter',sans-serif;font-weight:800;letter-spacing:0.18em;color:var(--ink-faint)">${p.band}</span>
               <span>${parseFloat(p.run.distance_mi).toFixed(1)}MI · ${fmtSecs(pace, false)}/MI · ${dm.day} ${dm.month}</span>
-              <span style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--ink);letter-spacing:0">${fmtSecs(p.projectedMarathon, true)}</span>
+              <span style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--ink);letter-spacing:0">${fmtSecs(p.projectedHalf, true)}</span>
             </div>`;
         }).join('')}
       </div>
@@ -5233,8 +5423,12 @@ function renderDash() {
   const cwEarly = getCurrentWeek();
   const posterChapterEl = document.getElementById('posterChapter');
   if (posterChapterEl) {
-    const wkNum = cwEarly ? cwEarly.wk : 0;
-    posterChapterEl.textContent = String(wkNum).padStart(2, '0');
+    // Weeks remaining until the next A-race on the calendar
+    const todayD = new Date(TODAY());
+    const nextA = RACES.filter(r => r.type === 'a-race' && new Date(r.date) >= todayD)
+                       .sort((a, b) => new Date(a.date) - new Date(b.date))[0];
+    const wksOut = nextA ? Math.max(0, Math.ceil((new Date(nextA.date) - todayD) / 604800000)) : 0;
+    posterChapterEl.textContent = String(wksOut).padStart(2, '0');
   }
 
   // Update legacy hero-fill bar if present (for fallbacks)
@@ -5258,25 +5452,25 @@ function renderDash() {
     validRaces.sort((a, b) => a.fraction - b.fraction);
 
     // Hide a label if the previous SHOWN label is within threshold % to the left
-    // OR if it's within threshold % of Warsaw (right edge) or Day 1 (left edge)
+    // OR if it's within threshold % of the A-race (right edge) or Day 1 (left edge)
     const COLLISION_THRESHOLD = 11;
     let lastShownLeftPct = -100;
     validRaces.forEach((v) => {
-      const isWarsaw = v.r.name && v.r.name.toLowerCase().includes('warsaw');
+      const isARace = v.r.name && v.r.name.toLowerCase().includes('great north run');
       const tooCloseToLast = (v.leftPct - lastShownLeftPct) < COLLISION_THRESHOLD;
-      const tooCloseToWarsaw = !isWarsaw && (100 - v.leftPct) < COLLISION_THRESHOLD;
+      const tooCloseToARace = !isARace && (100 - v.leftPct) < COLLISION_THRESHOLD;
       const tooCloseToStart = v.leftPct < COLLISION_THRESHOLD - 3; // Day 1 endcap
-      v.showLabel = !tooCloseToLast && !tooCloseToWarsaw && !tooCloseToStart && !isWarsaw;
+      v.showLabel = !tooCloseToLast && !tooCloseToARace && !tooCloseToStart && !isARace;
       if (v.showLabel) lastShownLeftPct = v.leftPct;
     });
 
     let markerHTML = '';
     validRaces.forEach(({ r, raceDate, leftPct, showLabel }) => {
-      const isWarsaw = r.name && r.name.toLowerCase().includes('warsaw');
+      const isARace = r.name && r.name.toLowerCase().includes('great north run');
       const isPast = raceDate < today;
       let cls = 'timeline-marker ';
       let labelCls = 'timeline-label ';
-      if (isWarsaw) { cls += 'warsaw'; labelCls += 'warsaw'; }
+      if (isARace) { cls += 'warsaw'; labelCls += 'warsaw'; }
       else if (isPast) { cls += 'past'; labelCls += 'past'; }
       else { cls += 'future'; }
       const shortLabel = r.name
@@ -5285,7 +5479,7 @@ function renderDash() {
         .replace('Colshaw 10K', '10K')
         .replace('Stockport 10K', '10K·T')
         .replace('Great North Run', 'GNR')
-        .replace('Warsaw Marathon', 'WARSAW');
+        .replace('Great North Run', 'GNR');
       const labelHTML = showLabel ? `<div class="${labelCls}" style="left:${leftPct}%">${shortLabel}</div>` : '';
       markerHTML += `<div class="${cls}" style="left:${leftPct}%" title="${r.name} · ${r.date}"></div>${labelHTML}`;
     });
@@ -5303,7 +5497,7 @@ function renderDash() {
   document.getElementById('dashPhase').textContent = phase;
 
   const cw = getCurrentWeek();
-  document.getElementById('dashWeek').textContent = cw ? `WK ${cw.wk} · ${cw.miles}MI` : '—';
+  document.getElementById('dashWeek').textContent = cw ? `${(cw.phase || 'WEEK').toUpperCase()} · ${cw.miles}MI` : '—';
 
   // Compute all-time habit stats — used by hero tag AND stats grid below
   const habitStats = calcHabitStats();
@@ -5433,7 +5627,7 @@ function renderDash() {
     const target = cw.miles;
     const pctRun = Math.min(100, (weekMiles / target) * 100);
     const remaining = Math.max(0, target - weekMiles);
-    wmMeta.textContent = `WK ${cw.wk} TARGET · ${target}MI`;
+    wmMeta.textContent = `WEEK TARGET · ${target}MI`;
     wmEl.innerHTML = `
       <div class="card" style="padding:20px">
         <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:14px;margin-bottom:14px">
@@ -5582,16 +5776,16 @@ function renderDash() {
     }
   }
 
-  // ====== POST-WARSAW BANNER (Sep 28 onwards) ======
+  // ====== POST-RACE BANNER (Sep 14 onwards) ======
   const banner = document.getElementById('postWarsawBanner');
   if (banner) {
-    const warsawDay = new Date('2026-09-28'); // day after race
+    const warsawDay = new Date('2026-09-14'); // day after GNR
     if (today >= warsawDay) {
       const daysSince = Math.floor((today - new Date('2026-09-27')) / 86400000);
       banner.innerHTML = `
         <div class="section">
           <div class="hero" style="margin:0 0 20px;background:var(--ink);color:var(--bg)">
-            <div class="hero-eyebrow" style="color:var(--accent)">${daysSince} DAYS POST-WARSAW</div>
+            <div class="hero-eyebrow" style="color:var(--accent)">${daysSince} DAYS POST-GNR</div>
             <div class="hero-num" style="font-size:42px;color:var(--bg)">HYPERTROPHY BLOCK</div>
             <div class="hero-label" style="color:var(--accent)">Build the strength that protects against injury</div>
             <div style="margin-top:14px;font-size:13px;line-height:1.6;color:var(--bg);opacity:0.9">
@@ -5660,12 +5854,12 @@ function renderDash() {
   const tw = document.getElementById('dashThisWeek');
   const thisWeekMetaEl = document.getElementById('thisWeekMeta');
   if (tw && cw) {
-    if (thisWeekMetaEl) thisWeekMetaEl.textContent = `WK ${cw.wk} · ${cw.miles}MI`;
+    if (thisWeekMetaEl) thisWeekMetaEl.textContent = `${(cw.phase || 'WEEK').toUpperCase()} · ${cw.miles}MI`;
     tw.innerHTML = `
       <div class="card">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:14px">
           <div style="flex:1">
-            <div class="card-title">Wk ${cw.wk} · ${fmtDateShort(cw.start)}</div>
+            <div class="card-title">w/c ${fmtDateShort(cw.start)}${cw.phase ? ' · ' + cw.phase : ''}</div>
             <div class="card-meta"><span class="tag accent">${cw.miles}MI</span> ${cw.notes || ''}</div>
             <div class="card-detail">Long Run: <strong style="color:var(--ink)">${cw.lr}</strong></div>
           </div>
@@ -5696,25 +5890,24 @@ function renderPlan() {
   // Bar chart
   const maxMiles = Math.max(...planWeeksWithCalc.map(w => w.miles));
   const barChart = document.getElementById('mileageChart');
-  // Reverse so wk 22 is first (left)
+  // Chronological order, oldest first (left)
   const orderedWeeks = [...planWeeksWithCalc];
   barChart.innerHTML = orderedWeeks.map(w => {
     const h = (w.miles / maxMiles) * 100;
     let cls = 'bar';
-    if (cw && w.wk === cw.wk) cls += ' current';
-    else if (cw && w.wk > cw.wk) cls += ' past';
+    if (cw && w.start === cw.start) cls += ' current';
+    else if (cw && new Date(w.start) < new Date(cw.start)) cls += ' past';
     if (w.deload) cls += ' deload';
     if (w.race) cls += ' race';
-    return `<div class="${cls}" style="height:${h}%" title="Wk ${w.wk}: ${w.miles}mi"></div>`;
+    return `<div class="${cls}" style="height:${h}%" title="${fmtDateShort(w.start)}: ${w.miles}mi"></div>`;
   }).join('');
 
   document.getElementById('planWeeks').innerHTML = planWeeksWithCalc.map(w => {
-    const isCurrent = cw && cw.wk === w.wk;
+    const isCurrent = cw && cw.start === w.start;
     return `
       <div class="plan-week ${isCurrent ? 'current' : ''}" onclick="openWeekDetail('${w.start}')" style="cursor:pointer">
-        <div class="plan-week-num">${w.wk}</div>
         <div class="plan-week-info">
-          <div class="plan-week-detail">${fmtDateShort(w.start)} ${w.deload ? '· DELOAD' : ''}${w.race ? '· RACE WK' : ''}</div>
+          <div class="plan-week-detail">${fmtDateShort(w.start)}${w.phase ? ' · ' + w.phase.toUpperCase() : ''}${w.deload ? ' · DELOAD' : ''}${w.race ? ' · RACE WK' : ''}</div>
           <div class="plan-week-lr">LR · ${w.lr}</div>
         </div>
         <div class="plan-week-mileage">${w.miles}</div>
@@ -5766,6 +5959,29 @@ function renderPlan() {
         <div class="card-meta"><span class="tag ${s.tag === 'mp' ? 'accent' : s.tag === 'speed' ? 'dark' : ''}">${s.tag.toUpperCase()}</span> ${s.detail}</div>
       </div>
     `).join('');
+  }
+
+  const seasonEl = document.getElementById('seasonList');
+  if (seasonEl) {
+    seasonEl.innerHTML = SEASON_PHASES.map(ph => {
+      const isCurrent = ph.status === 'current';
+      const tagCls = isCurrent ? 'accent' : ph.status === 'next' ? 'warn' : 'dark';
+      const tagTxt = isCurrent ? 'NOW' : ph.status === 'next' ? 'NEXT' : ph.range.split(' ')[0];
+      return `
+      <div class="card" style="margin-bottom:8px${isCurrent ? ';border-color:var(--accent-deep)' : ''}">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:14px">
+          <div style="flex:1">
+            <div class="card-title">${ph.name}</div>
+            <div class="card-meta"><span class="tag ${tagCls}">${tagTxt}</span> ${ph.range}</div>
+            <div class="card-detail" style="margin-top:6px">${ph.focus}</div>
+          </div>
+          <div style="text-align:right;line-height:0.9;flex-shrink:0">
+            <div style="font-family:'Bebas Neue';font-size:26px;color:var(--ink)">${ph.miles}</div>
+            <div style="font-family:'Inter';font-weight:800;font-size:9px;color:var(--ink-faint);letter-spacing:0.18em">MI/WK</div>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
   }
 
   document.getElementById('raceList').innerHTML = RACES.map(r => {
@@ -6485,7 +6701,7 @@ function renderAll() {
 function switchTab(name) {
   document.querySelectorAll('nav.bottom-nav button[data-tab]').forEach(b => b.classList.toggle('active', b.dataset.tab === name));
   document.querySelectorAll('main > .tab').forEach(t => t.classList.toggle('active', t.id === 'tab-' + name));
-  const titles = { dash: ['Dashboard', 'Project 2:55'], plan: ['Plan', '22-week build'], log: ['Log', 'Training history'], nut: ['Fuel', 'Macros + fuelling'], glow: ['Glow', 'Aesthetic + health'] };
+  const titles = { dash: ['Dashboard', 'Project 1:25'], plan: ['Plan', 'GNR build'], log: ['Log', 'Training history'], nut: ['Fuel', 'Macros + fuelling'], glow: ['Glow', 'Aesthetic + health'] };
   const t = titles[name] || ['', ''];
   document.getElementById('dynamicTitle').textContent = t[0];
   document.getElementById('dynamicSubtitle').textContent = t[1];
